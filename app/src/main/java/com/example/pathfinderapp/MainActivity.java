@@ -3,6 +3,8 @@ package com.example.pathfinderapp;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -10,6 +12,14 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    final Fragment fragment1 = new ProfileFragment();
+    final Fragment fragment2 = new PublishFragment();
+    final Fragment fragment3 = new SearchFragment();
+    final Fragment fragment4 = new ToursFragment();
+
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = fragment1;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -18,16 +28,24 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_search:
-                    mTextMessage.setText(R.string.title_search);
+                    fm.beginTransaction().hide(active).show(fragment1).commit();
+                    active = fragment1;
+                    //mTextMessage.setText(R.string.title_search);
                     return true;
                 case R.id.navigation_tours:
-                    mTextMessage.setText(R.string.title_tours);
+                    fm.beginTransaction().hide(active).show(fragment2).commit();
+                    active = fragment2;
+                    //mTextMessage.setText(R.string.title_tours);
                     return true;
                 case R.id.navigation_publish:
-                    mTextMessage.setText(R.string.title_publish);
+                    fm.beginTransaction().hide(active).show(fragment3).commit();
+                    active = fragment3;
+                    //mTextMessage.setText(R.string.title_publish);
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
+                    fm.beginTransaction().hide(active).show(fragment4).commit();
+                    active = fragment4;
+                    //mTextMessage.setText(R.string.title_profile);
                     return true;
             }
             return false;
@@ -38,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fm.beginTransaction().add(R.id.main_container, fragment4, "4").hide(fragment4).commit();
+        fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
+        fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
+
+
 
         /*Boolean mobile_register_flag = sharedpref.getBoolean("mobile_register_flag", false);
 
