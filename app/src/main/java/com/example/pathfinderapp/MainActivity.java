@@ -17,14 +17,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_search:
+                    mTextMessage.setText(R.string.title_search);
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_tours:
+                    mTextMessage.setText(R.string.title_tours);
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_publish:
+                    mTextMessage.setText(R.string.title_publish);
+                    return true;
+                case R.id.navigation_profile:
+                    mTextMessage.setText(R.string.title_profile);
                     return true;
             }
             return false;
@@ -35,6 +38,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Boolean mobile_register_flag = sharedpref.getBoolean("mobile_register_flag", false);
+
+        if (!mobile_register_flag) {
+            Intent intent = new Intent(FlashView.this,
+                    RegisterActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(FlashView.this,
+                    ActivityTwo.class);
+            startActivity(intent);
+        }*/
+
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
