@@ -1,5 +1,6 @@
 package com.example.pathfinderapp;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        ToursFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
+        PublishFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener
+{
 
     private TextView mTextMessage;
     final Fragment fragment1 = new ProfileFragment();
@@ -82,4 +86,8 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
