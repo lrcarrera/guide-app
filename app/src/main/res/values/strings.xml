@@ -22,5 +22,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="helloverga">Hello verga</string>
 
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">293971671262365</string> <string name="fb_login_protocol_scheme">fb293971671262365</string>
+
+
 
 </resources>
