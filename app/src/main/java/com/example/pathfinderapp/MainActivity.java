@@ -21,10 +21,10 @@ public class MainActivity extends AppCompatActivity implements
 {
 
     private TextView mTextMessage;
-    final Fragment fragment1 = new ProfileFragment();
-    final Fragment fragment2 = new PublishFragment();
-    final Fragment fragment3 = new SearchFragment();
-    final Fragment fragment4 = new ToursFragment();
+    final Fragment fragment1 = new SearchFragment();
+    final Fragment fragment2 = new ToursFragment();
+    final Fragment fragment3 = new PublishFragment();
+    final Fragment fragment4 = new ProfileFragment();
 
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
