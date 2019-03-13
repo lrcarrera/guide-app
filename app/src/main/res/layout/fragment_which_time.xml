@@ -35,7 +35,23 @@
             android:timePickerMode="spinner"
             />
 
+        <TextView
+            android:id="@+id/continueButton"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="23sp"
+            android:text="@string/continueText"
+            android:textColor="@drawable/text_button_color"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
     </LinearLayout>
+
+
 
 
 

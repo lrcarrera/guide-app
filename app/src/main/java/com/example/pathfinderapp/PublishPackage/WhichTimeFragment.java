@@ -7,10 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+
+import java.text.SimpleDateFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +35,8 @@ public class WhichTimeFragment extends Fragment {
 
     private PublishFragment parent;
 
-    TimePicker timePicker;
+    private TimePicker timePicker;
+    private TextView continueButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -70,8 +74,28 @@ public class WhichTimeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_which_time, container, false);
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         parent.setSeekBarStatus();
+        continueButton = (TextView) view.findViewById(R.id.continueButton);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                parent.post.setStartHour(format.format(timePicker.getDrawingTime()));
+                nextStep();
+            }
+        });
+
+        /*continueButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                    continueButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+        });*/
+
         return view;
     }
+
+    private void nextStep(){ parent.setCurrentPage(); }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

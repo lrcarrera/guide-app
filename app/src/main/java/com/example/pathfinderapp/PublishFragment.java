@@ -14,7 +14,11 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.PublishPackage.DurationFragment;
+import com.example.pathfinderapp.PublishPackage.PriceFragment;
+import com.example.pathfinderapp.PublishPackage.RouteSelectionFragment;
+import com.example.pathfinderapp.PublishPackage.TouristsAllowedFragment;
 import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
@@ -32,16 +36,18 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class PublishFragment extends Fragment implements WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
-        WhichTimeFragment.OnFragmentInteractionListener, DurationFragment.OnFragmentInteractionListener
+        WhichTimeFragment.OnFragmentInteractionListener, DurationFragment.OnFragmentInteractionListener, PriceFragment.OnFragmentInteractionListener,
+        RouteSelectionFragment.OnFragmentInteractionListener, TouristsAllowedFragment.OnFragmentInteractionListener
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    CustomPageAdapter pagerAdapter;
-    ViewPager pager;
-    SeekBar seekBar;
+    public CustomPageAdapter pagerAdapter;
+    public ViewPager pager;
+    public SeekBar seekBar;
+    public Post post;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,13 +70,17 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(getContext(), R.string.error_invalid_password, Toast.LENGTH_LONG);
-    }@Override
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_publish, container, false);
     seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
+
+    post = new Post();
 
 
     seekBar.setOnTouchListener(new View.OnTouchListener() {
@@ -110,12 +120,14 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         }
         else
         {
+            setSeekBarStatus();
             pager.setCurrentItem(pager.getCurrentItem() + 1);
         }
     }
 
     public void setSeekBarStatus(){
-        seekBar.setProgress((int) ((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+        //seekBar.setProgress((int) ((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+        seekBar.setProgress(seekBar.getProgress() + 10);
         seekBar.refreshDrawableState();
         //setCurrentPage();
     }
@@ -151,6 +163,9 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         fList.add(WhenFragment.newInstance(this));
         fList.add(WhichTimeFragment.newInstance(this));
         fList.add(DurationFragment.newInstance(this));
+        fList.add(new TouristsAllowedFragment());
+        fList.add(new RouteSelectionFragment());
+        fList.add(new PriceFragment());
 
 
         //fList.add(MyFragment.newInstance("Fragment 3", R.drawable.image3));

@@ -7,23 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
-import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
-
-import java.text.SimpleDateFormat;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DurationFragment.OnFragmentInteractionListener} interface
+ * {@link RouteSelectionFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DurationFragment#newInstance} factory method to
+ * Use the {@link RouteSelectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DurationFragment extends Fragment {
+public class RouteSelectionFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,13 +28,9 @@ public class DurationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private PublishFragment parent;
-    private TextView continueButton;
-    private TimePicker timePicker;
-
     private OnFragmentInteractionListener mListener;
 
-    public DurationFragment() {
+    public RouteSelectionFragment() {
         // Required empty public constructor
     }
 
@@ -47,14 +38,17 @@ public class DurationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param parent Parameter 1.
-     * @return A new instance of fragment DurationFragment.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment RouteSelectionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DurationFragment newInstance(PublishFragment parent) {
-        DurationFragment fragment = new DurationFragment();
-        fragment.parent = parent;
-
+    public static RouteSelectionFragment newInstance(String param1, String param2) {
+        RouteSelectionFragment fragment = new RouteSelectionFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -71,23 +65,8 @@ public class DurationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_duration, container, false);
-        timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-        continueButton = (TextView) view.findViewById(R.id.continueButton);
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-                parent.post.setStartHour(format.format(timePicker.getDrawingTime()));
-                nextStep();
-            }
-        });
-        parent.setSeekBarStatus();
-        return view;
+        return inflater.inflate(R.layout.fragment_route_selection, container, false);
     }
-
-    private void nextStep(){ parent.setCurrentPage(); }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

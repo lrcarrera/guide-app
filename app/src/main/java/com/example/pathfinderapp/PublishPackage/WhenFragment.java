@@ -90,6 +90,7 @@ public class WhenFragment extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
+                parent.post.setDueTo(new Date(calendarView.getDate()));
                 nextStep();
             }
         });

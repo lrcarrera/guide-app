@@ -30,6 +30,6 @@
     <string name="when_title">¿Cuándo va a ser el tour?</string>
     <string name="whichTimeTitle">¿A qué hora va a empezar?</string>
     <string name="durationTitle">¿A qué hora va a acabar?</string>
-
+    <string name="continueText">Continuar</string>
 
 </resources>
