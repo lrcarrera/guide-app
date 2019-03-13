@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
 /**
@@ -28,6 +29,8 @@ public class WhereFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private PublishFragment parent;
+
     private OnFragmentInteractionListener mListener;
 
     public WhereFragment() {
@@ -38,17 +41,13 @@ public class WhereFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param parent Parameter 1.
      * @return A new instance of fragment WhereFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WhereFragment newInstance(String param1, String param2) {
+    public static WhereFragment newInstance(PublishFragment parent) {
         WhereFragment fragment = new WhereFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.parent = parent;
         return fragment;
     }
 
@@ -65,6 +64,7 @@ public class WhereFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        parent.setSeekBarStatus();
         return inflater.inflate(R.layout.fragment_where, container, false);
     }
 

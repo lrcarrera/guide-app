@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PublishFragment">
+    tools:context=".PublishFragment"
+    android:id="@+id/publishFragment">
 
     <SeekBar
         android:id="@+id/publishSeekBar"

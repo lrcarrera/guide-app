@@ -27,7 +27,9 @@
     <string name="fb_login_protocol_scheme">fb293971671262365</string>
 
     <!-- WHEN FRAGMENT -->
-    <string name="when_title">¿Cuándo vas a viajar?</string>
+    <string name="when_title">¿Cuándo va a ser el tour?</string>
+    <string name="whichTimeTitle">¿A qué hora va a empezar?</string>
+    <string name="durationTitle">¿A qué hora va a acabar?</string>
 
 
 </resources>

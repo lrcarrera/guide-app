@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.PublishPackage.DurationFragment;
 import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
@@ -31,7 +32,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class PublishFragment extends Fragment implements WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
-        WhichTimeFragment.OnFragmentInteractionListener
+        WhichTimeFragment.OnFragmentInteractionListener, DurationFragment.OnFragmentInteractionListener
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,6 +40,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     private static final String ARG_PARAM2 = "param2";
 
     CustomPageAdapter pagerAdapter;
+    ViewPager pager;
     SeekBar seekBar;
 
     // TODO: Rename and change types of parameters
@@ -70,6 +72,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     View view = inflater.inflate(R.layout.fragment_publish, container, false);
     seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
 
+
     seekBar.setOnTouchListener(new View.OnTouchListener() {
 
         @Override
@@ -93,10 +96,28 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         // or  (ImageView) view.findViewById(R.id.foo);
         List<Fragment> fragments = getFragments();
         pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
-        ViewPager pager = getView().findViewById(R.id.pager);
+        pager = getView().findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
+        seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
         //Toast.makeText(getContext(), R.string.error_invalid_password, Toast.LENGTH_LONG);
 
+    }
+
+    public void setCurrentPage(){
+        if(pager == null)
+        {
+            Toast.makeText(getContext(), "es un null", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            pager.setCurrentItem(pager.getCurrentItem() + 1);
+        }
+    }
+
+    public void setSeekBarStatus(){
+        seekBar.setProgress((int) ((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+        seekBar.refreshDrawableState();
+        //setCurrentPage();
     }
 
     /*/**
@@ -126,9 +147,10 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<Fragment>();
 
-        fList.add(new WhereFragment());
-        fList.add(new WhenFragment());
-        fList.add(new WhichTimeFragment());
+        fList.add(WhereFragment.newInstance(this));
+        fList.add(WhenFragment.newInstance(this));
+        fList.add(WhichTimeFragment.newInstance(this));
+        fList.add(DurationFragment.newInstance(this));
 
 
         //fList.add(MyFragment.newInstance("Fragment 3", R.drawable.image3));

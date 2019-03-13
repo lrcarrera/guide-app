@@ -10,4 +10,11 @@
 
     <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
+    <style name="AlertDialogDatePicker" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorWhite</item>
+        <item name="android:textColorPrimaryInverse">@color/colorBlack</item>
+        <item name="android:textColorSecondaryInverse">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/com_facebook_messenger_blue</item>
+    </style>
+
 </resources>

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TimePicker;
 
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
@@ -15,12 +14,12 @@ import com.example.pathfinderapp.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WhichTimeFragment.OnFragmentInteractionListener} interface
+ * {@link DurationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link WhichTimeFragment#newInstance} factory method to
+ * Use the {@link DurationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WhichTimeFragment extends Fragment {
+public class DurationFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,11 +31,9 @@ public class WhichTimeFragment extends Fragment {
 
     private PublishFragment parent;
 
-    TimePicker timePicker;
-
     private OnFragmentInteractionListener mListener;
 
-    public WhichTimeFragment() {
+    public DurationFragment() {
         // Required empty public constructor
     }
 
@@ -45,12 +42,13 @@ public class WhichTimeFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param parent Parameter 1.
-     * @return A new instance of fragment WhichTimeFragment.
+     * @return A new instance of fragment DurationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WhichTimeFragment newInstance(PublishFragment parent) {
-        WhichTimeFragment fragment = new WhichTimeFragment();
+    public static DurationFragment newInstance(PublishFragment parent) {
+        DurationFragment fragment = new DurationFragment();
         fragment.parent = parent;
+
         return fragment;
     }
 
@@ -67,10 +65,8 @@ public class WhichTimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_which_time, container, false);
-        timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         parent.setSeekBarStatus();
-        return view;
+        return inflater.inflate(R.layout.fragment_duration, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

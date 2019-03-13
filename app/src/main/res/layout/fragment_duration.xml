@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context=".PublishPackage.WhichTimeFragment">
+    android:background="@color/colorWhite"
+    tools:context=".PublishPackage.DurationFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="23sp"
-        android:text="@string/whichTimeTitle"
+        android:text="@string/durationTitle"
         android:textColor="@color/colorBlack"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"/>
@@ -36,7 +36,5 @@
             />
 
     </LinearLayout>
-
-
 
 </LinearLayout>

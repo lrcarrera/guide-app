@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +40,10 @@ public class WhenFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    CalendarView calendarView;
+
+
+    private CalendarView calendarView;
+    private PublishFragment parent;
 
     private OnFragmentInteractionListener mListener;
 
@@ -47,21 +51,24 @@ public class WhenFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param parent Parameter 1.
      * @return A new instance of fragment WhenFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WhenFragment newInstance(String param1, String param2) {
+    public static WhenFragment newInstance(PublishFragment parent) {
+
         WhenFragment fragment = new WhenFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.parent = parent;
+
+        //Bundle args = new Bundle();
+        //.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
+        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -83,12 +90,16 @@ public class WhenFragment extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
-                Toast.makeText(getApplicationContext(), ""+day, Toast.LENGTH_SHORT).show();
+                nextStep();
             }
         });
         setCalendarMinDate();
-
+        parent.setSeekBarStatus();
         return view;
+    }
+
+    private void nextStep(){
+        parent.setCurrentPage();
     }
 
     private void  setCalendarMinDate() {

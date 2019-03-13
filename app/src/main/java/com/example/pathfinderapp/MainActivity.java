@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.pathfinderapp.PublishPackage.DurationFragment;
 import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements
         ToursFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
         PublishFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
         WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
-        WhichTimeFragment.OnFragmentInteractionListener
+        WhichTimeFragment.OnFragmentInteractionListener, DurationFragment.OnFragmentInteractionListener
 {
 
     private TextView mTextMessage;
