@@ -3,33 +3,22 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.Toast;
 
 import com.example.pathfinderapp.R;
-
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WhenFragment.OnFragmentInteractionListener} interface
+ * {@link WhichTimeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link WhenFragment#newInstance} factory method to
+ * Use the {@link WhichTimeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WhenFragment extends Fragment {
+public class WhichTimeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -39,11 +28,9 @@ public class WhenFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    CalendarView calendarView;
-
     private OnFragmentInteractionListener mListener;
 
-    public WhenFragment() {
+    public WhichTimeFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +40,11 @@ public class WhenFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment WhenFragment.
+     * @return A new instance of fragment WhichTimeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WhenFragment newInstance(String param1, String param2) {
-        WhenFragment fragment = new WhenFragment();
+    public static WhichTimeFragment newInstance(String param1, String param2) {
+        WhichTimeFragment fragment = new WhichTimeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,29 +65,8 @@ public class WhenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_when, container, false);
-        calendarView = (CalendarView) view.findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
-                Toast.makeText(getApplicationContext(), ""+day, Toast.LENGTH_SHORT).show();
-            }
-        });
-        setCalendarMinDate();
-
-        return view;
+        return inflater.inflate(R.layout.fragment_which_time, container, false);
     }
-
-    private void  setCalendarMinDate() {
-        Calendar calendar = Calendar.getInstance();
-
-        //calendar.set(Calendar.DATE, Calendar.getInstance().getActualMinimum(Calendar.DATE));
-        //long date = calendar.getTime();
-        long milis = System.currentTimeMillis();
-        calendarView.setMinDate(milis);
-    }
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

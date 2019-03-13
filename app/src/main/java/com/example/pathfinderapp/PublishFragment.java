@@ -1,21 +1,22 @@
 package com.example.pathfinderapp;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
+import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +30,16 @@ import java.util.List;
  * Use the {@link PublishFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PublishFragment extends Fragment implements WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener {
+public class PublishFragment extends Fragment implements WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
+        WhichTimeFragment.OnFragmentInteractionListener
+{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     CustomPageAdapter pagerAdapter;
+    SeekBar seekBar;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -63,7 +67,22 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_publish, container, false);
+    View view = inflater.inflate(R.layout.fragment_publish, container, false);
+    seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
+
+    seekBar.setOnTouchListener(new View.OnTouchListener() {
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+
+            return true;
+        }
+
+    });
+
+
+
+    return view;
     }
 
 
@@ -76,7 +95,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
         ViewPager pager = getView().findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
-        Toast.makeText(getContext(), R.string.error_invalid_password, Toast.LENGTH_LONG);
+        //Toast.makeText(getContext(), R.string.error_invalid_password, Toast.LENGTH_LONG);
 
     }
 
@@ -107,8 +126,11 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<Fragment>();
 
-        fList.add(new WhenFragment());
         fList.add(new WhereFragment());
+        fList.add(new WhenFragment());
+        fList.add(new WhichTimeFragment());
+
+
         //fList.add(MyFragment.newInstance("Fragment 3", R.drawable.image3));
         return fList;
     }

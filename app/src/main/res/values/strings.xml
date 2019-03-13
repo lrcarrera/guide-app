@@ -23,8 +23,11 @@
     <string name="helloverga">Hello verga</string>
 
     <!-- FACEBOOK -->
-    <string name="facebook_app_id">293971671262365</string> <string name="fb_login_protocol_scheme">fb293971671262365</string>
+    <string name="facebook_app_id">293971671262365</string>
+    <string name="fb_login_protocol_scheme">fb293971671262365</string>
 
+    <!-- WHEN FRAGMENT -->
+    <string name="when_title">¿Cuándo vas a viajar?</string>
 
 
 </resources>
