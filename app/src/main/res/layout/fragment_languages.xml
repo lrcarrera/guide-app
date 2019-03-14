@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PublishPackage.LanguagesFragment">
+
+
+    <TextView
+        android:id="@+id/whenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:text="@string/languagesTitle"
+        android:textColor="@color/colorBlack"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/switchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <!--<TimePicker
+            style="@style/AlertDialogDatePicker"
+            android:id="@+id/timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorWhite"
+            android:timePickerMode="spinner"
+            />
+
+
+        <Switch
+            android:id="@+id/switchButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:width="200dp"
+            android:height="100dp"
+            android:gravity="center"
+            android:text="Spanish"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:thumb="@drawable/spain_flag" />
+
+        <Switch
+            android:id="@+id/switchButton2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:width="200dp"
+            android:height="100dp"
+            android:gravity="center"
+            android:text="@string/spanish"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:thumb="@drawable/english_flag"
+            android:trackTint="@color/colorPrimary"/>-->
+
+    </LinearLayout>
+
+</LinearLayout>

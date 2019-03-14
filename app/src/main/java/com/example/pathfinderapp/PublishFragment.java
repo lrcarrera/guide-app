@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.PublishPackage.DurationFragment;
+import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.example.pathfinderapp.PublishPackage.PriceFragment;
 import com.example.pathfinderapp.PublishPackage.RouteSelectionFragment;
 import com.example.pathfinderapp.PublishPackage.TouristsAllowedFragment;
@@ -23,7 +26,9 @@ import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -48,6 +53,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     public ViewPager pager;
     public SeekBar seekBar;
     public Post post;
+    public User user;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,6 +87,14 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
     seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
 
     post = new Post();
+    user = new User();
+    user.setLanguages(new ArrayList<Language>(Arrays.asList(
+            new Language("spanish_flag", "Spanish"),
+            new Language("english_flag", "English"),
+            new Language("french_flag", "French"),
+            new Language("italian_flag", "Italian"),
+            new Language("german_flag", "German")
+            )));
 
 
     seekBar.setOnTouchListener(new View.OnTouchListener() {
@@ -164,7 +178,8 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         fList.add(WhichTimeFragment.newInstance(this));
         fList.add(DurationFragment.newInstance(this));
         fList.add(new TouristsAllowedFragment());
-        fList.add(new RouteSelectionFragment());
+        fList.add(LanguagesFragment.newInstance(this));
+        fList.add(RouteSelectionFragment.newInstance(this));
         fList.add(new PriceFragment());
 
 

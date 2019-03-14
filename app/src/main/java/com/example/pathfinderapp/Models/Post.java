@@ -1,5 +1,6 @@
 package com.example.pathfinderapp.Models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,22 @@ public class Post {
     private String endHour;
     private User guide;
     private List<User> tourists;
+    private ArrayList<Language> languages;
     private float price;
+
+
+    public Post(Date createdAt, Date dueTo, String startHour, String endHour, User guide, List<User> tourists, ArrayList<Language> languages, float price) {
+        this.createdAt = createdAt;
+        this.dueTo = dueTo;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.guide = guide;
+        this.tourists = tourists;
+        this.languages = languages;
+        this.price = price;
+    }
+
+
 
     public Post(Date createdAt, Date dueTo, User guide, List<User> tourists, float price) {
         this.createdAt = createdAt;
@@ -22,6 +38,14 @@ public class Post {
     }
 
     public Post() {}
+
+    public ArrayList<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(ArrayList<Language> languages) {
+        this.languages = languages;
+    }
 
     public Date getCreatedAt() {
         return createdAt;

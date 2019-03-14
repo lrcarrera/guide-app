@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.PublishPackage.DurationFragment;
+import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.example.pathfinderapp.PublishPackage.PriceFragment;
 import com.example.pathfinderapp.PublishPackage.RouteSelectionFragment;
 import com.example.pathfinderapp.PublishPackage.TouristsAllowedFragment;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements
         WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
         WhichTimeFragment.OnFragmentInteractionListener, DurationFragment.OnFragmentInteractionListener,
         PriceFragment.OnFragmentInteractionListener, RouteSelectionFragment.OnFragmentInteractionListener,
-        TouristsAllowedFragment.OnFragmentInteractionListener
+        TouristsAllowedFragment.OnFragmentInteractionListener, LanguagesFragment.OnFragmentInteractionListener
 {
 
     private TextView mTextMessage;

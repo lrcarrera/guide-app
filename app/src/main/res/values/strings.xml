@@ -31,5 +31,11 @@
     <string name="whichTimeTitle">¿A qué hora va a empezar?</string>
     <string name="durationTitle">¿A qué hora va a acabar?</string>
     <string name="continueText">Continuar</string>
+    <string name="languagesTitle">¿En qué idiomas vas a guiar?</string>
+    <string name="english">English</string>
+    <string name="german">German</string>
+    <string name="french">French</string>
+    <string name="italian">Italian</string>
+    <string name="spanish">Spanish</string>
 
 </resources>

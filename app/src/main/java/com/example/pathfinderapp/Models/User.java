@@ -1,5 +1,7 @@
 package com.example.pathfinderapp.Models;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -9,13 +11,25 @@ public class User {
     private int toursCound;
     private String company;
     private float score;
+    private ArrayList<Language> languages;
 
-    public User(String name, List<Post> postList, int toursCound, String company, float score) {
+    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages) {
         this.name = name;
         this.postList = postList;
         this.toursCound = toursCound;
         this.company = company;
         this.score = score;
+        this.languages = languages;
+    }
+
+    public User() { }
+
+    public ArrayList<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(ArrayList<Language> languages) {
+        this.languages = languages;
     }
 
     public String getName() {

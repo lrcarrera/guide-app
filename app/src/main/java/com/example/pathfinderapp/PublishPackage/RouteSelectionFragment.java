@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +33,8 @@ public class RouteSelectionFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private PublishFragment parent;
+
     private OnFragmentInteractionListener mListener;
 
     public RouteSelectionFragment() {
@@ -38,17 +45,17 @@ public class RouteSelectionFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param parent Parameter 1.
      * @return A new instance of fragment RouteSelectionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RouteSelectionFragment newInstance(String param1, String param2) {
+    public static RouteSelectionFragment newInstance(PublishFragment parent) {
         RouteSelectionFragment fragment = new RouteSelectionFragment();
-        Bundle args = new Bundle();
+        fragment.parent = parent;
+        /*Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -65,7 +72,18 @@ public class RouteSelectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_route_selection, container, false);
+        View view = inflater.inflate(R.layout.fragment_route_selection, container, false);
+        TextView text = (TextView) view.findViewById(R.id.mainText);
+        /*if(parent.post.getLanguages() != null)
+        {
+            String t = "";
+            for(Language l : parent.post.getLanguages())
+            {
+                t += l.getName() + "  " + l.getFlag() +  "  ";
+            }
+            text.setText(t);
+        }*/
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
