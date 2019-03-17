@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             callbackManager = CallbackManager.Factory.create();
 
-            LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+            LoginButton loginButton = (LoginButton) findViewById(R.id.fbButton);
             loginButton.setReadPermissions("email");
 
             // Callback registration
