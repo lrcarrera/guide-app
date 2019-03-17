@@ -166,13 +166,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-
-        <!--<EditText
-            android:drawablePadding="20dp"
-            android:drawableRight="@drawable/ic_person"
-            android:hint="user@mail.com"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />-->
         <TextView
             android:layout_marginTop="5dp"
             android:text="Password"
@@ -193,7 +186,6 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:textColor="@color/text_button_colors"
-
                 android:drawableRight="@drawable/ic_person"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -209,23 +201,6 @@
             android:text="Sign in"
             android:textAllCaps="false"
             android:textColor="#FFF" />
-       <!-- <Button
-            android:layout_marginTop="10dp"
-            android:textColor="#FFF"
-            android:background="@drawable/rec_gradient_fb"
-            android:textAllCaps="false"
-            android:text="Sign in with FACEBOOK"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />-->
-
-       <!-- <ImageButton
-            android:id="@+id/fbButton"
-            android:layout_width="100px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/com_facebook_button_icon_blue" />-->
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/fbButton"
