@@ -3,10 +3,17 @@ package com.example.pathfinderapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 
 /**
@@ -28,6 +35,9 @@ public class ToursFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private ArrayList<String> searchList;
+    RecyclerView recycler;
+    Context context;
 
     public ToursFragment() {
         // Required empty public constructor
@@ -61,10 +71,29 @@ public class ToursFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tours, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view  = inflater.inflate(R.layout.fragment_tours, container, false);
+
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        recycler = getView().findViewById(R.id.recyclerid);
+
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        searchList = new ArrayList<String>();
+
+        for (int i = 0; i < 50; ++i)
+            searchList.add("VERGA" + i);
+
+        AdapterSearch adapterSearch = new AdapterSearch(searchList);
+        recycler.setAdapter(adapterSearch);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -83,6 +112,8 @@ public class ToursFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        this.context = context;
     }
 
     @Override
