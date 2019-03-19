@@ -35,7 +35,7 @@ public class ToursFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<String> searchList;
+    private ArrayList<SearchItem> searchList;
     RecyclerView recycler;
     Context context;
 
@@ -85,10 +85,15 @@ public class ToursFragment extends Fragment {
         recycler = getView().findViewById(R.id.recyclerid);
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        searchList = new ArrayList<String>();
+        searchList = new ArrayList<SearchItem>();
 
         for (int i = 0; i < 50; ++i)
-            searchList.add("VERGA" + i);
+        {
+            SearchItem searchItem = new SearchItem();
+            searchItem.setTitle("vergon " + i);
+            searchItem.setInfo("vergita " + i);
+            searchList.add(searchItem);
+        }
 
         AdapterSearch adapterSearch = new AdapterSearch(searchList);
         recycler.setAdapter(adapterSearch);

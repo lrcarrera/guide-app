@@ -4,15 +4,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolderItem> {
 
-    private ArrayList<String> searchList;
+    private ArrayList<SearchItem> searchList;
 
-    public AdapterSearch(ArrayList<String> searchList) {
+    public AdapterSearch(ArrayList<SearchItem> searchList) {
         this.searchList = searchList;
     }
 
@@ -26,7 +27,9 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolderItem viewHolder, int i) {
-        viewHolder.asignData(searchList.get(i));
+        viewHolder.info.setText(searchList.get(i).getInfo());
+        viewHolder.title.setText(searchList.get(i).getTitle());
+        viewHolder.picture.setImageResource(searchList.get(i).getPicture());
     }
 
     @Override
@@ -36,16 +39,15 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
 
-        TextView data;
+        TextView title, info;
+        ImageView picture;
 
         public ViewHolderItem(View itemView) {
             super(itemView);
 
-            data = itemView.findViewById(R.id.SearchListItem);
-        }
-
-        public void asignData(String s) {
-            data.setText(s);
+            title = itemView.findViewById(R.id.ItemTitle);
+            info = itemView.findViewById(R.id.ItemInfo);
+            picture = itemView.findViewById(R.id.imageId);
         }
     }
 }
