@@ -177,7 +177,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         fList.add(WhenFragment.newInstance(this));
         fList.add(WhichTimeFragment.newInstance(this));
         fList.add(DurationFragment.newInstance(this));
-        fList.add(new TouristsAllowedFragment());
+        fList.add(TouristsAllowedFragment.newInstance(this));
         fList.add(LanguagesFragment.newInstance(this));
         fList.add(RouteSelectionFragment.newInstance(this));
         fList.add(new PriceFragment());

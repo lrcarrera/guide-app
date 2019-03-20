@@ -11,6 +11,7 @@ public class Post {
     private String startHour;
     private String endHour;
     private User guide;
+    private int numTourists;
     private List<User> tourists;
     private ArrayList<Language> languages;
     private float price;
@@ -38,6 +39,14 @@ public class Post {
     }
 
     public Post() {}
+
+    public int getNumTourists() {
+        return numTourists;
+    }
+
+    public void setNumTourists(int numTourists) {
+        this.numTourists = numTourists;
+    }
 
     public ArrayList<Language> getLanguages() {
         return languages;

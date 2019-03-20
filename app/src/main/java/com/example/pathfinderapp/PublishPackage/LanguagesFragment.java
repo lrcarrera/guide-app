@@ -1,6 +1,9 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,6 +47,7 @@ public class LanguagesFragment extends Fragment {
     private PublishFragment parent;
     private LinearLayout switchesLayout;
     private ArrayList<Switch> switches;
+    private ImageView sample;
     private TextView continueButton;
 
     private OnFragmentInteractionListener mListener;
@@ -80,6 +85,16 @@ public class LanguagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_languages, container, false);
         switchesLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
+
+
+        /* sample = (ImageView) view.findViewById(R.id.sample_image);
+        sample.setColorFilter(new PorterDuffColorFilter(Color.argb(120, 255, 255, 255), PorterDuff.Mode.SRC_OVER));
+        sample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sample.setColorFilter(new PorterDuffColorFilter(Color.argb(0, 255, 255, 255), PorterDuff.Mode.SRC_OVER));
+            }
+        });*/
         addSwitches();
         addContinueButton();
         return view;
@@ -90,6 +105,7 @@ public class LanguagesFragment extends Fragment {
         continueButton = new TextView(getContext());
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
+        params.topMargin = 20;
         continueButton.setLayoutParams(params);
         continueButton.setGravity(Gravity.CENTER);
         continueButton.setTextSize(23);
@@ -101,7 +117,7 @@ public class LanguagesFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addLanguagesToPost();
+                //addLanguagesToPost();
                 nextStep();
             }
         });
@@ -136,10 +152,12 @@ public class LanguagesFragment extends Fragment {
             LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(400, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER;
             sw.setLayoutParams(params);
-            sw.setWidth(200);
+            sw.setWidth(400);
             sw.setHeight(200);
             sw.setTextSize(18);
             sw.setGravity(Gravity.CENTER);
+            //sw.setTrackDrawable(getResources().getDrawable(R.drawable.spain_flag));
+            sw.setTrackTintMode(PorterDuff.Mode.DARKEN);
             changeSwitchImageAndText(sw, currentLanguage);
             switchesLayout.addView(sw);
             switches.add(sw);
