@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PublishPackage.TouristsAllowedFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/usersAllowedTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="44sp"
+        android:text="@string/turists_allowed_title"
+        android:textColor="@color/colorBlack"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/switchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/touristNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/big_btn_background"
+                android:textColor="@color/colorBlack"
+                android:textSize="200sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="1" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <ImageView
+                android:id="@+id/btnDecrease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/btn_background"
+                android:gravity="start"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_action_substraction" />
+
+            <ImageView
+                android:id="@+id/btnIncrease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/btn_background"
+                android:gravity="end"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_action_addition" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/continueButton"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="44sp"
+            android:text="@string/continueText"
+            android:textColor="@drawable/text_button_color"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

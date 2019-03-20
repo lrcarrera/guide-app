@@ -66,7 +66,7 @@ public class TouristsAllowedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tourists_allowed, container, false);
-        parent.setSeekBarStatus();
+        //parent.setSeekBarStatus();
         touristNumber = (TextView) view.findViewById(R.id.touristNumber);
         btnIncrease = (ImageView) view.findViewById(R.id.btnIncrease);
         btnIncrease.setOnClickListener(new View.OnClickListener() {

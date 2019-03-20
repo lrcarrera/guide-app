@@ -38,5 +38,6 @@
     <string name="italian">Italian</string>
     <string name="spanish">Spanish</string>
     <string name="turists_allowed_title">¿Cuántos turistas va a tener este tour como máximo?</string>
+    <string name="whereTitle">¿Dónde quieres guiar?</string>
 
 </resources>

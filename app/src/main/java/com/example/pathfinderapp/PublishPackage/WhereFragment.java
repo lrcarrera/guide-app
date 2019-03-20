@@ -3,13 +3,26 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.example.pathfinderapp.AdapterPlace;
+import com.example.pathfinderapp.AdapterSearch;
+import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+import com.example.pathfinderapp.SearchItem;
+import com.example.pathfinderapp.ToursFragment;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +43,9 @@ public class WhereFragment extends Fragment {
     private String mParam2;
 
     private PublishFragment parent;
-
+    private ArrayList<Place> placesList;
+    RecyclerView recycler;
+    Context context;
     private OnFragmentInteractionListener mListener;
 
     public WhereFragment() {
@@ -64,8 +79,27 @@ public class WhereFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_where, container, false);
         parent.setSeekBarStatus();
-        return inflater.inflate(R.layout.fragment_where, container, false);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        recycler = getView().findViewById(R.id.places);
+
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        placesList = new ArrayList<Place>();
+        placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation));
+        placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place));
+        placesList.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place));
+        placesList.add(new Place("London", "England", R.drawable.ic_action_place));
+        AdapterPlace adapterPlace = new AdapterPlace(placesList);
+        recycler.setAdapter(adapterPlace);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
