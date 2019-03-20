@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.example.pathfinderapp.AdapterPlace;
+import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.AdapterSearch;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;

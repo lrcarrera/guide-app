@@ -39,5 +39,7 @@
     <string name="spanish">Spanish</string>
     <string name="turists_allowed_title">¿Cuántos turistas va a tener este tour como máximo?</string>
     <string name="whereTitle">¿Dónde quieres guiar?</string>
+    <string name="routeSelectionTitle">Seleccione los puntos que va a visitar</string>
+    <string name="title_activity_fragment_map">map</string>
 
 </resources>

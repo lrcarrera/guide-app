@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".PublishPackage.TouristsAllowedFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -28,7 +29,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_gravity="center"
@@ -46,38 +47,57 @@
                 android:textStyle="bold"
                 android:text="1" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <RelativeLayout
             android:id="@+id/buttonsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="bottom"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp">
+            android:paddingTop="20dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="20dp">
 
             <ImageView
                 android:id="@+id/btnDecrease"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="start"
                 android:background="@drawable/btn_background"
                 android:gravity="start"
-                android:layout_alignParentStart="true"
                 android:src="@drawable/ic_action_substraction" />
+
+            <TextView
+                android:id="@+id/touristNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/big_btn_background"
+                android:textColor="@color/colorBlack"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="1" />
 
             <ImageView
                 android:id="@+id/btnIncrease"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="end"
                 android:background="@drawable/btn_background"
                 android:gravity="end"
-                android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_action_addition" />
 
 

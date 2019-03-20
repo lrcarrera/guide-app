@@ -1,4 +1,4 @@
-package com.example.pathfinderapp;
+package com.example.pathfinderapp.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.Models.Place;
+import com.example.pathfinderapp.R;
 
 import java.util.ArrayList;
 
