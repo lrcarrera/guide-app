@@ -9,9 +9,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolderItem> {
+public class AdapterSearch
+        extends RecyclerView.Adapter<AdapterSearch.ViewHolderItem>
+        implements View.OnClickListener {
 
     private ArrayList<SearchItem> searchList;
+    private View.OnClickListener listener;
 
     public AdapterSearch(ArrayList<SearchItem> searchList) {
         this.searchList = searchList;
@@ -22,6 +25,7 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_item, null, false);
 
+        view.setOnClickListener(this);
         return new ViewHolderItem(view);
     }
 
@@ -35,6 +39,16 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHolder
     @Override
     public int getItemCount() {
         return searchList.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(listener != null)
+            listener.onClick(v);
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {

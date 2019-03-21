@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,13 @@ public class ToursFragment extends Fragment {
         }
 
         AdapterSearch adapterSearch = new AdapterSearch(searchList);
+        adapterSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
