@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -30,111 +31,11 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <!--<android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view"
-                android:layout_gravity="center"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                card_view:cardCornerRadius="10dp"
-                >
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/sample_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/spain_big_flag2"/>
-
-                    <TextView
-                        android:id="@+id/info_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Hola"/>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-
-
-
-
-            <TimePicker
-                style="@style/AlertDialogDatePicker"
-                android:id="@+id/timePicker"
+            <android.support.v7.widget.RecyclerView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/languages"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/colorWhite"
-                android:timePickerMode="spinner"
-                />
-
-
-            <Switch
-                android:id="@+id/switchButton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:width="200dp"
-                android:height="100dp"
-                android:gravity="center"
-                android:text="Spanish"
-                android:textAlignment="center"
-                android:textColor="@color/colorBlack"
-                android:textSize="18dp"
-                android:thumb="@drawable/spain_flag" />
-
-            <Switch
-                android:id="@+id/switchButton2"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:width="200dp"
-                android:height="100dp"
-                android:gravity="center"
-                android:text="@string/spanish"
-                android:textAlignment="center"
-                android:textColor="@color/colorBlack"
-                android:textSize="18dp"
-                android:thumb="@drawable/english_flag"
-                android:trackTint="@color/colorPrimary"/>
-
-               <LinearLayout
-                android:id="@+id/horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Español"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:gravity="center"/>
-
-
-                <ImageView
-                    android:id="@+id/sample_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/spain_flag"
-                    android:layout_marginStart="5dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"/>-
-
-
-
-
-            </LinearLayout>-->
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
@@ -47,10 +48,10 @@ public class RouteSelectionFragment extends Fragment  {
     //private String mParam1;
     //private String mParam2;
 
-    private TextView continueButton;
     private LinearLayout mapLayout;
     private Marker mCurrentMarker;
     private ArrayList<Marker> mMarkerArrayList;
+    private FloatingActionButton continueButton;
 
     private PublishFragment parent;
     private GoogleMap mMap;
@@ -100,12 +101,7 @@ public class RouteSelectionFragment extends Fragment  {
         // Inflate the layout for this fragment
         //mMap = new GoogleMap();
         View view = inflater.inflate(R.layout.fragment_route_selection, container, false);
-
-        //mapLayout = view.findViewById(R.id.auxLayout);
-        //SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        //layout.addView(mapFragment);
-
-
+        continueButton = (FloatingActionButton) view.findViewById(R.id.continueButton);
         FragmentManager fm = getChildFragmentManager();
         mMarkerArrayList = new ArrayList<>();
         SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
@@ -156,9 +152,19 @@ public class RouteSelectionFragment extends Fragment  {
                 });
             }
         });
-        //addContinueButton();
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //addLanguagesToPost();
+                nextStep();
+            }
+        });
 
         return view;
+    }
+
+    private void nextStep(){
+        parent.setCurrentPage();
     }
 
     /*private void addContinueButton()

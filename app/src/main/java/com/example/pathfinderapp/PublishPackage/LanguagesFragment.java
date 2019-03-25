@@ -6,7 +6,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +21,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.Adapters.AdapterLanguage;
+import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
@@ -45,11 +52,12 @@ public class LanguagesFragment extends Fragment {
     private String mParam2;
 
     private PublishFragment parent;
-    private LinearLayout switchesLayout;
-    private ArrayList<Switch> switches;
-    private ImageView sample;
+    private LinearLayout containLayout;
+    private List<Integer> toAdd;
+    //private ImageView sample;
     private TextView continueButton;
-
+    //private ArrayList<Place> placesList;
+    RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
 
     public LanguagesFragment() {
@@ -84,18 +92,26 @@ public class LanguagesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_languages, container, false);
-        switchesLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
+        containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
+        recycler = view.findViewById(R.id.languages);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        //placesList = new ArrayList<Place>();
 
-        /* sample = (ImageView) view.findViewById(R.id.sample_image);
-        sample.setColorFilter(new PorterDuffColorFilter(Color.argb(120, 255, 255, 255), PorterDuff.Mode.SRC_OVER));
-        sample.setOnClickListener(new View.OnClickListener() {
+        AdapterLanguage adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
+        adapterLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                sample.setColorFilter(new PorterDuffColorFilter(Color.argb(0, 255, 255, 255), PorterDuff.Mode.SRC_OVER));
+            public void onClick(View v) {
+                int pos =  recycler.getChildAdapterPosition(v);
+                List<Language> aux = parent.user.getLanguages();
+                Language language = aux.get(pos);
+                language.setAdded(!language.isAdded());
+                aux.set(pos, language);
             }
-        });*/
-        addSwitches();
+        });
+
+        recycler.setAdapter(adapterLanguages);
+        recycler.setItemAnimator(new DefaultItemAnimator());
         addContinueButton();
         return view;
     }
@@ -117,23 +133,22 @@ public class LanguagesFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //addLanguagesToPost();
+                addLanguagesToPost();
                 nextStep();
             }
         });
 
-        switchesLayout.addView(continueButton);
+        containLayout.addView(continueButton);
     }
 
     private void addLanguagesToPost()
     {
         ArrayList<Language> userLanguages = parent.user.getLanguages();
         ArrayList<Language> postLanguages = new ArrayList<>();
-        for(Switch sw : switches)
+        for(Language language : userLanguages)
         {
-
-            if(sw.isChecked())
-                postLanguages.add(userLanguages.get(sw.getId()));
+            if(language.isAdded())
+                postLanguages.add(language);
         }
         parent.post.setLanguages(postLanguages);
     }
@@ -142,7 +157,7 @@ public class LanguagesFragment extends Fragment {
         parent.setCurrentPage();
     }
 
-    private void addSwitches(){
+    /*private void addSwitches(){
         int index = 0;
         switches = new ArrayList<>();
         for(Language currentLanguage : parent.user.getLanguages())
@@ -186,7 +201,7 @@ public class LanguagesFragment extends Fragment {
                 sw.setThumbDrawable(getResources().getDrawable(R.drawable.english_flag));
                 break;
         }
-    }
+    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

@@ -89,7 +89,6 @@ public class WhereFragment extends Fragment {
     private PublishFragment parent;
     private ArrayList<Place> placesList;
     RecyclerView recycler;
-    Context context;
     private OnFragmentInteractionListener mListener;
 
     public WhereFragment() {
@@ -155,6 +154,7 @@ public class WhereFragment extends Fragment {
                 onPlaceClicked(pos);
             }
         });
+
         recycler.setAdapter(adapterPlace);
         recycler.setItemAnimator(new DefaultItemAnimator());
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
