@@ -1,5 +1,7 @@
 package com.example.pathfinderapp.Models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,33 +14,33 @@ public class Post {
     private String endHour;
     private User guide;
     private int numTourists;
+    private Place place;
     private List<User> tourists;
     private ArrayList<Language> languages;
     private float price;
 
-
-    public Post(Date createdAt, Date dueTo, String startHour, String endHour, User guide, List<User> tourists, ArrayList<Language> languages, float price) {
+    public Post(Date createdAt, Date dueTo, String startHour, String endHour, User guide, int numTourists, Place place, List<User> tourists, ArrayList<Language> languages, float price) {
         this.createdAt = createdAt;
         this.dueTo = dueTo;
         this.startHour = startHour;
         this.endHour = endHour;
         this.guide = guide;
+        this.numTourists = numTourists;
+        this.place = place;
         this.tourists = tourists;
         this.languages = languages;
         this.price = price;
     }
 
+    public Post() {}
 
-
-    public Post(Date createdAt, Date dueTo, User guide, List<User> tourists, float price) {
-        this.createdAt = createdAt;
-        this.dueTo = dueTo;
-        this.guide = guide;
-        this.tourists = tourists;
-        this.price = price;
+    public Place getPlace() {
+        return place;
     }
 
-    public Post() {}
+    public void setPlace(Place place) {
+        this.place = place;
+    }
 
     public int getNumTourists() {
         return numTourists;

@@ -79,10 +79,6 @@ public class RouteSelectionFragment extends Fragment  {
     public static RouteSelectionFragment newInstance(PublishFragment parent) {
         RouteSelectionFragment fragment = new RouteSelectionFragment();
         fragment.parent = parent;
-        /*Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -135,7 +131,7 @@ public class RouteSelectionFragment extends Fragment  {
                         return true;
                     }
                 });
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PARIS, 11));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parent.post.getPlace().getCoord(), 11));
                 mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {

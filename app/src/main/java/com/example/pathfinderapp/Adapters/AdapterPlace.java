@@ -12,9 +12,12 @@ import com.example.pathfinderapp.R;
 
 import java.util.ArrayList;
 
-public class AdapterPlace extends RecyclerView.Adapter<AdapterPlace.ViewHolderItem> {
+public class AdapterPlace
+        extends RecyclerView.Adapter<AdapterPlace.ViewHolderItem>
+        implements View.OnClickListener{
 
     private ArrayList<Place> placesList;
+    private View.OnClickListener listener;
 
     public AdapterPlace(ArrayList<Place> placesList) {
         this.placesList = placesList;
@@ -24,7 +27,7 @@ public class AdapterPlace extends RecyclerView.Adapter<AdapterPlace.ViewHolderIt
     public ViewHolderItem onCreateViewHolder(ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_item, null, false);
-
+        view.setOnClickListener(this);
         return new ViewHolderItem(view);
     }
 
@@ -34,6 +37,16 @@ public class AdapterPlace extends RecyclerView.Adapter<AdapterPlace.ViewHolderIt
         viewHolder.info.setText(aux);
         viewHolder.title.setText(placesList.get(i).getName());
         viewHolder.picture.setImageResource(placesList.get(i).getPicture());
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(listener != null)
+            listener.onClick(v);
     }
 
     @Override

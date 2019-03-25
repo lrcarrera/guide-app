@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.AdapterSearch;
@@ -21,6 +22,7 @@ import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 import com.example.pathfinderapp.SearchItem;
 import com.example.pathfinderapp.ToursFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -92,14 +94,38 @@ public class WhereFragment extends Fragment {
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         placesList = new ArrayList<Place>();
-        placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation));
-        placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place));
-        placesList.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place));
-        placesList.add(new Place("London", "England", R.drawable.ic_action_place));
+
+        /*LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);
+        LatLng LONDON = new LatLng(51.528308, -0.3817765);
+        LatLng BARCELONA = new LatLng(41.3948975, 2.0785566);
+        LatLng PARIS = new LatLng(48.8589506, 2.2768488);*/
+
+        placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation, new LatLng(48.8589506, 2.2768488)));
+        placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
+        placesList.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
+        placesList.add(new Place("London", "England", R.drawable.ic_action_place, new LatLng(51.528308, -0.3817765)));
         AdapterPlace adapterPlace = new AdapterPlace(placesList);
+        adapterPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos =  recycler.getChildAdapterPosition(v);
+                onPlaceClicked(pos);
+            }
+        });
         recycler.setAdapter(adapterPlace);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
+    }
+
+    private void onPlaceClicked(int position){
+        parent.post.setPlace(placesList.get(position));
+        nextStep();
+        //String aux = placesList.get(pos).getName();
+        //Toast.makeText(getContext(), "verga seleccionada: " +  aux, Toast.LENGTH_SHORT).show();
+    }
+
+    private void nextStep(){
+        parent.setCurrentPage();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
