@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,8 @@ public class RouteSelectionFragment extends Fragment  {
     //private String mParam1;
     //private String mParam2;
 
+    private TextView continueButton;
+    private LinearLayout mapLayout;
     private Marker mCurrentMarker;
     private ArrayList<Marker> mMarkerArrayList;
 
@@ -97,7 +100,8 @@ public class RouteSelectionFragment extends Fragment  {
         // Inflate the layout for this fragment
         //mMap = new GoogleMap();
         View view = inflater.inflate(R.layout.fragment_route_selection, container, false);
-        //LinearLayout layout = view.findViewById(R.id.mapLayout);
+
+        //mapLayout = view.findViewById(R.id.auxLayout);
         //SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         //layout.addView(mapFragment);
 
@@ -152,9 +156,35 @@ public class RouteSelectionFragment extends Fragment  {
                 });
             }
         });
+        //addContinueButton();
 
         return view;
     }
+
+    /*private void addContinueButton()
+    {
+        continueButton = new TextView(getContext());
+        LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        params.topMargin = 20;
+        continueButton.setLayoutParams(params);
+        continueButton.setGravity(Gravity.CENTER);
+        continueButton.setTextSize(23);
+        continueButton.setClickable(true);
+        continueButton.setFocusable(true);
+        continueButton.setText(getResources().getString(R.string.continueText));
+        continueButton.setTextColor(getResources().getColorStateList(R.color.text_button_colors));
+
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //addLanguagesToPost();
+                nextStep();
+            }
+        });
+
+        mapLayout.addView(continueButton);
+    }*/
 
     /* @Override
     public boolean onMarkerClick(final Marker marker) {
