@@ -96,7 +96,16 @@ public class MainActivity extends AppCompatActivity implements
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void changeIcons(BottomNavigationView navigationView)
+    {
+        navigationView.getMenu().getItem(0).setIcon(R.drawable.ic_action_search);
+        navigationView.getMenu().getItem(1).setIcon(R.drawable.ic_action_tours);
+        navigationView.getMenu().getItem(2).setIcon(R.drawable.ic_action_publish);
+        navigationView.getMenu().getItem(3).setIcon(R.drawable.ic_action_profile);
     }
 
     @Override
