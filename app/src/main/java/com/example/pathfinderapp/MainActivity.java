@@ -1,5 +1,7 @@
 package com.example.pathfinderapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements
         RouteSelectionFragment.OnFragmentInteractionListener, TouristsAllowedFragment.OnFragmentInteractionListener,
         LanguagesFragment.OnFragmentInteractionListener
 {
+
+    SharedPreferences prefs;
 
     private TextView mTextMessage;
     final Fragment fragment1 = new SearchFragment();
@@ -78,21 +82,6 @@ public class MainActivity extends AppCompatActivity implements
         fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
         fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
         fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
-
-
-
-        /*Boolean mobile_register_flag = sharedpref.getBoolean("mobile_register_flag", false);
-
-        if (!mobile_register_flag) {
-            Intent intent = new Intent(FlashView.this,
-                    RegisterActivity.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(FlashView.this,
-                    ActivityTwo.class);
-            startActivity(intent);
-        }*/
-
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

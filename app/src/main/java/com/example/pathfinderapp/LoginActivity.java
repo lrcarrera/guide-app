@@ -3,7 +3,9 @@ package com.example.pathfinderapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -15,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,11 +34,16 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -62,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     CallbackManager callbackManager;
-
+    SharedPreferences prefs;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -74,6 +82,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        prefs = this.getSharedPreferences(
+                "com.example.pathfinderapp", MODE_PRIVATE);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -116,7 +127,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //FIXME: Exit that Activity.
         }else {
 
-
             callbackManager = CallbackManager.Factory.create();
 
             LoginButton loginButton = (LoginButton) findViewById(R.id.fbButton);
@@ -124,15 +134,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             // Callback registration
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {//loginResult retrieve the access token
-                    // App code
-                    Toast.makeText(getApplicationContext(), "You are logged by FB", Toast.LENGTH_LONG);
 
-                    Intent intent = new Intent(getApplication(), MainActivity.class);
-                    startActivity(intent);
-                    //FIXME: Exit that Activity.
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    //Log.d("SATAN", response.toString());
+                                    try {
+                                        String facebookId = object.getString("id");
+                                        String facebookName = object.getString("name");
+                                        String facebookMail = object.getString("email");
+                                        String facebookPictureLink = "https://graph.facebook.com/" + facebookId + "/picture?type=large";
+
+                                        prefs.edit().putString("facebook_id", facebookId).apply();
+                                        prefs.edit().putString("facebook_name", facebookName).apply();
+                                        prefs.edit().putString("facebook_email", facebookMail).apply();
+                                        prefs.edit().putString("facebook_picture_link", facebookPictureLink).apply();
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    Intent intent = new Intent(getApplication(), MainActivity.class);
+                                    startActivity(intent);
+                                    //TODO: Exit activity once mainActivity is opened
+                                }
+                    });
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name,email,picture");
+                    request.setParameters(parameters);
+                    request.executeAsync();
                 }
+
 
                 @Override
                 public void onCancel() {
