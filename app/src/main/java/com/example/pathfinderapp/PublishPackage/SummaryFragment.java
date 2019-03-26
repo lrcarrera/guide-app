@@ -1,32 +1,24 @@
-package com.example.pathfinderapp;
+package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-
+import com.example.pathfinderapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ToursFragment.OnFragmentInteractionListener} interface
+ * {@link SummaryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ToursFragment#newInstance} factory method to
+ * Use the {@link SummaryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ToursFragment extends Fragment {
+public class SummaryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,11 +29,8 @@ public class ToursFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<SearchItem> searchList;
-    RecyclerView recycler;
-    Context context;
 
-    public ToursFragment() {
+    public SummaryFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +40,11 @@ public class ToursFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ToursFragment.
+     * @return A new instance of fragment SummaryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ToursFragment newInstance(String param1, String param2) {
-        ToursFragment fragment = new ToursFragment();
+    public static SummaryFragment newInstance(String param1, String param2) {
+        SummaryFragment fragment = new SummaryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,44 +62,10 @@ public class ToursFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view  = inflater.inflate(R.layout.fragment_tours, container, false);
-
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        recycler = getView().findViewById(R.id.recyclerid);
-
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        searchList = new ArrayList<SearchItem>();
-
-        for (int i = 0; i < 50; ++i)
-        {
-            SearchItem searchItem = new SearchItem();
-            searchItem.setTitle("vergon " + i);
-            searchItem.setInfo("vergita " + i);
-            searchItem.setPicture(R.drawable.stock_girl);
-            searchList.add(searchItem);
-
-
-        }
-
-        AdapterSearch adapterSearch = new AdapterSearch(searchList);
-        adapterSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        recycler.setAdapter(adapterSearch);
-        recycler.setItemAnimator(new DefaultItemAnimator());
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_summary, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -129,8 +84,6 @@ public class ToursFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-
-        this.context = context;
     }
 
     @Override

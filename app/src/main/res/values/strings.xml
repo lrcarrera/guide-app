@@ -41,5 +41,8 @@
     <string name="whereTitle">¿Dónde quieres guiar?</string>
     <string name="routeSelectionTitle">¡Seleccione los puntos que va a visitar!</string>
     <string name="title_activity_fragment_map">map</string>
+    <string name="priceTitle">Esta es nuestra recomendación por turista.¿Te parece bien?</string>
+    <string name="defaultPrice">15</string>
+    <string name="defaultCurrency">€</string>
 
 </resources>

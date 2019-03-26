@@ -19,6 +19,7 @@ import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.example.pathfinderapp.PublishPackage.PriceFragment;
 import com.example.pathfinderapp.PublishPackage.RouteSelectionFragment;
+import com.example.pathfinderapp.PublishPackage.SummaryFragment;
 import com.example.pathfinderapp.PublishPackage.TouristsAllowedFragment;
 import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
@@ -174,11 +175,11 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         fList.add(WhenFragment.newInstance(this));
         fList.add(WhichTimeFragment.newInstance(this, false));
         fList.add(WhichTimeFragment.newInstance(this, true));
-        //fList.add(DurationFragment.newInstance(this));
         fList.add(TouristsAllowedFragment.newInstance(this));
         fList.add(LanguagesFragment.newInstance(this));
         fList.add(RouteSelectionFragment.newInstance(this));
-        fList.add(new PriceFragment());
+        fList.add(PriceFragment.newInstance(this));
+        fList.add(new SummaryFragment());
 
 
         //fList.add(MyFragment.newInstance("Fragment 3", R.drawable.image3));
