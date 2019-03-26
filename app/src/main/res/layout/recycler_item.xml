@@ -1,50 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="3dp"
+        android:shape="ring"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardBackgroundColor="#DCDCDC">
 
-        <ImageView
-            android:id="@+id/imageId"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"/>
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/ItemTitle"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
+            <ImageView
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.3"
+                android:adjustViewBounds="true"
+                android:id="@+id/imageId"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="VERGA"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/ItemInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="VERGON"
-                android:layout_marginBottom="15dp"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
                 android:layout_marginEnd="10dp"/>
-        </LinearLayout>
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorPrimary"
-        android:layout_marginTop="11dp"/>
+            <android.support.constraint.ConstraintLayout
+                app:layout_constraintStart_toEndOf="@+id/imageId"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/ItemTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VERGA"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/ItemInfo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/ItemInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VERGON"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/ItemTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/ItemTitle" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>
