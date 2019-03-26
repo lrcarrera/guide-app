@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".PublishPackage.PriceFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/priceTitle"
+        android:id="@+id/usersAllowedTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="23sp"
+        android:textSize="44sp"
         android:text="@string/priceTitle"
         android:textColor="@color/colorBlack"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"/>
+
+
 
     <LinearLayout
         android:id="@+id/switchLayout"
@@ -28,25 +25,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/touristNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/big_btn_background"
-                android:textColor="@color/colorBlack"
-                android:textSize="100sp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="1" />
-
-        </LinearLayout>-->
 
         <RelativeLayout
             android:id="@+id/buttonsLayout"
@@ -93,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/colorBlack"
-                    android:textSize="100sp"
+                    android:textSize="200sp"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:text="@string/defaultPrice" />
@@ -107,13 +85,10 @@
                     android:gravity="center"
                     android:text="@string/defaultCurrency"
                     android:textColor="@color/colorBlack"
-                    android:textSize="100sp"
+                    android:textSize="200sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
-
-
 
             <ImageView
                 android:id="@+id/btnIncrease"
@@ -136,13 +111,16 @@
             android:gravity="center"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textSize="23sp"
+            android:textSize="44sp"
             android:text="@string/continueText"
             android:textColor="@drawable/text_button_color"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:clickable="true"
             android:focusable="true"/>-->
+
+
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -156,5 +134,4 @@
         android:src="@drawable/ic_action_next"
         app:backgroundTint="@color/colorWhite"
         android:backgroundTint="@color/colorWhite"/>
-
 </RelativeLayout>
