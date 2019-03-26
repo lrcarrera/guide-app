@@ -179,7 +179,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         fList.add(LanguagesFragment.newInstance(this));
         fList.add(RouteSelectionFragment.newInstance(this));
         fList.add(PriceFragment.newInstance(this));
-        fList.add(new SummaryFragment());
+        fList.add(SummaryFragment.newInstance(this));
 
 
         //fList.add(MyFragment.newInstance("Fragment 3", R.drawable.image3));

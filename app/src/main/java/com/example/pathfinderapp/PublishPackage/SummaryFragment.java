@@ -4,11 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.example.pathfinderapp.Adapters.AdapterLanguage;
+import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
+import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +38,8 @@ public class SummaryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    RecyclerView recycler;
+    PublishFragment parent;
     private OnFragmentInteractionListener mListener;
 
     public SummaryFragment() {
@@ -38,17 +50,13 @@ public class SummaryFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param parent Parameter 1.
      * @return A new instance of fragment SummaryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SummaryFragment newInstance(String param1, String param2) {
+    public static SummaryFragment newInstance(PublishFragment parent) {
         SummaryFragment fragment = new SummaryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.parent = parent;
         return fragment;
     }
 
@@ -65,7 +73,24 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summary, container, false);
+        View view = inflater.inflate(R.layout.fragment_summary, container, false);
+        recycler = view.findViewById(R.id.languages);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
+        AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(parent.user.getLanguages());
+        /*adapterLanguages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos =  recycler.getChildAdapterPosition(v);
+                List<Language> aux = parent.user.getLanguages();
+                Language language = aux.get(pos);
+                language.setAdded(!language.isAdded());
+                aux.set(pos, language);
+            }
+        });*/
+
+        recycler.setAdapter(adapterLanguages);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

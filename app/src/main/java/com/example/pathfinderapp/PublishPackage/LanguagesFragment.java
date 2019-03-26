@@ -58,9 +58,6 @@ public class LanguagesFragment extends Fragment {
     private LinearLayout containLayout;
     private List<Integer> toAdd;
     private FloatingActionButton continueButton;
-    //private ImageView sample;
-    //private TextView continueButton;
-    //private ArrayList<Place> placesList;
     RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
 

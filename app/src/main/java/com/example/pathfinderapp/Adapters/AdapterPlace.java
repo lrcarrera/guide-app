@@ -26,7 +26,7 @@ public class AdapterPlace
     @Override
     public ViewHolderItem onCreateViewHolder(ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_item, null, false);
+                .inflate(R.layout.recycler_location, null, false);
         view.setOnClickListener(this);
         return new ViewHolderItem(view);
     }

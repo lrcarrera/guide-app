@@ -140,7 +140,8 @@ public class WhereFragment extends Fragment {
         /*LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);
         LatLng LONDON = new LatLng(51.528308, -0.3817765);
         LatLng BARCELONA = new LatLng(41.3948975, 2.0785566);
-        LatLng PARIS = new LatLng(48.8589506, 2.2768488);*/
+        LatLng PARIS = new LatLng(48.8589506, 2.2768488);
+        41.889363, 12.490389*/
 
         placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation /*new LatLng(48.8589506, 2.2768488)*/));
         placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
