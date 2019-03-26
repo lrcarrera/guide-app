@@ -1,13 +1,16 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,8 +57,9 @@ public class LanguagesFragment extends Fragment {
     private PublishFragment parent;
     private LinearLayout containLayout;
     private List<Integer> toAdd;
+    private FloatingActionButton continueButton;
     //private ImageView sample;
-    private TextView continueButton;
+    //private TextView continueButton;
     //private ArrayList<Place> placesList;
     RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
@@ -118,18 +122,17 @@ public class LanguagesFragment extends Fragment {
 
     private void addContinueButton()
     {
-        continueButton = new TextView(getContext());
+        continueButton = new FloatingActionButton(getContext());
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
-        params.topMargin = 20;
+        params.gravity = Gravity.END;
+        params.bottomMargin = 20;
+        params.rightMargin = 20;
         continueButton.setLayoutParams(params);
-        continueButton.setGravity(Gravity.CENTER);
-        continueButton.setTextSize(23);
+        continueButton.setForegroundGravity(Gravity.END);
+        continueButton.setImageResource(R.drawable.ic_action_next);
+        continueButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
         continueButton.setClickable(true);
         continueButton.setFocusable(true);
-        continueButton.setText(getResources().getString(R.string.continueText));
-        continueButton.setTextColor(getResources().getColorStateList(R.color.text_button_colors));
-
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

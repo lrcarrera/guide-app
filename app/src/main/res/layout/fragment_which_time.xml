@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context=".PublishPackage.WhichTimeFragment">
@@ -16,7 +17,8 @@
         android:textSize="23sp"
         android:text="@string/whichTimeTitle"
         android:textColor="@color/colorBlack"
-        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
 
     <LinearLayout
@@ -35,7 +37,7 @@
             android:timePickerMode="spinner"
             />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/continueButton"
             android:layout_width="match_parent"
             android:gravity="center"
@@ -47,12 +49,24 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"/>-->
 
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/continueButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_action_next"
+        app:backgroundTint="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"/>
 
 
 
 
-</LinearLayout>
+
+</RelativeLayout>

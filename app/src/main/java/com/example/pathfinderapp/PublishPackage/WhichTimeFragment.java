@@ -3,6 +3,7 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,11 @@ import android.widget.TimePicker;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,10 +31,9 @@ import java.text.SimpleDateFormat;
 public class WhichTimeFragment extends Fragment {
 
     private PublishFragment parent;
-
+    private boolean isDuration;
+    private TextView whenTitle;
     private TimePicker timePicker;
-    private TextView continueButton;
-
     private OnFragmentInteractionListener mListener;
 
     public WhichTimeFragment() {
@@ -44,9 +48,16 @@ public class WhichTimeFragment extends Fragment {
      * @return A new instance of fragment WhichTimeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WhichTimeFragment newInstance(PublishFragment parent) {
+    /*public static WhichTimeFragment newInstance(PublishFragment parent) {
         WhichTimeFragment fragment = new WhichTimeFragment();
         fragment.parent = parent;
+        return fragment;
+    }*/
+
+    public static WhichTimeFragment newInstance(PublishFragment parent, boolean isDuration){
+        WhichTimeFragment fragment = new WhichTimeFragment();
+        fragment.parent = parent;
+        fragment.isDuration = isDuration;
         return fragment;
     }
 
@@ -65,14 +76,20 @@ public class WhichTimeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_which_time, container, false);
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-        parent.setSeekBarStatus();
-        continueButton = (TextView) view.findViewById(R.id.continueButton);
+        whenTitle = (TextView) view.findViewById(R.id.whenTitle);
+
+        if(isDuration)
+            checkIfIsEndHour();
+
+        FloatingActionButton continueButton =  view.findViewById(R.id.continueButton);
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-                parent.post.setStartHour(format.format(timePicker.getDrawingTime()));
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                if(!isDuration)
+                    parent.post.setStartHour(format.format(timePicker.getDrawingTime()));
+                if(isDuration)
+                    parent.post.setEndHour(format.format(timePicker.getDrawingTime()));
                 nextStep();
             }
         });
@@ -85,6 +102,22 @@ public class WhichTimeFragment extends Fragment {
         });*/
 
         return view;
+    }
+
+    private void checkIfIsEndHour(){
+        whenTitle.setText(R.string.durationTitle);
+        /*String min = parent.post.getStartHour();
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            Calendar calendate = new GregorianCalendar();
+            calendate.setTime(format.parse(min));
+
+            timePicker.setHour(calendate.get(Calendar.HOUR_OF_DAY));
+            timePicker.setHour(calendate.get(Calendar.MINUTE));
+            timePicker.setHour(calendate.get(Calendar.SECOND));
+        }catch (ParseException e){
+            e.printStackTrace();
+        }*/
     }
 
     private void nextStep(){ parent.setCurrentPage(); }

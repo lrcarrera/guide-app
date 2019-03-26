@@ -105,9 +105,6 @@ public class WhenFragment extends Fragment {
 
     private void  setCalendarMinDate() {
         Calendar calendar = Calendar.getInstance();
-
-        //calendar.set(Calendar.DATE, Calendar.getInstance().getActualMinimum(Calendar.DATE));
-        //long date = calendar.getTime();
         long milis = System.currentTimeMillis();
         calendarView.setMinDate(milis);
     }

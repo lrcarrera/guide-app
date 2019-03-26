@@ -1,6 +1,5 @@
 package com.example.pathfinderapp;
 
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
-import com.example.pathfinderapp.PublishPackage.DurationFragment;
 import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.example.pathfinderapp.PublishPackage.PriceFragment;
 import com.example.pathfinderapp.PublishPackage.RouteSelectionFragment;
@@ -26,7 +24,6 @@ import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +38,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class PublishFragment extends Fragment implements WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
-        WhichTimeFragment.OnFragmentInteractionListener, DurationFragment.OnFragmentInteractionListener, PriceFragment.OnFragmentInteractionListener,
+        WhichTimeFragment.OnFragmentInteractionListener, PriceFragment.OnFragmentInteractionListener,
         RouteSelectionFragment.OnFragmentInteractionListener, TouristsAllowedFragment.OnFragmentInteractionListener
 {
     // TODO: Rename parameter arguments, choose names that match
@@ -175,8 +172,9 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
 
         fList.add(WhereFragment.newInstance(this));
         fList.add(WhenFragment.newInstance(this));
-        fList.add(WhichTimeFragment.newInstance(this));
-        fList.add(DurationFragment.newInstance(this));
+        fList.add(WhichTimeFragment.newInstance(this, false));
+        fList.add(WhichTimeFragment.newInstance(this, true));
+        //fList.add(DurationFragment.newInstance(this));
         fList.add(TouristsAllowedFragment.newInstance(this));
         fList.add(LanguagesFragment.newInstance(this));
         fList.add(RouteSelectionFragment.newInstance(this));
