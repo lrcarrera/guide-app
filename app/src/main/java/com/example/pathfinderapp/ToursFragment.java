@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -93,7 +94,10 @@ public class ToursFragment extends Fragment {
             SearchItem searchItem = new SearchItem();
             searchItem.setTitle("vergon " + i);
             searchItem.setInfo("vergita " + i);
+            searchItem.setPicture(R.drawable.stock_girl);
             searchList.add(searchItem);
+
+
         }
 
         AdapterSearch adapterSearch = new AdapterSearch(searchList);
