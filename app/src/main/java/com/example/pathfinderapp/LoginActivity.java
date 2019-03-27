@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Toast.makeText(this, "You are login with FB", Toast.LENGTH_LONG);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            //FIXME: Exit that Activity.
+            finish();
         }else {
 
             callbackManager = CallbackManager.Factory.create();
@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     Intent intent = new Intent(getApplication(), MainActivity.class);
                                     startActivity(intent);
-                                    //TODO: Exit activity once mainActivity is opened
+                                    finish();
                                 }
                     });
 
