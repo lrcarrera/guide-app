@@ -12,14 +12,24 @@ public class User {
     private String company;
     private float score;
     private ArrayList<Language> languages;
+    private int image;
 
-    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages) {
+    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
         this.name = name;
         this.postList = postList;
         this.toursCound = toursCound;
         this.company = company;
         this.score = score;
         this.languages = languages;
+        this.image = image;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
     public User() { }
