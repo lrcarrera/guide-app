@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,13 +23,10 @@ import android.widget.Toast;
 import android.os.Looper;
 
 import com.example.pathfinderapp.Adapters.AdapterPlace;
-import com.example.pathfinderapp.AdapterSearch;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
-import com.example.pathfinderapp.SearchItem;
-import com.example.pathfinderapp.ToursFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import com.google.android.gms.common.api.ApiException;

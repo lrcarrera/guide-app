@@ -11,9 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.User;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class ToursFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<SearchItem> searchList;
+    private ArrayList<Post> searchList;
     RecyclerView recycler;
     Context context;
 
@@ -87,30 +89,56 @@ public class ToursFragment extends Fragment {
         recycler = getView().findViewById(R.id.recyclerid);
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        searchList = new ArrayList<SearchItem>();
+        searchList = createMockList();
 
-        for (int i = 0; i < 50; ++i)
-        {
-            SearchItem searchItem = new SearchItem();
-            searchItem.setTitle("vergon " + i);
-            searchItem.setInfo("vergita " + i);
-            searchItem.setPicture(R.drawable.stock_girl);
-            searchList.add(searchItem);
-
-
-        }
 
         AdapterSearch adapterSearch = new AdapterSearch(searchList);
         adapterSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getGuide().getName(), Toast.LENGTH_SHORT).show();
             }
         });
 
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
+    }
+
+    public ArrayList<Post> createMockList(){
+        ArrayList<Post> list = new ArrayList<Post>();
+
+        User user1 = new User();
+        user1.setScore(1.0f);
+        user1.setName("Bonifacia la piedra");
+        user1.setImage(R.drawable.stock_girl);
+
+        Post post1 = new Post();
+        post1.setGuide(user1);
+        post1.setPrice(30.0f);
+
+        User user2 = new User();
+        user2.setScore(5.0f);
+        user2.setName("Concha Mas");
+        user2.setImage(R.drawable.stock_girl1);
+
+        Post post2 = new Post();
+        post2.setGuide(user2);
+        post2.setPrice(30.0f);
+
+        User user3 = new User();
+        user3.setScore(5.0f);
+        user3.setName("Cubru Tivisoaro");
+        user3.setImage(R.drawable.stock_man);
+
+        Post post3 = new Post();
+        post3.setGuide(user3);
+        post3.setPrice(30.0f);
+
+        list.add(post1);
+        list.add(post2);
+        list.add(post3);
+        return list;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

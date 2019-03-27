@@ -1,5 +1,13 @@
 package com.example.pathfinderapp;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,22 +15,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.pathfinderapp.Models.Post;
+
 import java.util.ArrayList;
 
 public class AdapterSearch
         extends RecyclerView.Adapter<AdapterSearch.ViewHolderItem>
         implements View.OnClickListener {
 
-    private ArrayList<SearchItem> searchList;
+    private ArrayList<Post> searchList;
     private View.OnClickListener listener;
+    private Context context;
 
-    public AdapterSearch(ArrayList<SearchItem> searchList) {
+    public AdapterSearch(ArrayList<Post> searchList) {
         this.searchList = searchList;
     }
 
     @Override
     public ViewHolderItem onCreateViewHolder(ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext())
+        context = parent.getContext();
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.recycler_item, null, false);
 
         view.setOnClickListener(this);
@@ -31,9 +43,35 @@ public class AdapterSearch
 
     @Override
     public void onBindViewHolder(ViewHolderItem viewHolder, int i) {
-        viewHolder.info.setText(searchList.get(i).getInfo());
-        viewHolder.title.setText(searchList.get(i).getTitle());
-        viewHolder.picture.setImageResource(searchList.get(i).getPicture());
+        viewHolder.info.setText(Float.toString(searchList.get(i).getGuide().getScore()));
+        viewHolder.title.setText(searchList.get(i).getGuide().getName());
+        viewHolder.picture.setImageResource(searchList.get(i).getGuide().getImage());
+
+        Bitmap bitmap = null;
+
+        bitmap = BitmapFactory.decodeResource(context.getResources(), searchList.get(i).getGuide().getImage());
+        bitmap = getCroppedBitmap(bitmap);
+        viewHolder.picture.setImageBitmap(bitmap);
+    }
+
+    private Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+
+        canvas.drawCircle((bitmap.getWidth()) / 3, bitmap.getHeight() / 2 ,
+                (int) (bitmap.getWidth() / 2.8), paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
     @Override
