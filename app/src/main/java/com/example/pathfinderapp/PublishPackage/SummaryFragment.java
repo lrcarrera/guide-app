@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.pathfinderapp.Adapters.AdapterLanguage;
 import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
@@ -18,7 +19,11 @@ import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,8 +43,10 @@ public class SummaryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    View view;
     RecyclerView recycler;
     PublishFragment parent;
+    public TextView priceNumber;
     private OnFragmentInteractionListener mListener;
 
     public SummaryFragment() {
@@ -69,28 +76,53 @@ public class SummaryFragment extends Fragment {
         }
     }
 
+    /*public void setPrice(){
+
+        priceNumber.setText(Integer.parseInt(String.valueOf(parent.post.getPrice())));
+        //onCreateView(getLayoutInflater(), g)
+    }*/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_summary, container, false);
+        view = inflater.inflate(R.layout.fragment_summary, container, false);
+        TextView dateContent = view.findViewById(R.id.dateContent);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        dateContent.setText(sdf.format(parent.post.getDueTo()));
+
+        TextView fromHourNumber = view.findViewById(R.id.fromHourNumber);
+        fromHourNumber.setText(parent.post.getStartHour());
+
+        TextView toHourNumber = view.findViewById(R.id.toHourNumber);
+        toHourNumber.setText(parent.post.getEndHour());
+
+
+        int tourist = parent.post.getNumTourists();
+        TextView touristAllowed = view.findViewById(R.id.touristAllowedNumber);
+        touristAllowed.setText(String.valueOf(parent.post.getNumTourists()));
+
+        //float aux = 15;
+        //if(parent.post.getPrice() == 0.0f)
+        priceNumber = view.findViewById(R.id.priceNumber);
+
+
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
-        AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(parent.user.getLanguages());
-        /*adapterLanguages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos =  recycler.getChildAdapterPosition(v);
-                List<Language> aux = parent.user.getLanguages();
-                Language language = aux.get(pos);
-                language.setAdded(!language.isAdded());
-                aux.set(pos, language);
-            }
-        });*/
-
+        AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(parent.post.getLanguages());
         recycler.setAdapter(adapterLanguages);
         recycler.setItemAnimator(new DefaultItemAnimator());
         return view;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

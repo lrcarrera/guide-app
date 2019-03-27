@@ -81,15 +81,18 @@ public class WhichTimeFragment extends Fragment {
         if(isDuration)
             checkIfIsEndHour();
 
+
+
         FloatingActionButton continueButton =  view.findViewById(R.id.continueButton);
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                //SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                String aux = timePicker.getHour() + ":" + timePicker.getMinute();
                 if(!isDuration)
-                    parent.post.setStartHour(format.format(timePicker.getDrawingTime()));
+                    parent.post.setStartHour(aux);
                 if(isDuration)
-                    parent.post.setEndHour(format.format(timePicker.getDrawingTime()));
+                    parent.post.setEndHour(aux);
                 nextStep();
             }
         });

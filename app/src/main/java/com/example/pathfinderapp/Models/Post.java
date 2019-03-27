@@ -17,9 +17,9 @@ public class Post {
     private Place place;
     private List<User> tourists;
     private ArrayList<Language> languages;
-    private float price;
+    private Float price;
 
-    public Post(Date createdAt, Date dueTo, String startHour, String endHour, User guide, int numTourists, Place place, List<User> tourists, ArrayList<Language> languages, float price) {
+    public Post(Date createdAt, Date dueTo, String startHour, String endHour, User guide, int numTourists, Place place, List<User> tourists, ArrayList<Language> languages, Float price) {
         this.createdAt = createdAt;
         this.dueTo = dueTo;
         this.startHour = startHour;
@@ -32,7 +32,7 @@ public class Post {
         this.price = price;
     }
 
-    public Post() {}
+    public Post() { this.price = 0f;}
 
     public Place getPlace() {
         return place;

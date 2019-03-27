@@ -1,32 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/colorWhite"
-    tools:context=".PublishPackage.SummaryFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/sumTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:text="@string/summaryTitle"
-        android:textColor="@color/colorBlack"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"/>
-
-
-    <!--<android.support.v7.widget.CardView
+    <android.support.v7.widget.CardView
         android:id="@+id/card"
-        android:layout_above="@+id/continueButton"
-        android:layout_below="@+id/sumTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -66,7 +45,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="25/7/2019"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -98,7 +76,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="12:00"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -109,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="-"
+                    android:text="@string/separator"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -121,7 +98,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="14:00"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -151,7 +127,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="11"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -182,7 +157,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="15"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -193,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="23sp"
-                    android:text="€"
+                    android:text="@string/defaultCurrency"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
@@ -204,27 +178,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:id="@+id/fifthLayout"
                 android:layout_below="@+id/fourthLayout">
 
                 <ImageView
                     android:id="@+id/languagesText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:src="@drawable/ic_action_languages"
-                    android:layout_gravity="start"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"
-                    android:gravity="start"/>
+                    android:gravity="center_horizontal"/>
 
                 <android.support.v7.widget.RecyclerView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/languages"
                     android:layout_marginStart="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"/>
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"/>
 
             </LinearLayout>
 
@@ -240,63 +216,6 @@
                 />
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>-->
+    </android.support.v7.widget.CardView>
 
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonsLayout"
-        android:layout_below="@+id/sumTitle"
-        layout="@layout/tour_summary_card"/>
-
-    <!--<ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/card"
-        android:id="@+id/confirmation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_time"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"/>-->
-
-    <LinearLayout
-        android:id="@+id/buttonsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true">
-
-        <Button
-            android:id="@+id/continueButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_action_next"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="@string/confirm"
-            android:drawableLeft="@drawable/ic_action_confirmation"
-            app:backgroundTint="@color/colorWhite"
-            android:backgroundTint="@color/colorWhite"/>
-
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_action_next"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="@string/cancel"
-            android:drawableLeft="@drawable/ic_action_cancel"
-            app:backgroundTint="@color/colorWhite"
-            android:backgroundTint="@color/colorWhite"/>
-
-    </LinearLayout>
-
-
-
-
-</RelativeLayout>
+</LinearLayout>

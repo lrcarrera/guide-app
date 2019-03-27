@@ -2,9 +2,12 @@ package com.example.pathfinderapp;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,20 +41,19 @@ import java.util.List;
  * Use the {@link PublishFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PublishFragment extends Fragment implements WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
-        WhichTimeFragment.OnFragmentInteractionListener, PriceFragment.OnFragmentInteractionListener,
-        RouteSelectionFragment.OnFragmentInteractionListener, TouristsAllowedFragment.OnFragmentInteractionListener
-{
+public class PublishFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     public CustomPageAdapter pagerAdapter;
+    //public SummaryFragment summaryFragment;
     public ViewPager pager;
     public SeekBar seekBar;
     public Post post;
     public User user;
+    private int currentItem = 0;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -120,10 +122,37 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
         pager = getView().findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //int aux = pager.getCurrentItem();
+                if(position < currentItem)
+                {
+                    pager.setCurrentItem(position);
+                } else {
+                    pager.setCurrentItem(currentItem);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
         //Toast.makeText(getContext(), R.string.error_invalid_password, Toast.LENGTH_LONG);
 
     }
+
+    /*public void summaryFragmentChange(){
+        summaryFragment.priceNumber.setText(String.valueOf(post.getPrice()));
+        setCurrentPage();
+    }*/
 
     public void setCurrentPage(){
         if(pager == null)
@@ -133,6 +162,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         else
         {
             setSeekBarStatus();
+            currentItem++;
             pager.setCurrentItem(pager.getCurrentItem() + 1);
         }
     }
@@ -170,7 +200,7 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
 
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<Fragment>();
-
+        //summaryFragment = SummaryFragment.newInstance(this);
         fList.add(WhereFragment.newInstance(this));
         fList.add(WhenFragment.newInstance(this));
         fList.add(WhichTimeFragment.newInstance(this, false));
@@ -180,16 +210,13 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         fList.add(RouteSelectionFragment.newInstance(this));
         fList.add(PriceFragment.newInstance(this));
         fList.add(SummaryFragment.newInstance(this));
-
-
-        //fList.add(MyFragment.newInstance("Fragment 3", R.drawable.image3));
         return fList;
     }
 
-    @Override
+    /*@Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
+    }*/
 
     /*@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -278,5 +305,10 @@ public class PublishFragment extends Fragment implements WhenFragment.OnFragment
         {
             return this.fragments.size();
         }
+
+        /*@Override
+        public boolean onTouchEvent(MotionEvent event ){
+            return false;
+        }*/
     }
 }
