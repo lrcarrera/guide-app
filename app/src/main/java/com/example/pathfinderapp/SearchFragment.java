@@ -1,12 +1,15 @@
 package com.example.pathfinderapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.ramotion.foldingcell.FoldingCell;
 
 
 /**
@@ -64,7 +67,17 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        final FoldingCell fc = view.findViewById(R.id.folding_cell);
+        fc.initialize(30,1000, Color.DKGRAY, 2);
+        // attach click listener to folding cell
+        fc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fc.toggle(false);
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
