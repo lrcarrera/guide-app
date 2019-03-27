@@ -3,16 +3,14 @@ package com.example.pathfinderapp.Adapters;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.Models.Language;
-import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.R;
 
 import java.util.ArrayList;

@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -20,7 +20,7 @@
         card_view:cardPreventCornerOverlap="false"
         card_view:cardBackgroundColor="#FFF">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -36,7 +36,7 @@
                 android:src="@mipmap/ic_launcher"
                 android:scaleType="centerCrop" />
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 app:layout_constraintStart_toEndOf="@+id/imageId"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/linearLayout"
@@ -63,9 +63,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ItemTitle"
                     app:layout_constraintTop_toBottomOf="@+id/ItemTitle" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
