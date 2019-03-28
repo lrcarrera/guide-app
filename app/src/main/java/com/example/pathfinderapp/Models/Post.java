@@ -46,7 +46,8 @@ public class Post implements Serializable {
     public Post() {
         this.price = 0f;
         this.numTourists= 1;
-        this.places = new ArrayList<Marker>();
+        this.places = new ArrayList<>();
+        this.languages = new ArrayList<>();
     }
 
     public ArrayList<Marker> getPlaces() {

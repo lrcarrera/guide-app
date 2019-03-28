@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".SearchFragment">
 
-    <com.ramotion.foldingcell.FoldingCell
+    <!--<include layout="@layout/tour_layout"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recyclerid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--<com.ramotion.foldingcell.FoldingCell
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/folding_cell"
         android:layout_width="match_parent"
@@ -13,19 +21,41 @@
         android:clipChildren="false"
         android:clipToPadding="false">
         ​
+        <FrameLayout
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cell_content_view"
+            layout="@layout/tour_summary_card">
 
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/cell_content_view"
+            android:id="@+id/postCard"
             layout="@layout/tour_summary_card"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cell_title_view"
+            layout="@layout/tour_summary_card"
+            >
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/userCard"
+                layout="@layout/recycler_item"/>
+        </FrameLayout>
+
+
         ​
        <include
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:id="@+id/cell_title_view"
            layout="@layout/recycler_item"/>
         ​
-    </com.ramotion.foldingcell.FoldingCell>
+    </com.ramotion.foldingcell.FoldingCell>-->
 
 </FrameLayout>

@@ -4,12 +4,34 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.pathfinderapp.Adapters.AdapterTour;
+import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.User;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.ramotion.foldingcell.FoldingCell;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -29,6 +51,10 @@ public class SearchFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ArrayList<Post> searchList;
+    RecyclerView recycler;
+    Context context;
 
     private OnFragmentInteractionListener mListener;
 
@@ -68,7 +94,10 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        final FoldingCell fc = view.findViewById(R.id.folding_cell);
+
+
+
+        /*final FoldingCell fc = view.findViewById(R.id.folding_cell);
         fc.initialize(30,1000, Color.DKGRAY, 2);
         // attach click listener to folding cell
         fc.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +106,97 @@ public class SearchFragment extends Fragment {
                 fc.toggle(false);
             }
         });
+        FragmentManager fm = getChildFragmentManager();
+        SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
+        fm.beginTransaction().replace(R.id.map, supportMapFragment).commit();
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                GoogleMap mMap = googleMap;
+
+            }
+        });*/
+
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        recycler = getView().findViewById(R.id.recyclerid);
+
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        searchList = createMockList();
+
+
+        AdapterTour adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
+        adapterSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getGuide().getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        recycler.setAdapter(adapterSearch);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+
+    }
+
+    public ArrayList<Post> createMockList(){
+        ArrayList<Post> list = new ArrayList<Post>();
+
+        User user1 = new User();
+        user1.setScore(1.0f);
+        user1.setName("Bonifacia la piedra");
+        user1.setImage(R.drawable.stock_girl);
+
+
+
+        Post post1 = new Post();
+        post1.setGuide(user1);
+        post1.setPrice(30.0f);
+        post1.setDueTo(new Date());
+        post1.setStartHour("12:00");
+        post1.setEndHour("14:00");
+        post1.setNumTourists(6);
+        post1.setPrice(14.5f);
+        post1.setLanguages(new ArrayList<Language>());
+
+        User user2 = new User();
+        user2.setScore(5.0f);
+        user2.setName("Concha Mas");
+        user2.setImage(R.drawable.stock_girl1);
+
+        Post post2 = new Post();
+        post2.setGuide(user2);
+        post2.setPrice(30.0f);
+        post2.setDueTo(new Date());
+        post2.setStartHour("12:00");
+        post2.setEndHour("14:00");
+        post2.setNumTourists(6);
+        post2.setPrice(14.5f);
+        post2.setLanguages(new ArrayList<Language>());
+
+        User user3 = new User();
+        user3.setScore(5.0f);
+        user3.setName("Cubru Tivisoaro");
+        user3.setImage(R.drawable.stock_man);
+
+        Post post3 = new Post();
+        post3.setGuide(user3);
+        post3.setPrice(30.0f);
+        post3.setDueTo(new Date());
+        post3.setStartHour("12:00");
+        post3.setEndHour("14:00");
+        post3.setNumTourists(6);
+        post3.setPrice(14.5f);
+        post3.setLanguages(new ArrayList<Language>());
+
+        list.add(post1);
+        list.add(post2);
+        list.add(post3);
+        return list;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,6 +215,7 @@ public class SearchFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        this.context = context;
     }
 
     @Override

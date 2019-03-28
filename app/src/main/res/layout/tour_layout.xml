@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ramotion.foldingcell.FoldingCell
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/folding_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        ​
+        <FrameLayout
+            android:id="@+id/cell_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="450dp">
+                <include layout="@layout/recycler_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@android:color/holo_blue_dark" />
+
+                <include layout="@layout/tour_summary_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--<Button
+                    android:id="@+id/continueButton"
+                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:src="@drawable/ic_action_next"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="@string/confirm"
+                    android:drawableLeft="@drawable/ic_action_confirmation"
+                    app:backgroundTint="@color/colorWhite"
+                    android:backgroundTint="@color/colorWhite"/>-->
+            </LinearLayout>
+
+        </FrameLayout>
+        ​
+        <FrameLayout
+            android:id="@+id/cell_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <RelativeLayout
+                android:id="@+id/aux_lay"
+                layout="@layout/recycler_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.28"
+                            android:adjustViewBounds="true"
+                            android:id="@+id/topImageId"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_launcher"
+                            android:scaleType="centerCrop" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintStart_toEndOf="@+id/topImageId"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:id="@+id/linearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/topItemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="test"
+                                android:textSize="25sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@+id/topItemInfo"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed" />
+
+                            <TextView
+                                android:id="@+id/topItemInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="test"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+
+
+        </FrameLayout>
+        ​
+    </com.ramotion.foldingcell.FoldingCell>
+</LinearLayout>

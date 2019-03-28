@@ -3,6 +3,8 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -91,7 +93,9 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_summary, container, false);
+
         getDataResume(view);
+        /* Al confirmar ficar els llenguatges seleccionats a isAdded=false*/
         return view;
     }
 
