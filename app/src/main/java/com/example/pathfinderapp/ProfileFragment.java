@@ -1,9 +1,12 @@
 package com.example.pathfinderapp;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -12,10 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +54,8 @@ public class ProfileFragment extends Fragment {
     private static final String NO_NAME = "no_name";
     private static final String NO_EMAIL = "no_email";
 
-
+    Dialog myDialog;
+    ImageButton settings;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -93,12 +104,24 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        myDialog = new Dialog(getContext());
+        settings = (ImageButton) rootView.findViewById(R.id.configure_button);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSettings();
+            }
+        });
+
+
         profilePicture = rootView.findViewById(R.id.profilePicture);
         textViewName = rootView.findViewById(R.id.tv_name);
         textViewEmail = rootView.findViewById(R.id.tv_email);
 
         //From facebook login
-        getContext();
+
         prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
                 "com.example.pathfinderapp", Context.MODE_PRIVATE);
 
@@ -115,6 +138,51 @@ public class ProfileFragment extends Fragment {
         //TODO: From normal login
 
         return rootView;
+    }
+
+    public void openSettings(){
+        ImageButton btnClose;
+        Button btnLogout;
+        myDialog.setContentView(R.layout.popupsettings);
+        btnClose = (ImageButton) myDialog.findViewById(R.id.btnclose);
+        btnLogout = (Button) myDialog.findViewById(R.id.btnlogout);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //myDialog.dismiss();
+                logOut();
+            }
+        });
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
+
+    public void logOut(){
+
+        myDialog.dismiss();
+
+        if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
+
+            getActivity().finish();//TODO: implement logout for credentials from Firebase
+        }else{
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                    .Callback() {
+                @Override
+                public void onCompleted(GraphResponse graphResponse) {
+
+                    LoginManager.getInstance().logOut();
+                    getActivity().finish();
+
+                }
+            }).executeAsync();
+        }
     }
 
     @Override

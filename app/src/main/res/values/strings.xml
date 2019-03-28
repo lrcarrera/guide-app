@@ -49,4 +49,8 @@
     <string name="cancel">Cancelar</string>
     <string name="confirm">Confirmar</string>
     <string name="separator">-</string>
+
+    <!-- SETTINGS -->
+    <string name="logout">Log out</string>
+
 </resources>
