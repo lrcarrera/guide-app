@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_gradient"
-        android:paddingBottom="20dp">
+        android:paddingBottom="5dp">
 
         <!--<RelativeLayout
             android:id="@+id/imgUser"
@@ -21,18 +21,18 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/circle_border">-->
 
-            <ImageView
-                android:id="@+id/profilePicture"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_margin="9dp"
-                android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
-                android:background="@drawable/circle"
-                android:padding="3dp"
-                android:layout_marginTop="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_user"/>
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle"
+            android:padding="3dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_user" />
 
        <!-- </RelativeLayout>-->
 
@@ -60,15 +60,16 @@
             android:textColor="@color/address"
             android:textSize="14sp" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/configure_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_settings" />
+            android:background="@drawable/ic_settings"/>
 
     </RelativeLayout>
 
