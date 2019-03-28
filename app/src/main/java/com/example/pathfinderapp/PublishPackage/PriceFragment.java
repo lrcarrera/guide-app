@@ -97,7 +97,7 @@ public class PriceFragment extends Fragment {
         });
     }
 
-    private void nextStep(){ parent.setCurrentPage(); }
+    private void nextStep(){ parent.summaryFragmentChange(); }
 
     public void setPrice(boolean increase)
     {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,13 @@ import android.widget.TextView;
 import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -39,6 +47,7 @@ public class SummaryFragment extends Fragment {
     private String mParam2;
 
     View view;
+    private GoogleMap mMap;
     RecyclerView recycler;
     PublishFragment parent;
     public TextView priceNumber;
@@ -82,6 +91,17 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_summary, container, false);
+        getDataResume(view);
+        return view;
+    }
+
+    private void getDataResume(View view){
+        addTextViewsContent();
+        addLanguages();
+        addMapMarkers();
+    }
+
+    private void addTextViewsContent(){
         TextView dateContent = view.findViewById(R.id.dateContent);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         dateContent.setText(sdf.format(parent.post.getDueTo()));
@@ -93,21 +113,39 @@ public class SummaryFragment extends Fragment {
         toHourNumber.setText(parent.post.getEndHour());
 
 
-        int tourist = parent.post.getNumTourists();
         TextView touristAllowed = view.findViewById(R.id.touristAllowedNumber);
         touristAllowed.setText(String.valueOf(parent.post.getNumTourists()));
 
-        //float aux = 15;
-        //if(parent.post.getPrice() == 0.0f)
         priceNumber = view.findViewById(R.id.priceNumber);
+        priceNumber.setText(String.valueOf(parent.post.getPrice()));
+    }
 
-
+    private void addLanguages(){
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
         AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(parent.post.getLanguages());
         recycler.setAdapter(adapterLanguages);
         recycler.setItemAnimator(new DefaultItemAnimator());
-        return view;
+    }
+
+    private void addMapMarkers(){
+        FragmentManager fm = getChildFragmentManager();
+        SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
+        fm.beginTransaction().replace(R.id.map, supportMapFragment).commit();
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parent.post.getPlace().getCoord(), 11));
+                for (Marker marker : parent.post.getPlaces()){
+                    mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
+                }
+            }
+        });
+    }
+
+    public void setPriceView(){
+        priceNumber.setText(String.valueOf(parent.post.getPrice()));
     }
 
     @Override

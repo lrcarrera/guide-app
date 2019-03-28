@@ -204,7 +204,7 @@
 
             </LinearLayout>
 
-            <fragment
+            <FrameLayout
                 android:layout_below="@+id/fifthLayout"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:map="http://schemas.android.com/apk/res-auto"

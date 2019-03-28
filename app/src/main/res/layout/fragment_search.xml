@@ -13,26 +13,18 @@
         android:clipChildren="false"
         android:clipToPadding="false">
         ​
-        <FrameLayout
-            android:id="@+id/cell_content_view"
+
+        <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_dark"
-            android:visibility="gone">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="250dp" />
-        </FrameLayout>
+            android:id="@+id/cell_content_view"
+            layout="@layout/tour_summary_card"/>
         ​
-        <FrameLayout
-            android:id="@+id/cell_title_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@android:color/holo_blue_dark" />
-        </FrameLayout>
+       <include
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/cell_title_view"
+           layout="@layout/recycler_item"/>
         ​
     </com.ramotion.foldingcell.FoldingCell>
 

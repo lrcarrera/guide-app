@@ -34,15 +34,6 @@ import java.util.ArrayList;
  */
 public class RouteSelectionFragment extends Fragment  {
 
-    //implements GoogleMap.OnMarkerClickListener
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    //private String mParam1;
-    //private String mParam2;
 
     private LinearLayout mapLayout;
     private Marker mCurrentMarker;
@@ -106,6 +97,12 @@ public class RouteSelectionFragment extends Fragment  {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                if(parent.post.getPlaces().size() != 0){
+                    mMarkerArrayList = parent.post.getPlaces();
+                    for (Marker marker : mMarkerArrayList){
+                        mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
+                    }
+                }
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
@@ -151,7 +148,7 @@ public class RouteSelectionFragment extends Fragment  {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //addLanguagesToPost();
+                parent.post.setPlaces(mMarkerArrayList);
                 nextStep();
             }
         });

@@ -1,12 +1,15 @@
 package com.example.pathfinderapp.Models;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Post {
+public class Post implements Serializable {
 
     private Date createdAt;
     private Date dueTo;
@@ -17,9 +20,16 @@ public class Post {
     private Place place;
     private List<User> tourists;
     private ArrayList<Language> languages;
+    private ArrayList<Marker> places;
     private Float price;
 
-    public Post(Date createdAt, Date dueTo, String startHour, String endHour, User guide, int numTourists, Place place, List<User> tourists, ArrayList<Language> languages, Float price) {
+
+    public Post(Date createdAt, Date dueTo,
+                String startHour, String endHour,
+                User guide, int numTourists, Place place,
+                List<User> tourists, ArrayList<Language> languages,
+                ArrayList<Marker> places, Float price) {
+
         this.createdAt = createdAt;
         this.dueTo = dueTo;
         this.startHour = startHour;
@@ -29,10 +39,28 @@ public class Post {
         this.place = place;
         this.tourists = tourists;
         this.languages = languages;
+        this.places = places;
         this.price = price;
     }
 
-    public Post() { this.price = 0f;}
+    public Post() {
+        this.price = 0f;
+        this.numTourists= 1;
+        this.places = new ArrayList<Marker>();
+    }
+
+    public ArrayList<Marker> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(ArrayList<Marker> places) {
+        this.places = places;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
 
     public Place getPlace() {
         return place;

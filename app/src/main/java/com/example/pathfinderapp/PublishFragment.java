@@ -27,6 +27,7 @@ import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,27 +41,16 @@ import java.util.List;
  * Use the {@link PublishFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PublishFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class PublishFragment extends Fragment implements Serializable{
 
     public CustomPageAdapter pagerAdapter;
-    //public SummaryFragment summaryFragment;
     public ViewPager pager;
     public SeekBar seekBar;
     public Post post;
     public User user;
     private int currentItem = 0;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    private static int NUM_ITEMS = 2;
 
     public PublishFragment() {
         // Required empty public constructor
@@ -82,34 +72,50 @@ public class PublishFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-    View view = inflater.inflate(R.layout.fragment_publish, container, false);
-    seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
+        View view = inflater.inflate(R.layout.fragment_publish, container, false);
+        seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
+        if(savedInstanceState == null){
 
-    post = new Post();
-    user = new User();
-    user.setLanguages(new ArrayList<Language>(Arrays.asList(
-            new Language("spanish_flag", "Spanish", "ES", R.drawable.spain_flag),
-            new Language("english_flag", "English", "EN",R.drawable.english_flag),
-            new Language("french_flag" , "French" , "FR",R.drawable.french_flag),
-            new Language("italian_flag", "Italian", "IT",R.drawable.italy_flag),
-            new Language("german_flag" , "German" , "DE",R.drawable.german_flag)
+            post = new Post();
+            user = new User();
+            user.setLanguages(new ArrayList<Language>(Arrays.asList(
+                    new Language("spanish_flag", "Spanish", "ES", R.drawable.spain_flag),
+                    new Language("english_flag", "English", "EN",R.drawable.english_flag),
+                    new Language("french_flag" , "French" , "FR",R.drawable.french_flag),
+                    new Language("italian_flag", "Italian", "IT",R.drawable.italy_flag),
+                    new Language("german_flag" , "German" , "DE",R.drawable.german_flag)
             )));
 
 
-    seekBar.setOnTouchListener(new View.OnTouchListener() {
+            seekBar.setOnTouchListener(new View.OnTouchListener() {
 
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
 
-            return true;
+                    return true;
+                }
+
+            });
         }
 
-    });
-
-
-
-    return view;
+        return view;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putSerializable("post", post);
+        savedInstanceState.putSerializable("user", user);
+        savedInstanceState.putInt("currentItem", currentItem);
+        savedInstanceState.putSerializable("pagerAdapter", pagerAdapter);
+        savedInstanceState.putInt("seekBarStatus", seekBar.getProgress());
+    }
+
+    /*@Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+
+    }*/
 
 
 
@@ -117,9 +123,21 @@ public class PublishFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //ImageView imageView = (ImageView) getView().findViewById(R.id.foo);
         // or  (ImageView) view.findViewById(R.id.foo);
-        List<Fragment> fragments = getFragments();
-        pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
         pager = getView().findViewById(R.id.pager);
+        if(savedInstanceState == null){
+            List<Fragment> fragments = getFragments();
+            pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
+            seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+        } else {
+            //System.out.println("Llengo al final");
+            post = (Post) savedInstanceState.getSerializable("post");
+            user = (User) savedInstanceState.getSerializable("user");
+            currentItem = savedInstanceState.getInt("currentItem");
+            pagerAdapter = (CustomPageAdapter) savedInstanceState.getSerializable("pagerAdapter");
+            seekBar.setProgress(savedInstanceState.getInt("seekBarStatus"));
+            //Current page del pager
+
+        }
         pager.setAdapter(pagerAdapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -143,15 +161,17 @@ public class PublishFragment extends Fragment {
 
             }
         });
-        seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+
         //Toast.makeText(getContext(), R.string.error_invalid_password, Toast.LENGTH_LONG);
 
     }
 
-    /*public void summaryFragmentChange(){
-        summaryFragment.priceNumber.setText(String.valueOf(post.getPrice()));
+    public void summaryFragmentChange(){
+        SummaryFragment sm = (SummaryFragment) pagerAdapter.getItem(pagerAdapter.getCount()-1);
+        sm.setPriceView();
         setCurrentPage();
-    }*/
+
+    }
 
     public void setCurrentPage(){
         if(pager == null)
@@ -284,7 +304,7 @@ public class PublishFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class CustomPageAdapter extends FragmentPagerAdapter {
+    private class CustomPageAdapter extends FragmentPagerAdapter implements Serializable {
         private List<Fragment> fragments;
         private int[] mResources;
 

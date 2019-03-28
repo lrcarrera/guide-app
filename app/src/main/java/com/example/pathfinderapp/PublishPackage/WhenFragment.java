@@ -13,8 +13,10 @@ import android.widget.CalendarView;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,16 +27,6 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class WhenFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
 
     private CalendarView calendarView;
     private PublishFragment parent;
@@ -58,21 +50,12 @@ public class WhenFragment extends Fragment {
 
         WhenFragment fragment = new WhenFragment();
         fragment.parent = parent;
-
-        //Bundle args = new Bundle();
-        //.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        //fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -89,12 +72,26 @@ public class WhenFragment extends Fragment {
             }
         });
         setCalendarMinDate();
+        setFocus();
         parent.setSeekBarStatus();
         return view;
     }
 
     private void nextStep(){
         parent.setCurrentPage();
+    }
+
+    private void setFocus(){
+        if(parent.post.getDueTo() != null){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String date = sdf.format(parent.post.getDueTo());
+            String parts[] = date.split("/");
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, Integer.parseInt(parts[2]));
+            calendar.set(Calendar.MONTH, Integer.parseInt(parts[1]));
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[0]));
+            calendarView.setDate(calendar.getTimeInMillis());
+        }
     }
 
     private void  setCalendarMinDate() {

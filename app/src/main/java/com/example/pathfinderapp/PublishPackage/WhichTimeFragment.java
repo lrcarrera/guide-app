@@ -14,6 +14,10 @@ import android.widget.TimePicker;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -72,8 +76,7 @@ public class WhichTimeFragment extends Fragment {
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         whenTitle = (TextView) view.findViewById(R.id.whenTitle);
 
-        if(isDuration)
-            checkIfIsEndHour();
+        checkHours();
 
 
 
@@ -101,20 +104,24 @@ public class WhichTimeFragment extends Fragment {
         return view;
     }
 
-    private void checkIfIsEndHour(){
-        whenTitle.setText(R.string.durationTitle);
-        /*String min = parent.post.getStartHour();
-        try{
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            Calendar calendate = new GregorianCalendar();
-            calendate.setTime(format.parse(min));
+    private void checkHours(){
+        String[] time = new String[]{"1", "2"};
+        if(!isDuration){
+            if(parent.post.getStartHour() != null){
+                time = parent.post.getStartHour().split(":");
+                timePicker.setHour(Integer.parseInt(time[0]));
+                timePicker.setMinute(Integer.parseInt(time[1]));
+            }
+        } else {
+            whenTitle.setText(R.string.durationTitle);
+            if(parent.post.getEndHour() != null){
+                time = parent.post.getEndHour().split(":");
+                timePicker.setHour(Integer.parseInt(time[0]));
+                timePicker.setMinute(Integer.parseInt(time[1]));
+            }
+        }
 
-            timePicker.setHour(calendate.get(Calendar.HOUR_OF_DAY));
-            timePicker.setHour(calendate.get(Calendar.MINUTE));
-            timePicker.setHour(calendate.get(Calendar.SECOND));
-        }catch (ParseException e){
-            e.printStackTrace();
-        }*/
+
     }
 
     private void nextStep(){ parent.setCurrentPage(); }

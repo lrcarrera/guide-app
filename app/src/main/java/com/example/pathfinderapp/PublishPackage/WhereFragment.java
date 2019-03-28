@@ -120,9 +120,17 @@ public class WhereFragment extends Fragment {
         // Inflate the layout for this fragment
         //mRequestingLocationUpdates = false;
         View view = inflater.inflate(R.layout.fragment_where, container, false);
+        //if(savedInstanceState != null)
+        //    parent = (PublishFragment) savedInstanceState.getSerializable("parent");
         parent.setSeekBarStatus();
         return view;
     }
+
+    /*@Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("parent", parent);
+    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -130,7 +138,7 @@ public class WhereFragment extends Fragment {
 
         mRequestingLocationUpdates = true;
         recycler = getView().findViewById(R.id.places);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         placesList = new ArrayList<Place>();
 
         /*LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);

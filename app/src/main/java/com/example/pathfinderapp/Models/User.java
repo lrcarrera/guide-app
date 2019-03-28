@@ -1,10 +1,11 @@
 package com.example.pathfinderapp.Models;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     private String name;
     private List<Post> postList;
