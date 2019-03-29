@@ -22,8 +22,8 @@ public class CroppedImage {
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
 
-        canvas.drawCircle((bitmap.getWidth()) / 3, bitmap.getHeight() / 2 ,
-                (int) (bitmap.getWidth() / 2.8), paint);
+        canvas.drawCircle((bitmap.getWidth()) / 2, bitmap.getHeight() / 2 ,
+                (int) (bitmap.getWidth() / 2), paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;

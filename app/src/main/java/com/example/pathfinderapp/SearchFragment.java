@@ -150,7 +150,7 @@ public class SearchFragment extends Fragment {
         User user1 = new User();
         user1.setScore(1.0f);
         user1.setName("Bonifacia la piedra");
-        user1.setImage(R.drawable.verguser);
+        user1.setImage(R.drawable.stock_man);
 
 
 
@@ -167,7 +167,7 @@ public class SearchFragment extends Fragment {
         User user2 = new User();
         user2.setScore(5.0f);
         user2.setName("Concha Mas");
-        user2.setImage(R.drawable.verguser);
+        user2.setImage(R.drawable.stock_girl1);
 
         Post post2 = new Post();
         post2.setGuide(user2);
@@ -182,7 +182,7 @@ public class SearchFragment extends Fragment {
         User user3 = new User();
         user3.setScore(5.0f);
         user3.setName("Cubru Tivisoaro");
-        user3.setImage(R.drawable.verguser);
+        user3.setImage(R.drawable.stock_man1);
 
         Post post3 = new Post();
         post3.setGuide(user3);

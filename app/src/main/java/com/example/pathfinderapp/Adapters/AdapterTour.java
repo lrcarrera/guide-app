@@ -162,7 +162,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
 
             final FoldingCell fc = itemView.findViewById(R.id.folding_cell);
-            fc.initialize(30,1000, Color.WHITE, 2);
+            fc.initialize(30,1000, Color.DKGRAY, 2);
             // attach click listener to folding cell
             fc.setOnClickListener(new View.OnClickListener() {
                 @Override
