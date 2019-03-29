@@ -310,34 +310,87 @@
                             android:src="@mipmap/ic_launcher"
                             android:scaleType="centerCrop" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                        <LinearLayout
                             app:layout_constraintStart_toEndOf="@+id/topImageId"
                             app:layout_constraintTop_toTopOf="parent"
                             android:id="@+id/linearLayout"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="10dp">
 
                             <TextView
                                 android:id="@+id/topItemTitle"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="test"
                                 android:textSize="25sp"
                                 android:textStyle="bold"
+                                android:textColor="@color/colorBlack"
                                 app:layout_constraintBottom_toTopOf="@+id/topItemInfo"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_chainStyle="packed" />
 
+
                             <TextView
                                 android:id="@+id/topItemInfo"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="test"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="@+id/topItemTitle"
                                 app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <LinearLayout
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/scoreTitle"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+
+                                    <TextView
+                                        android:id="@+id/topItemScore"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="5"
+                                        android:textStyle="bold"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/languages"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+
+                                    <TextView
+                                        android:id="@+id/topItemLanguages"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="+4"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                                </LinearLayout>
+                        </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>

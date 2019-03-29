@@ -78,10 +78,10 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     private void processPostData(Post current, ViewHolderItem viewHolder){
-        viewHolder.info.setText(String.valueOf(current.getGuide().getScore()));
-        viewHolder.title.setText(current.getGuide().getName());
-        viewHolder.topInfo.setText(String.valueOf(current.getGuide().getScore()));
-        viewHolder.topTitle.setText(current.getGuide().getName());
+        viewHolder.info.setText(String.valueOf(current.getGuide().getName()));
+        viewHolder.title.setText(current.getPlace().getName());
+        viewHolder.topInfo.setText(String.valueOf(current.getGuide().getName()));
+        viewHolder.topTitle.setText(current.getPlace().getName());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         viewHolder.dateContent.setText(sdf.format(current.getDueTo()));
         viewHolder.fromHourNumber.setText(current.getStartHour());

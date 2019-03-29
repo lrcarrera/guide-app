@@ -91,7 +91,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         if(view == null)
             return;;
 
-        searchList = DefValues.createMockList();
+        searchList = DefValues.getMockPostList();
         adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
 
         recycler = view.findViewById(R.id.recyclerid);

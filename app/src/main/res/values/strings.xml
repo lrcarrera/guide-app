@@ -62,6 +62,8 @@
     <string name="alertTitle">¡Hey!</string>
     <string name="selectLanguageAlert">Seleccione alemnos un idioma</string>
     <string name="search_bar">Search a city</string>
+    <string name="languages">Idiomas:</string>
+    <string name="scoreTitle">Puntuación:</string>
 
 
 </resources>
