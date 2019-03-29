@@ -100,8 +100,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
-        SearchView editsearch = view.findViewById(R.id.search_bar);
-        editsearch.setOnQueryTextListener(this);
+        SearchView searchView = view.findViewById(R.id.search_bar);
+        searchView.setFocusable(false);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(this);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
