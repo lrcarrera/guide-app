@@ -1,6 +1,7 @@
 package com.example.pathfinderapp;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -16,8 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
@@ -65,6 +69,12 @@ public class ProfileFragment extends Fragment {
     ImageView profilePicture;
     TextView textViewName;
     TextView textViewEmail;
+
+    CheckBox checkboxNotifications;
+    RadioGroup radioGroupConnectivity;
+    RadioButton radioWifi;
+    RadioButton radioWifiAndMore;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -120,10 +130,13 @@ public class ProfileFragment extends Fragment {
         textViewName = rootView.findViewById(R.id.tv_name);
         textViewEmail = rootView.findViewById(R.id.tv_email);
 
+
         //From facebook login
 
         prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
                 "com.example.pathfinderapp", Context.MODE_PRIVATE);
+
+
 
         String facebookImageLink =  prefs.getString("facebook_picture_link", NO_PHOTO);
         String name = prefs.getString("facebook_name", NO_NAME);
@@ -141,11 +154,31 @@ public class ProfileFragment extends Fragment {
     }
 
     public void openSettings(){
+
+        myDialog.setContentView(R.layout.popupsettings);
+
+        checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
+        radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
+        radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
+        radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);
+
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+
+        handleActionButtons();
+        setInitialValuesToTogglesItems();
+    }
+
+    private void handleActionButtons(){
+
         ImageButton btnClose;
         Button btnLogout;
-        myDialog.setContentView(R.layout.popupsettings);
+        Button btnSave;
+
         btnClose = (ImageButton) myDialog.findViewById(R.id.btnclose);
         btnLogout = (Button) myDialog.findViewById(R.id.btnlogout);
+        btnSave = (Button) myDialog.findViewById(R.id.btnSave);
+
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,9 +193,77 @@ public class ProfileFragment extends Fragment {
                 logOut();
             }
         });
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
+
+        btnSave.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //myDialog.dismiss();
+                storePreferenceValues();
+            }
+        });
     }
+    private void setInitialValuesToTogglesItems(){
+
+
+
+        Boolean isNotificationsOn = prefs.getBoolean("notifications", false);
+        Boolean isFullConnectivityOn = prefs.getBoolean("full_connectivity", false);
+
+        if(isFullConnectivityOn){
+            //radioGroupConnectivity.check(R.id.wifiandmore);
+            radioWifi.setChecked(false);
+            radioWifiAndMore.setChecked(true);
+        }else{
+           // radioGroupConnectivity.check(R.id.wifi);
+            radioWifi.setChecked(true);
+            radioWifiAndMore.setChecked(false);
+
+        }
+        if(isNotificationsOn){
+            checkboxNotifications.setChecked(true);
+        }else{
+            checkboxNotifications.setChecked(false);
+        }
+    }
+
+    private void storePreferenceValues(){
+
+        //Checkbox
+        if(checkboxNotifications.isChecked()){
+            prefs.edit().putBoolean("notifications", true).apply();
+        }else{
+            prefs.edit().putBoolean("notifications", false).apply();
+        }
+
+        if(radioWifi.isChecked()){
+            prefs.edit().putBoolean("full_connectivity", false).apply();
+        }else{
+            prefs.edit().putBoolean("full_connectivity", true).apply();
+        }
+
+        //RadioGroup
+       /* radioGroupConnectivity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // find which radio button is selected
+                if(checkedId == R.id.wifiandmore) {
+                    prefs.edit().putBoolean("full_connectivity", true).apply();
+                } else{
+                }
+            }
+        });*/
+    }
+
+   /* private void showProgressDialog(){
+        ProgressDialog progress = new ProgressDialog(getContext());
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+// To dismiss the dialog
+        progress.dismiss();
+    }*/
 
     public void logOut(){
 

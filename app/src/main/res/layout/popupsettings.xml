@@ -1,51 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="350dp"
     android:layout_height="475dp"
+    android:layout_gravity="center"
     android:background="@drawable/background_popup"
-    android:padding="5dp"
-    android:layout_gravity="center">
+    android:orientation="vertical"
+    android:padding="5dp">
+
     <ImageButton
         android:id="@+id/btnclose"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:textColor="@color/white"
-        android:text="X"
-        android:textStyle="bold"
         android:layout_gravity="end"
+        android:background="@drawable/com_facebook_close"
         android:gravity="center"
-        android:background="@drawable/com_facebook_close"/>
+        android:text="X"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Elina Grofild"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Montreal,Canada"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/settings"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/notifications"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkbox_notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/colorWhite" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/connectivity"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:id="@+id/radio_group_connectivity"
+            android:checkedButton="@+id/wifiandmore" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wifi"
+                android:text="@string/wifi"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wifiandmore"
+                android:text="@string/wifiandco" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/save"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:gravity="center">
     <Button
         android:id="@+id/btnlogout"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:layout_marginTop="25dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:background="@drawable/buttonstylepopup"
-        android:textColor="@color/white"/>
+        android:text="@string/logout"
+        android:textColor="@color/white" />
+    </RelativeLayout>
 
 </LinearLayout>

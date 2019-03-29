@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.AdapterSearch;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,6 +27,7 @@ import com.ramotion.foldingcell.FoldingCell;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
@@ -40,11 +42,15 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private Context context;
     private View.OnClickListener listener;
     private ArrayList<Post> searchList;
+    private ArrayList<Post> originalSearchList;
     private FragmentManager fragmentManager;
 
     public AdapterTour(ArrayList<Post> searchList, FragmentManager fragmentManager) {
         this.searchList = searchList;
         this.fragmentManager = fragmentManager;
+        this.originalSearchList = new ArrayList<>();
+
+        originalSearchList.addAll(searchList);
     }
 
     @Override
@@ -122,7 +128,28 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     public void filter(String newText) {
+        String toSearch = newText.toLowerCase();
 
+        searchList = new ArrayList<>();
+        searchList.addAll(originalSearchList);
+
+        if (toSearch.length() == 0)
+        {
+            searchList = DefValues.getMockPostList();
+            notifyDataSetChanged();
+            return;
+        }
+
+        ListIterator<Post> itr = searchList.listIterator();
+        while (itr.hasNext())
+        {
+            if (itr.next().getPlace().getName().toLowerCase().contains(toSearch))
+                continue;
+
+            itr.remove();
+        }
+
+        notifyDataSetChanged();
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
