@@ -1,7 +1,6 @@
 package com.example.pathfinderapp;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -155,7 +154,7 @@ public class ProfileFragment extends Fragment {
 
     public void openSettings(){
 
-        myDialog.setContentView(R.layout.popupsettings);
+        myDialog.setContentView(R.layout.settings_popup);
 
         checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
         radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);

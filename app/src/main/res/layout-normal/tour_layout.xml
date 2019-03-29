@@ -34,7 +34,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="450dp">
+                android:layout_height="350dp">
 
 
                 <include layout="@layout/recycler_item"
@@ -259,164 +259,166 @@
                            map:liteMode="true"
                            map:mapType="none" />-->
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/inscribeButton"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginTop="20dp"
-                            android:src="@drawable/ic_action_publish"
-                            app:backgroundTint="@color/colorWhite"
-                            android:backgroundTint="@color/colorWhite"/>
+                       <com.google.android.material.floatingactionbutton.FloatingActionButton
+                           android:id="@+id/inscribeButton"
+                           android:layout_height="wrap_content"
+                           android:layout_width="wrap_content"
+                           android:layout_alignParentTop="true"
+                           android:layout_alignParentEnd="true"
+                           android:layout_marginTop="20dp"
+                           android:layout_marginEnd="5dp"
+                           android:src="@drawable/ic_action_publish"
+                           app:backgroundTint="@color/colorWhite"
+                           android:backgroundTint="@color/colorWhite"/>
 
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-
-
-            </LinearLayout>
-
-        </FrameLayout>
-        ​
-        <FrameLayout
-            android:id="@+id/cell_title_view"
-            android:layout_width="match_parent"
-            android:layout_height="120dp">
-
-            <RelativeLayout
-                android:id="@+id/aux_lay"
-                layout="@layout/recycler_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        app:layout_constraintLeft_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:id="@+id/mapButton"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center_vertical|end"
-                        android:src="@drawable/ic_action_tours"
-                        app:backgroundTint="@color/colorWhite"
-                        android:backgroundTint="@color/colorWhite"
-                        android:layout_marginEnd="5dp"/>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                   </RelativeLayout>
+               </androidx.cardview.widget.CardView>
 
 
-                        <ImageView
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintWidth_percent="0.28"
-                            android:adjustViewBounds="true"
-                            android:id="@+id/topImageId"
-                            android:layout_marginStart="5dp"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:src="@mipmap/ic_launcher"
-                            android:scaleType="centerCrop" />
+           </LinearLayout>
 
-                        <LinearLayout
-                            app:layout_constraintStart_toEndOf="@+id/topImageId"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:id="@+id/linearLayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginStart="10dp">
+       </FrameLayout>
+       ​
+       <FrameLayout
+           android:id="@+id/cell_title_view"
+           android:layout_width="match_parent"
+           android:layout_height="100dp">
 
-                            <TextView
-                                android:id="@+id/topItemTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="test"
-                                android:textSize="25sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/colorBlack"
-                                app:layout_constraintBottom_toTopOf="@+id/topItemInfo"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_chainStyle="packed" />
+           <RelativeLayout
+               android:id="@+id/aux_lay"
+               layout="@layout/recycler_item"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+               <androidx.cardview.widget.CardView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
 
+                   <com.google.android.material.floatingactionbutton.FloatingActionButton
+                       app:layout_constraintLeft_toRightOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       android:id="@+id/mapButton"
+                       android:layout_height="wrap_content"
+                       android:layout_width="wrap_content"
+                       android:layout_gravity="center_vertical|end"
+                       android:src="@drawable/ic_action_tours"
+                       app:backgroundTint="@color/colorWhite"
+                       android:backgroundTint="@color/colorWhite"
+                       android:layout_marginEnd="5dp"/>
 
-                                <LinearLayout
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/topItemInfo"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="test"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
-                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
-
-                                    <TextView
-                                        android:layout_marginStart="15dp"
-                                        android:id="@+id/topItemStar"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="★"
-                                        android:textStyle="bold"
-                                        android:textColor="@color/colorBlack"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
-                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
-                                    <TextView
-                                        android:id="@+id/topItemScore"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="5.0"
-                                        android:textStyle="bold"
-                                        android:textColor="@color/colorBlack"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
-                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/languages"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
-                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
-
-                                    <TextView
-                                        android:layout_marginStart="2dp"
-                                        android:id="@+id/topItemLanguages"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="+4"
-                                        android:textColor="@color/colorBlack"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
-                                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
-                                </LinearLayout>
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-            </RelativeLayout>
+                   <androidx.constraintlayout.widget.ConstraintLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:orientation="horizontal">
 
 
+                       <ImageView
+                           app:layout_constraintLeft_toLeftOf="parent"
+                           app:layout_constraintTop_toTopOf="parent"
+                           app:layout_constraintWidth_percent="0.28"
+                           android:adjustViewBounds="true"
+                           android:id="@+id/topImageId"
+                           android:layout_marginStart="5dp"
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:src="@mipmap/ic_launcher"
+                           android:scaleType="centerCrop" />
 
-        </FrameLayout>
-        ​
-    </com.ramotion.foldingcell.FoldingCell>
+
+                       <LinearLayout
+                           app:layout_constraintStart_toEndOf="@+id/topImageId"
+                           app:layout_constraintTop_toTopOf="parent"
+                           android:id="@+id/linearLayout"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical"
+                           android:layout_marginStart="10dp">
+
+                           <TextView
+                               android:id="@+id/topItemTitle"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:text="test"
+                               android:textSize="25sp"
+                               android:textStyle="bold"
+                               android:textColor="@color/colorBlack"
+                               app:layout_constraintBottom_toTopOf="@+id/topItemInfo"
+                               app:layout_constraintEnd_toEndOf="parent"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintVertical_chainStyle="packed" />
+
+
+                           <LinearLayout
+                               app:layout_constraintTop_toTopOf="parent"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:orientation="horizontal">
+
+                               <TextView
+                                   android:id="@+id/topItemInfo"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:text="test"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                   app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+
+                               <TextView
+                                   android:layout_marginStart="15dp"
+                                   android:id="@+id/topItemStar"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:text="★"
+                                   android:textStyle="bold"
+                                   android:textColor="@color/colorBlack"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                   app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                               <TextView
+                                   android:id="@+id/topItemScore"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:text="5.0"
+                                   android:textStyle="bold"
+                                   android:textColor="@color/colorBlack"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                   app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                           </LinearLayout>
+
+                           <LinearLayout
+                               app:layout_constraintTop_toTopOf="parent"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:orientation="horizontal">
+
+                               <TextView
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:text="@string/languages"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                   app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+
+                               <TextView
+                                   android:layout_marginStart="2dp"
+                                   android:id="@+id/topItemLanguages"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:text="+4"
+                                   android:textColor="@color/colorBlack"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                                   app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                           </LinearLayout>
+                       </LinearLayout>
+                   </androidx.constraintlayout.widget.ConstraintLayout>
+
+               </androidx.cardview.widget.CardView>
+           </RelativeLayout>
+
+
+
+       </FrameLayout>
+       ​
+   </com.ramotion.foldingcell.FoldingCell>
 </LinearLayout>

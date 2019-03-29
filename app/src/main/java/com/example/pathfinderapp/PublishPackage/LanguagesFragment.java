@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -165,10 +167,11 @@ public class LanguagesFragment extends Fragment {
                     text.setText("English");
                     TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
                     text2.setText("EN");
+                    View aux = layout.findViewById(R.id.image);
+                    aux.setBackgroundColor(Color.parseColor("#b6fcd5"));
 
-                    layout.setBackgroundColor(Color.parseColor("#b6fcd5"));
                     Toast toast = new Toast(getContext());
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.setGravity(Gravity.BOTTOM |Gravity.FILL_HORIZONTAL, 0, 0);
                     toast.setDuration(Toast.LENGTH_LONG);
                     toast.setView(layout);
                     toast.show();
