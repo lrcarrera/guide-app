@@ -54,5 +54,6 @@
     <string name="logout">Log out</string>
     <string name="alertTitle">¡Hey!</string>
     <string name="selectLanguageAlert">Seleccione alemnos un idioma</string>
+    <string name="search_bar">Search a city</string>
 
 </resources>

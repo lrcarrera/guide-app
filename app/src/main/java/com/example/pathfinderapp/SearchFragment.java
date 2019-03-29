@@ -1,13 +1,11 @@
 package com.example.pathfinderapp;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,25 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
-import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
-import com.example.pathfinderapp.Models.User;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.ramotion.foldingcell.FoldingCell;
-
 import java.util.ArrayList;
-import java.util.Date;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +28,7 @@ import java.util.Date;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,8 +39,9 @@ public class SearchFragment extends Fragment {
     private String mParam2;
 
     private ArrayList<Post> searchList;
-    RecyclerView recycler;
-    Context context;
+    private RecyclerView recycler;
+    private Context context;
+    private AdapterTour adapterSearch;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,110 +80,28 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-
-
-        /*final FoldingCell fc = view.findViewById(R.id.folding_cell);
-        fc.initialize(30,1000, Color.DKGRAY, 2);
-        // attach click listener to folding cell
-        fc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fc.toggle(false);
-            }
-        });
-        FragmentManager fm = getChildFragmentManager();
-        SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
-        fm.beginTransaction().replace(R.id.map, supportMapFragment).commit();
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                GoogleMap mMap = googleMap;
-
-            }
-        });*/
-
-        return view;
+        return  inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        recycler = getView().findViewById(R.id.recyclerid);
+        View view = getView();
+        if(view == null)
+            return;;
 
+        searchList = DefValues.createMockList();
+        adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
+
+        recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        searchList = createMockList();
-
-
-        AdapterTour adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
-        /*adapterSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getGuide().getName(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
 
-    }
-
-    public ArrayList<Post> createMockList(){
-        ArrayList<Post> list = new ArrayList<Post>();
-
-        User user1 = new User();
-        user1.setScore(1.0f);
-        user1.setName("Bonifacia la piedra");
-        user1.setImage(R.drawable.verguser);
-
-
-
-        Post post1 = new Post();
-        post1.setGuide(user1);
-        post1.setPrice(30.0f);
-        post1.setDueTo(new Date());
-        post1.setStartHour("19:00");
-        post1.setEndHour("21:00");
-        post1.setNumTourists(6);
-        post1.setPrice(14.5f);
-        post1.setLanguages(DefValues.DefLanguages());
-
-        User user2 = new User();
-        user2.setScore(5.0f);
-        user2.setName("Concha Mas");
-        user2.setImage(R.drawable.verguser);
-
-        Post post2 = new Post();
-        post2.setGuide(user2);
-        post2.setPrice(30.0f);
-        post2.setDueTo(new Date());
-        post2.setStartHour("12:00");
-        post2.setEndHour("14:00");
-        post2.setNumTourists(6);
-        post2.setPrice(14.5f);
-        post2.setLanguages(DefValues.DefLanguages());
-
-        User user3 = new User();
-        user3.setScore(5.0f);
-        user3.setName("Cubru Tivisoaro");
-        user3.setImage(R.drawable.verguser);
-
-        Post post3 = new Post();
-        post3.setGuide(user3);
-        post3.setPrice(30.0f);
-        post3.setDueTo(new Date());
-        post3.setStartHour("21:00");
-        post3.setEndHour("24:00");
-        post3.setNumTourists(6);
-        post3.setPrice(14.5f);
-        post3.setLanguages(DefValues.DefLanguages());
-
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-        return list;
+        SearchView editsearch = view.findViewById(R.id.search_bar);
+        editsearch.setOnQueryTextListener(this);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -223,6 +127,17 @@ public class SearchFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapterSearch.filter(newText);
+        return false;
     }
 
     /**

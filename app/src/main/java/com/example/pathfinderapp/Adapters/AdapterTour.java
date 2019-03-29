@@ -121,6 +121,10 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         return searchList.size();
     }
 
+    public void filter(String newText) {
+        
+    }
+
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         //LinearLayout background;
