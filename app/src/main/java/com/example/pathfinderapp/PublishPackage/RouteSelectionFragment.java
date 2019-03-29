@@ -3,6 +3,8 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -103,6 +105,10 @@ public class RouteSelectionFragment extends Fragment  {
                         mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
                     }
                 }
+
+                if(parent.isNightMode())
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(parent.getContext(), R.raw.mapstyle_night));
+
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {

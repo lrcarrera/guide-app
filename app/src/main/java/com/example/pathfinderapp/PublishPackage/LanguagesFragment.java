@@ -2,10 +2,13 @@ package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.IntegerRes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -15,7 +18,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterLanguage;
 import com.example.pathfinderapp.Models.Language;
@@ -46,8 +52,10 @@ public class LanguagesFragment extends Fragment {
     private PublishFragment parent;
     private LinearLayout containLayout;
     private List<Integer> toAdd;
+    private AdapterLanguage adapterLanguages;
     private FloatingActionButton continueButton;
     RecyclerView recycler;
+    View view;
     private OnFragmentInteractionListener mListener;
 
     public LanguagesFragment() {
@@ -81,14 +89,14 @@ public class LanguagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_languages, container, false);
+        view = inflater.inflate(R.layout.fragment_languages, container, false);
         containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
         recycler = view.findViewById(R.id.languages);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         //placesList = new ArrayList<Place>();
 
-        AdapterLanguage adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
+        adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
         adapterLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +114,27 @@ public class LanguagesFragment extends Fragment {
         return view;
     }
 
+    /*@Override
+    public void onStart(Bundle savedInstanceState){
+
+    }*/
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    /*private void checkPrevSelectedLanguages(){
+        if(parent.post.getLanguages().size() != 0){
+            ArrayList<Language> userLanguages = parent.user.getLanguages();
+            for(Language language : parent.post.getLanguages()){
+                int pos = userLanguages.indexOf(language);
+                RecyclerView.ViewHolder v = recycler.findViewHolderForAdapterPosition(pos);
+                v.itemView.setBackgroundColor(Color.parseColor(AdapterLanguage.SELECTED_COLOR));
+            }
+        }
+    }*/
+
     private void addContinueButton()
     {
         continueButton = new FloatingActionButton(getContext());
@@ -122,16 +151,38 @@ public class LanguagesFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addLanguagesToPost();
-                nextStep();
+                int added = addLanguagesToPost();
+                if (added > 0){
+                    nextStep();
+                } else {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast,
+                            (ViewGroup) getActivity().findViewById(R.id.toastRoot));
+
+                    ImageView image = (ImageView) layout.findViewById(R.id.imageId);
+                    image.setImageResource(R.drawable.english_flag);
+                    TextView text = (TextView) layout.findViewById(R.id.ItemTitle);
+                    text.setText("English");
+                    TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
+                    text2.setText("EN");
+
+                    layout.setBackgroundColor(Color.parseColor("#b6fcd5"));
+                    Toast toast = new Toast(getContext());
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
+                }
+
             }
         });
 
         containLayout.addView(continueButton);
     }
 
-    private void addLanguagesToPost()
+    private int addLanguagesToPost()
     {
+        int added = 0;
         ArrayList<Language> userLanguages = parent.user.getLanguages();
         ArrayList<Language> postLanguages = new ArrayList<>();
         for(Language language : userLanguages)
@@ -140,57 +191,12 @@ public class LanguagesFragment extends Fragment {
                 postLanguages.add(language);
         }
         parent.post.setLanguages(postLanguages);
+        return added;
     }
 
     private void nextStep(){
         parent.setCurrentPage();
     }
-
-    /*private void addSwitches(){
-        int index = 0;
-        switches = new ArrayList<>();
-        for(Language currentLanguage : parent.user.getLanguages())
-        {
-            Switch sw = new Switch(getContext());
-            sw.setId(index);
-            LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(400, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.CENTER;
-            sw.setLayoutParams(params);
-            sw.setWidth(400);
-            sw.setHeight(200);
-            sw.setTextSize(18);
-            sw.setGravity(Gravity.CENTER);
-            //sw.setTrackDrawable(getResources().getDrawable(R.drawable.spain_flag));
-            sw.setTrackTintMode(PorterDuff.Mode.DARKEN);
-            changeSwitchImageAndText(sw, currentLanguage);
-            switchesLayout.addView(sw);
-            switches.add(sw);
-            index++;
-
-        }
-    }
-
-    private void changeSwitchImageAndText(Switch sw, Language language) {
-        sw.setText(language.getName());
-        switch (language.getName())
-        {
-            case "Spanish":
-                sw.setThumbDrawable(getResources().getDrawable(R.drawable.spain_flag));
-                break;
-            case "French":
-                sw.setThumbDrawable(getResources().getDrawable(R.drawable.french_flag));
-                break;
-            case "German":
-                sw.setThumbDrawable(getResources().getDrawable(R.drawable.german_flag));
-                break;
-            case "Italian":
-                sw.setThumbDrawable(getResources().getDrawable(R.drawable.italy_flag));
-                break;
-            case "English":
-                sw.setThumbDrawable(getResources().getDrawable(R.drawable.english_flag));
-                break;
-        }
-    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

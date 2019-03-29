@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SearchFragment">
 
-    <com.ramotion.foldingcell.FoldingCell
+    <!--<include layout="@layout/tour_layout"/>-->
+
+    <!--  id of an search view used to uniquely identify it -->
+    <SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_bar"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/folding_cell"
+        android:id="@+id/recyclerid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false">
-        ​
+        android:layout_height="wrap_content"/>
 
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/cell_content_view"
-            layout="@layout/tour_summary_card"/>
-        ​
-       <include
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:id="@+id/cell_title_view"
-           layout="@layout/recycler_item"/>
-        ​
-    </com.ramotion.foldingcell.FoldingCell>
 
-</FrameLayout>
+</LinearLayout>

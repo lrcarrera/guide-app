@@ -19,8 +19,10 @@ public class AdapterLanguage
         extends RecyclerView.Adapter<AdapterLanguage.ViewHolderItem>
         implements View.OnClickListener{
 
-    private static String DEFAULT_COLOR = "#ffffff";
-    private static String SELECTED_COLOR = "#b6fcd5";
+    public static String DEFAULT_COLOR = "#ffffff";
+    public static String SELECTED_COLOR = "#b6fcd5";
+
+    private View view;
 
     private ArrayList<Language> languagesList;
     private View.OnClickListener listener;
@@ -31,7 +33,7 @@ public class AdapterLanguage
 
     @Override
     public AdapterLanguage.ViewHolderItem onCreateViewHolder(ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext())
+        view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.languages_recycler_item, null, false);
         view.setOnClickListener(this);
         return new AdapterLanguage.ViewHolderItem(view);
@@ -43,6 +45,8 @@ public class AdapterLanguage
         viewHolder.info.setText(languagesList.get(i).getCode());
         viewHolder.title.setText(languagesList.get(i).getName());
         viewHolder.picture.setImageResource(languagesList.get(i).getPicture());
+        if(languagesList.get(i).isAdded())
+            view.setBackgroundColor(Color.parseColor(SELECTED_COLOR));
 
         //viewHolder.setItemCl
     }
@@ -58,7 +62,7 @@ public class AdapterLanguage
             listener.onClick(v);
     }
 
-    private void changeColor(View v){
+    public void changeColor(View v){
         Drawable background = v.getBackground();
         int color = ((ColorDrawable) background).getColor();
         if(color == Color.parseColor(DEFAULT_COLOR)){

@@ -3,6 +3,8 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -91,7 +94,9 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_summary, container, false);
+
         getDataResume(view);
+        /* Al confirmar ficar els llenguatges seleccionats a isAdded=false*/
         return view;
     }
 
@@ -136,6 +141,8 @@ public class SummaryFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                if(parent.isNightMode())
+                    mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(parent.getContext(), R.raw.mapstyle_night));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parent.post.getPlace().getCoord(), 11));
                 for (Marker marker : parent.post.getPlaces()){
                     mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
