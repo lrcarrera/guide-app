@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
@@ -131,12 +132,12 @@ public class SearchFragment extends Fragment {
 
 
         AdapterTour adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
-        adapterSearch.setOnClickListener(new View.OnClickListener() {
+        /*adapterSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getGuide().getName(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
@@ -149,7 +150,7 @@ public class SearchFragment extends Fragment {
         User user1 = new User();
         user1.setScore(1.0f);
         user1.setName("Bonifacia la piedra");
-        user1.setImage(R.drawable.stock_girl);
+        user1.setImage(R.drawable.verguser);
 
 
 
@@ -157,16 +158,16 @@ public class SearchFragment extends Fragment {
         post1.setGuide(user1);
         post1.setPrice(30.0f);
         post1.setDueTo(new Date());
-        post1.setStartHour("12:00");
-        post1.setEndHour("14:00");
+        post1.setStartHour("19:00");
+        post1.setEndHour("21:00");
         post1.setNumTourists(6);
         post1.setPrice(14.5f);
-        post1.setLanguages(new ArrayList<Language>());
+        post1.setLanguages(DefValues.DefLanguages());
 
         User user2 = new User();
         user2.setScore(5.0f);
         user2.setName("Concha Mas");
-        user2.setImage(R.drawable.stock_girl1);
+        user2.setImage(R.drawable.verguser);
 
         Post post2 = new Post();
         post2.setGuide(user2);
@@ -176,22 +177,22 @@ public class SearchFragment extends Fragment {
         post2.setEndHour("14:00");
         post2.setNumTourists(6);
         post2.setPrice(14.5f);
-        post2.setLanguages(new ArrayList<Language>());
+        post2.setLanguages(DefValues.DefLanguages());
 
         User user3 = new User();
         user3.setScore(5.0f);
         user3.setName("Cubru Tivisoaro");
-        user3.setImage(R.drawable.stock_man);
+        user3.setImage(R.drawable.verguser);
 
         Post post3 = new Post();
         post3.setGuide(user3);
         post3.setPrice(30.0f);
         post3.setDueTo(new Date());
-        post3.setStartHour("12:00");
-        post3.setEndHour("14:00");
+        post3.setStartHour("21:00");
+        post3.setEndHour("24:00");
         post3.setNumTourists(6);
         post3.setPrice(14.5f);
-        post3.setLanguages(new ArrayList<Language>());
+        post3.setLanguages(DefValues.DefLanguages());
 
         list.add(post1);
         list.add(post2);

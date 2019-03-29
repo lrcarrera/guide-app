@@ -1,26 +1,37 @@
 package com.example.pathfinderapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.AdapterSearch;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.ramotion.foldingcell.FoldingCell;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem>
@@ -60,19 +71,49 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     @Override
     public void onBindViewHolder(@NonNull ViewHolderItem viewHolder, int i) {
         Post current = searchList.get(i);
+        processPostData(current, viewHolder);
+        checkNightMode(current.getStartHour(), current.getEndHour(), viewHolder);
+        createLanguagesRecycler(viewHolder, current);
+        processProfilePicture(current, viewHolder);
+    }
+
+    private void processPostData(Post current, ViewHolderItem viewHolder){
         viewHolder.info.setText(String.valueOf(current.getGuide().getScore()));
         viewHolder.title.setText(current.getGuide().getName());
-        //viewHolder.picture.setImageResource(current.getGuide().getImage());
-
         viewHolder.topInfo.setText(String.valueOf(current.getGuide().getScore()));
         viewHolder.topTitle.setText(current.getGuide().getName());
-        //viewHolder.topPicture.setImageResource(current.getGuide().getImage());
-        //viewHolder.dateContent.setText(current.getDueTo().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        viewHolder.dateContent.setText(sdf.format(current.getDueTo()));
         viewHolder.fromHourNumber.setText(current.getStartHour());
         viewHolder.toHourNumber.setText(current.getEndHour());
         viewHolder.touristAllowedNumber.setText(String.valueOf(current.getNumTourists()));
         viewHolder.priceNumber.setText(String.valueOf(current.getPrice()));
-        //TextView dateContent, fromHourNumber, toHourNumber, touristAllowedNumber, priceNumber;
+    }
+
+    private void processProfilePicture(Post current, ViewHolderItem viewHolder){
+        Bitmap bitmap = null;
+        bitmap = BitmapFactory.decodeResource(context.getResources(), current.getGuide().getImage());
+        bitmap = CroppedImage.getCroppedBitmap(bitmap);
+        viewHolder.picture.setImageBitmap(bitmap);
+        viewHolder.topPicture.setImageBitmap(bitmap);
+    }
+
+    private void createLanguagesRecycler(ViewHolderItem viewHolder, Post current){
+        viewHolder.languages.setLayoutManager(new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false));
+        AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(current.getLanguages());
+        viewHolder.languages.setAdapter(adapterLanguages);
+        viewHolder.languages.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void checkNightMode(String startHour, String endHour, ViewHolderItem viewHolderItem){
+        String[] time;
+        time = startHour.split(":");
+        if(Integer.parseInt(time[0]) >= 21)
+            viewHolderItem.isNight = true;
+
+        time = endHour.split(":");
+        if(Integer.parseInt(time[0]) >= 21)
+            viewHolderItem.isNight = true;
     }
 
     @Override
@@ -80,12 +121,13 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         return searchList.size();
     }
 
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
+    public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         //LinearLayout background;
         TextView dateContent, fromHourNumber, toHourNumber, touristAllowedNumber, priceNumber;
         RecyclerView languages;
-        FrameLayout map;
+        MapView mapView;
+        GoogleMap mMap;
 
         TextView  title, info;
         ImageView picture;
@@ -94,6 +136,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         ImageView topPicture;
 
         FoldingCell foldingCell;
+        boolean isNight = false;
 
         public ViewHolderItem(View itemView) {
             super(itemView);
@@ -109,11 +152,17 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             topTitle = itemView.findViewById(R.id.topItemTitle);
             topInfo = itemView.findViewById(R.id.topItemInfo);
             topPicture = itemView.findViewById(R.id.topImageId);
-
+            mapView = itemView.findViewById(R.id.map);
+            if (mapView != null) {
+                // Initialise the MapView
+                mapView.onCreate(null);
+                // Set the map ready callback to receive the GoogleMap object
+                mapView.getMapAsync(this);
+            }
 
 
             final FoldingCell fc = itemView.findViewById(R.id.folding_cell);
-            fc.initialize(30,1000, Color.DKGRAY, 2);
+            fc.initialize(30,1000, Color.WHITE, 2);
             // attach click listener to folding cell
             fc.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,17 +171,21 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 }
             });
 
-            FragmentManager fm = fragmentManager;
-            SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
-            fm.beginTransaction().replace(R.id.map, supportMapFragment).commit();
-            supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    GoogleMap mMap = googleMap;
 
-                }
-            });
+        }
 
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.750580, -73.993584),11));
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            if(isNight)
+                setMapStyle();
+            //new NamedLocation("New York", new LatLng(40.750580, -73.993584)),
+        }
+
+        public void setMapStyle(){
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night));
         }
     }
 }

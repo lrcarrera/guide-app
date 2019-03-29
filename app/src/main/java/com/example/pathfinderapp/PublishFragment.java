@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.Adapters.AdapterTour;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
@@ -74,48 +76,38 @@ public class PublishFragment extends Fragment implements Serializable{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_publish, container, false);
         seekBar = (SeekBar) view.findViewById(R.id.publishSeekBar);
-        if(savedInstanceState == null){
-
-            post = new Post();
-            user = new User();
-            user.setLanguages(new ArrayList<Language>(Arrays.asList(
-                    new Language("spanish_flag", "Spanish", "ES", R.drawable.spain_flag),
-                    new Language("english_flag", "English", "EN",R.drawable.english_flag),
-                    new Language("french_flag" , "French" , "FR",R.drawable.french_flag),
-                    new Language("italian_flag", "Italian", "IT",R.drawable.italy_flag),
-                    new Language("german_flag" , "German" , "DE",R.drawable.german_flag)
-            )));
 
 
-            seekBar.setOnTouchListener(new View.OnTouchListener() {
+        post = new Post();
+        user = new User();
+        user.setLanguages(DefValues.DefLanguages());
 
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                    return true;
-                }
+        seekBar.setOnTouchListener(new View.OnTouchListener() {
 
-            });
-        }
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                return true;
+            }
+
+        });
+
 
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
+    public boolean isNightMode(){
+        String[] time;
+        time = post.getStartHour().split(":");
+        if(Integer.parseInt(time[0]) >= 21)
+            return true;
 
-        savedInstanceState.putSerializable("post", post);
-        savedInstanceState.putSerializable("user", user);
-        savedInstanceState.putInt("currentItem", currentItem);
-        savedInstanceState.putSerializable("pagerAdapter", pagerAdapter);
-        savedInstanceState.putInt("seekBarStatus", seekBar.getProgress());
+        time = post.getEndHour().split(":");
+        if(Integer.parseInt(time[0]) >= 21)
+            return true;
+        return false;
     }
-
-    /*@Override
-    public void onRestoreInstanceState(Bundle savedInstanceState){
-
-    }*/
 
 
 
@@ -124,20 +116,11 @@ public class PublishFragment extends Fragment implements Serializable{
         //ImageView imageView = (ImageView) getView().findViewById(R.id.foo);
         // or  (ImageView) view.findViewById(R.id.foo);
         pager = getView().findViewById(R.id.pager);
-        if(savedInstanceState == null){
-            List<Fragment> fragments = getFragments();
-            pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
-            seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
-        } else {
-            //System.out.println("Llengo al final");
-            post = (Post) savedInstanceState.getSerializable("post");
-            user = (User) savedInstanceState.getSerializable("user");
-            currentItem = savedInstanceState.getInt("currentItem");
-            pagerAdapter = (CustomPageAdapter) savedInstanceState.getSerializable("pagerAdapter");
-            seekBar.setProgress(savedInstanceState.getInt("seekBarStatus"));
-            //Current page del pager
 
-        }
+        List<Fragment> fragments = getFragments();
+        pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
+        seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+
         pager.setAdapter(pagerAdapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

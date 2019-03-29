@@ -18,7 +18,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterLanguage;
 import com.example.pathfinderapp.Models.Language;
@@ -52,6 +55,7 @@ public class LanguagesFragment extends Fragment {
     private AdapterLanguage adapterLanguages;
     private FloatingActionButton continueButton;
     RecyclerView recycler;
+    View view;
     private OnFragmentInteractionListener mListener;
 
     public LanguagesFragment() {
@@ -85,7 +89,7 @@ public class LanguagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_languages, container, false);
+        view = inflater.inflate(R.layout.fragment_languages, container, false);
         containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
         recycler = view.findViewById(R.id.languages);
@@ -147,16 +151,38 @@ public class LanguagesFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addLanguagesToPost();
-                nextStep();
+                int added = addLanguagesToPost();
+                if (added > 0){
+                    nextStep();
+                } else {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast,
+                            (ViewGroup) getActivity().findViewById(R.id.toastRoot));
+
+                    ImageView image = (ImageView) layout.findViewById(R.id.imageId);
+                    image.setImageResource(R.drawable.english_flag);
+                    TextView text = (TextView) layout.findViewById(R.id.ItemTitle);
+                    text.setText("English");
+                    TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
+                    text2.setText("EN");
+
+                    layout.setBackgroundColor(Color.parseColor("#b6fcd5"));
+                    Toast toast = new Toast(getContext());
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
+                }
+
             }
         });
 
         containLayout.addView(continueButton);
     }
 
-    private void addLanguagesToPost()
+    private int addLanguagesToPost()
     {
+        int added = 0;
         ArrayList<Language> userLanguages = parent.user.getLanguages();
         ArrayList<Language> postLanguages = new ArrayList<>();
         for(Language language : userLanguages)
@@ -165,6 +191,7 @@ public class LanguagesFragment extends Fragment {
                 postLanguages.add(language);
         }
         parent.post.setLanguages(postLanguages);
+        return added;
     }
 
     private void nextStep(){
