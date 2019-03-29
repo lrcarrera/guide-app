@@ -44,6 +44,7 @@
                     android:text="test"
                     android:textSize="25sp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
                     app:layout_constraintBottom_toTopOf="@+id/ItemInfo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
