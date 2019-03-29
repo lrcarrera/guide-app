@@ -122,7 +122,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     public void filter(String newText) {
-        
+
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
