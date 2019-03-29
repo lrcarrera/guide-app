@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="350dp"
     android:layout_height="475dp"
     android:layout_gravity="center"
@@ -15,7 +16,7 @@
         android:background="@drawable/com_facebook_close"
         android:gravity="center"
         android:text="X"
-        android:textColor="@color/white"
+        android:textColor="@color/colorBlack"
         android:textStyle="bold" />
 
 
@@ -24,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="10px"
         android:gravity="center">
 
         <LinearLayout
@@ -37,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/settings"
                 android:textSize="20sp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorBlack"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -60,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/notifications"
-                android:textColor="@color/white"
+                android:textColor="@color/colorBlack"
                 android:textStyle="bold" />
 
             <CheckBox
@@ -68,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:buttonTint="@color/colorWhite" />
+                android:buttonTint="@color/colorBlack" />
 
         </LinearLayout>
     </LinearLayout>
@@ -79,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center">
 
             <TextView
@@ -87,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/connectivity"
-                android:textColor="@color/white"
+                android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 />
 
@@ -125,34 +127,152 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
         android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Languages"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/frenchflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/french_flag" />
+        <ImageView
+            android:id="@+id/englishflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/english_flag" />
+        <ImageView
+            android:id="@+id/germanflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/german_flag" />
+        <ImageView
+            android:id="@+id/italianflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/italy_flag" />
+        <ImageView
+            android:id="@+id/spanishflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/spain_flag" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--<include
+            android:id="@+id/image"
+            layout="@layout/languages_recycler_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal" />-->
+
+        <CheckBox
+            android:id="@+id/checkbox_french"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_german"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_italian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_spanish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:buttonTint="@color/colorBlack" />
+
+
+
+        <!--<Button
+            android:id="@+id/sadasdfasdff"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/save"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/sadf"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/logout"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"/>-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/btnSave"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:background="@drawable/buttonstylepopup"
             android:text="@string/save"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/white"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:gravity="center">
-    <Button
-        android:id="@+id/btnlogout"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/buttonstylepopup"
-        android:text="@string/logout"
-        android:textColor="@color/white" />
-    </RelativeLayout>
+        <Button
+            android:id="@+id/btnlogout"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/logout"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
 
 </LinearLayout>

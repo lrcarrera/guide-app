@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +26,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
+import com.example.pathfinderapp.ProfileTabFragments.ProfileTab1Fragment;
+import com.example.pathfinderapp.ProfileTabFragments.ProfileTab2Fragment;
+import com.example.pathfinderapp.ProfileTabFragments.ProfileTab3Fragment;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,12 +75,23 @@ public class ProfileFragment extends Fragment {
     SharedPreferences prefs;
     ImageView profilePicture;
     TextView textViewName;
-    TextView textViewEmail;
+    //TextView textViewEmail;
 
     CheckBox checkboxNotifications;
+    CheckBox checkboxFrench;
+    CheckBox checkboxEnglish;
+    CheckBox checkboxGerman;
+    CheckBox checkboxItalian;
+    CheckBox checkboxSpanish;
+
     RadioGroup radioGroupConnectivity;
     RadioButton radioWifi;
     RadioButton radioWifiAndMore;
+
+    //private static final String TAG = "MainActivity";
+
+    private AdapterProfile mSectionsPageAdapter;
+    private ViewPager mViewPager;
 
 
     private OnFragmentInteractionListener mListener;
@@ -128,15 +146,11 @@ public class ProfileFragment extends Fragment {
 
         profilePicture = rootView.findViewById(R.id.profilePicture);
         textViewName = rootView.findViewById(R.id.tv_name);
-        textViewEmail = rootView.findViewById(R.id.tv_email);
-
+        //textViewEmail = rootView.findViewById(R.id.tv_email);
 
         //From facebook login
-
         prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
                 "com.example.pathfinderapp", Context.MODE_PRIVATE);
-
-
 
         String facebookImageLink =  prefs.getString("facebook_picture_link", NO_PHOTO);
         String name = prefs.getString("facebook_name", NO_NAME);
@@ -146,9 +160,38 @@ public class ProfileFragment extends Fragment {
             new AsyncTaskLoadImage(profilePicture).execute(facebookImageLink);
 
         if(!Objects.equals(name, NO_NAME)) textViewName.setText(name);
-        if(!Objects.equals(email, NO_EMAIL)) textViewEmail.setText(email);
+       // if(!Objects.equals(email, NO_EMAIL)) textViewEmail.setText(email);
 
         //TODO: From normal login
+
+
+        //Log.d(TAG, "onCreate: Starting.");
+
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Home"));
+        tabLayout.addTab(tabLayout.newTab().setText("About"));
+        tabLayout.addTab(tabLayout.newTab().setText("Contact"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);
+        AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(tabsAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
         return rootView;
     }
@@ -158,9 +201,16 @@ public class ProfileFragment extends Fragment {
         myDialog.setContentView(R.layout.popupsettings);
 
         checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
+        checkboxFrench = (CheckBox) myDialog.findViewById(R.id.checkbox_french);
+        checkboxEnglish = (CheckBox) myDialog.findViewById(R.id.checkbox_english);
+        checkboxGerman = (CheckBox) myDialog.findViewById(R.id.checkbox_german);
+        checkboxItalian = (CheckBox) myDialog.findViewById(R.id.checkbox_italian);
+        checkboxSpanish = (CheckBox) myDialog.findViewById(R.id.checkbox_spanish);
+
         radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
         radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
         radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);
+
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
@@ -204,10 +254,15 @@ public class ProfileFragment extends Fragment {
     }
     private void setInitialValuesToTogglesItems(){
 
-
-
         Boolean isNotificationsOn = prefs.getBoolean("notifications", false);
         Boolean isFullConnectivityOn = prefs.getBoolean("full_connectivity", false);
+
+        Boolean isFrenchChecked = prefs.getBoolean("french", false);
+        Boolean isEnglishChecked = prefs.getBoolean("french", false);
+       /* Boolean isFrenchChecked = prefs.getBoolean("french", false);
+        Boolean isFrenchChecked = prefs.getBoolean("french", false);
+        Boolean isFrenchChecked = prefs.getBoolean("french", false);
+*///TODO: CONTINUE HANDLING CHECKBOXES
 
         if(isFullConnectivityOn){
             //radioGroupConnectivity.check(R.id.wifiandmore);
@@ -217,7 +272,6 @@ public class ProfileFragment extends Fragment {
            // radioGroupConnectivity.check(R.id.wifi);
             radioWifi.setChecked(true);
             radioWifiAndMore.setChecked(false);
-
         }
         if(isNotificationsOn){
             checkboxNotifications.setChecked(true);
