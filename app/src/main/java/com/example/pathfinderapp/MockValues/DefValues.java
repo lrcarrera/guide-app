@@ -29,7 +29,7 @@ public class DefValues {
         if(POSTS == null){
             POSTS = new ArrayList<Post>();
             User user1 = new User();
-            user1.setScore(1.0f);
+            user1.setScore(5.0f);
             user1.setName("Maria Carrera");
             user1.setImage(R.drawable.stock_girl);
 
@@ -56,7 +56,7 @@ public class DefValues {
 
 
             User user2 = new User();
-            user2.setScore(5.0f);
+            user2.setScore(12.0f);
             user2.setName("Concha Mas");
             user2.setImage(R.drawable.stock_girl1);
 
@@ -72,7 +72,7 @@ public class DefValues {
             post2.setPlace(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
 
             User user3 = new User();
-            user3.setScore(5.0f);
+            user3.setScore(7.0f);
             user3.setName("Ramon Polanksi");
             user3.setImage(R.drawable.stock_girl);
 

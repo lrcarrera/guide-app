@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
     android:layout_height="100dp"
+    android:id="@+id/topLayoutLanguage"
     android:background="@color/white"
     android:orientation="vertical">
 

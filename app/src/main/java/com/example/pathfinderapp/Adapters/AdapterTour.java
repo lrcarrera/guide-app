@@ -1,9 +1,11 @@
 package com.example.pathfinderapp.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.AdapterSearch;
+import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.R;
@@ -23,7 +26,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ramotion.foldingcell.FoldingCell;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,6 +100,12 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.toHourNumber.setText(current.getEndHour());
         viewHolder.touristAllowedNumber.setText(String.valueOf(current.getNumTourists()));
         viewHolder.priceNumber.setText(String.valueOf(current.getPrice()));
+        String auxScore = String.valueOf(current.getGuide().getScore());
+        viewHolder.topItemScore.setText(auxScore);
+        viewHolder.itemScore.setText(auxScore);
+        String aux = "+" + String.valueOf(current.getLanguages().size());
+        viewHolder.topItemLanguages.setText(aux);
+        viewHolder.itemLanguages.setText(aux);
     }
 
     private void processProfilePicture(Post current, ViewHolderItem viewHolder){
@@ -155,18 +167,20 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         //LinearLayout background;
-        TextView dateContent, fromHourNumber, toHourNumber, touristAllowedNumber, priceNumber;
+        TextView dateContent, fromHourNumber, toHourNumber, touristAllowedNumber, priceNumber, itemScore, itemLanguages;
         RecyclerView languages;
         MapView mapView;
         GoogleMap mMap;
+        FloatingActionButton topMapButton, mapButton;
+
 
         TextView  title, info;
         ImageView picture;
 
-        TextView  topTitle, topInfo;
+        TextView  topTitle, topInfo, topItemScore, topItemLanguages;
         ImageView topPicture;
 
-        FoldingCell foldingCell;
+        //FoldingCell foldingCell;
         boolean isNight = false;
 
         public ViewHolderItem(View itemView) {
@@ -183,13 +197,38 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             topTitle = itemView.findViewById(R.id.topItemTitle);
             topInfo = itemView.findViewById(R.id.topItemInfo);
             topPicture = itemView.findViewById(R.id.topImageId);
-            mapView = itemView.findViewById(R.id.map);
-            if (mapView != null) {
+            //mapView = itemView.findViewById(R.id.map);
+            itemScore = itemView.findViewById(R.id.ItemScore);
+            topItemScore = itemView.findViewById(R.id.topItemScore);
+            itemLanguages = itemView.findViewById(R.id.ItemLanguages);
+            topItemLanguages = itemView.findViewById(R.id.topItemLanguages);
+
+
+            mapButton = itemView.findViewById(R.id.mapButton);
+            topMapButton = itemView.findViewById(R.id.topMapButton);
+            mapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   mapPopupSettings();
+                }
+            });
+            topMapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mapPopupSettings();
+                }
+            });
+
+
+
+
+
+            /*if (mapView != null) {
                 // Initialise the MapView
                 mapView.onCreate(null);
                 // Set the map ready callback to receive the GoogleMap object
                 mapView.getMapAsync(this);
-            }
+            }*/
 
 
             final FoldingCell fc = itemView.findViewById(R.id.folding_cell);
@@ -202,6 +241,28 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 }
             });
 
+
+        }
+
+        private void mapPopupSettings(){
+            final Dialog auxDialog = new Dialog(context);
+            auxDialog.setContentView(R.layout.map_popup);
+            FloatingActionButton btnClose = auxDialog.findViewById(R.id.btnClose);
+            MapView map = auxDialog.findViewById(R.id.map);
+            if (map != null) {
+                // Initialise the MapView
+                map.onCreate(null);
+                // Set the map ready callback to receive the GoogleMap object
+                map.getMapAsync(this);
+            }
+            auxDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            auxDialog.show();
+            btnClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    auxDialog.dismiss();
+                }
+            });
 
         }
 
