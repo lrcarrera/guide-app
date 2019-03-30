@@ -120,23 +120,19 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-
-        app:srcCompat="@drawable/pathfinderlogo1" />
+        app:srcCompat="@drawable/applogo"/>
 
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-
     <LinearLayout
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="160dp"
         android:id="@+id/layoutInput"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
