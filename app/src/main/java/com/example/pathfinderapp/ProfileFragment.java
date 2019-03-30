@@ -61,10 +61,10 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private static final String NO_PHOTO = "no_photo";
     private static final String NO_NAME = "no_name";
     private static final String NO_EMAIL = "no_email";
+    private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
     Dialog myDialog;
     ImageButton settings;
@@ -151,11 +151,11 @@ public class ProfileFragment extends Fragment {
 
         //From facebook login
         prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
-                "com.example.pathfinderapp", Context.MODE_PRIVATE);
+                PACKAGE_NAME, Context.MODE_PRIVATE);
 
-        String facebookImageLink =  prefs.getString("facebook_picture_link", NO_PHOTO);
-        String name = prefs.getString("facebook_name", NO_NAME);
-        String email = prefs.getString("facebook_email", NO_EMAIL);
+        String facebookImageLink =  prefs.getString(getResources().getString(R.string.facebook_picture_link), NO_PHOTO);
+        String name = prefs.getString(getResources().getString(R.string.facebook_name), NO_NAME);
+        String email = prefs.getString(getResources().getString(R.string.facebook_email), NO_EMAIL);
 
         if(!Objects.equals(facebookImageLink, NO_PHOTO))
             new AsyncTaskLoadImage(profilePicture).execute(facebookImageLink);
@@ -247,15 +247,14 @@ public class ProfileFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //myDialog.dismiss();
                 storePreferenceValues();
             }
         });
     }
     private void setInitialValuesToTogglesItems(){
 
-        Boolean isNotificationsOn = prefs.getBoolean("notifications", false);
-        Boolean isFullConnectivityOn = prefs.getBoolean("full_connectivity", false);
+        Boolean isNotificationsOn = prefs.getBoolean(getResources().getString(R.string.notification), false);
+        Boolean isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
 
         if(isNotificationsOn){
             checkboxNotifications.setChecked(true);
@@ -277,11 +276,11 @@ public class ProfileFragment extends Fragment {
 
     private void setLanguagesStatuses(){
 
-        Boolean isFrenchChecked = prefs.getBoolean("french", false);
-        Boolean isEnglishChecked = prefs.getBoolean("english", false);
-        Boolean isGermanChecked = prefs.getBoolean("german", false);
-        Boolean isItalianChecked = prefs.getBoolean("italian", false);
-        Boolean isSpanishChecked = prefs.getBoolean("spanish", false);
+        Boolean isFrenchChecked = prefs.getBoolean(getResources().getString(R.string.french_key), false);
+        Boolean isEnglishChecked = prefs.getBoolean(getResources().getString(R.string.english_key), false);
+        Boolean isGermanChecked = prefs.getBoolean(getResources().getString(R.string.german_key), false);
+        Boolean isItalianChecked = prefs.getBoolean(getResources().getString(R.string.italian_key), false);
+        Boolean isSpanishChecked = prefs.getBoolean(getResources().getString(R.string.spanish_key), false);
 
         if(isFrenchChecked){
             checkboxFrench.setChecked(true);
@@ -314,45 +313,45 @@ public class ProfileFragment extends Fragment {
 
         //Checkbox
         if(checkboxNotifications.isChecked()){
-            prefs.edit().putBoolean("notifications", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.notification), true).apply();
         }else{
-            prefs.edit().putBoolean("notifications", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.notification), false).apply();
         }
 
         if(radioWifi.isChecked()){
-            prefs.edit().putBoolean("full_connectivity", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), false).apply();
         }else{
-            prefs.edit().putBoolean("full_connectivity", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), true).apply();
         }
 
         if(checkboxFrench.isChecked()){
-            prefs.edit().putBoolean("french", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.french_key), true).apply();
         }else{
-            prefs.edit().putBoolean("french", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.french_key), false).apply();
         }
         if(checkboxEnglish.isChecked()){
-            prefs.edit().putBoolean("english", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.english_key), true).apply();
         }else{
-            prefs.edit().putBoolean("english", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.english_key), false).apply();
         }
         if(checkboxGerman.isChecked()){
-            prefs.edit().putBoolean("german", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.german_key), true).apply();
         }else{
-            prefs.edit().putBoolean("german", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.german_key), false).apply();
         }
         if(checkboxItalian.isChecked()){
-            prefs.edit().putBoolean("italian", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.italian_key), true).apply();
         }else{
-            prefs.edit().putBoolean("italian", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.italian_key), false).apply();
         }
         if(checkboxSpanish.isChecked()){
-            prefs.edit().putBoolean("spanish", true).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.spanish_key), true).apply();
         }else{
-            prefs.edit().putBoolean("spanish", false).apply();
+            prefs.edit().putBoolean(getResources().getString(R.string.spanish_key), false).apply();
         }
 
         myDialog.dismiss();
-        Toast.makeText(getContext(), "Your configuration was stored!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();
     }
 
     public void logOut(){

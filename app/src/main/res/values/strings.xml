@@ -72,5 +72,20 @@
     <string name="creationSuccessful">Tu tour se ha creado correctamente</string>
     <string name="mapToastMessage">Marque almenos un punto en el mapa</string>
 
+    <!-- KEYS -->
+
+    <string name="facebook_picture_link">facebook_picture_link</string>
+    <string name="facebook_name">facebook_name</string>
+    <string name="facebook_email">facebook_email</string>
+    <string name="notification">notifications</string>
+    <string name="full_connectivity">full_connectivity</string>
+    <string name="french_key">french_key</string>
+    <string name="english_key">english_key</string>
+    <string name="german_key">german_key</string>
+    <string name="italian_key">italian_key</string>
+    <string name="spanish_key">spanish_key</string>
+
+    <!--TOAST -->
+    <string name="configuration_stored_message">Your configuration was stored!</string>
 
 </resources>
