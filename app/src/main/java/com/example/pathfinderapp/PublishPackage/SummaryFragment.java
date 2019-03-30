@@ -131,7 +131,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private void confirmButtonPressed(){
-
+        parent.confirmButtonPressed();
     }
 
     private void cancelButtonPressed(){

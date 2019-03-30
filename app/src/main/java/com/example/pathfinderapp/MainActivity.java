@@ -36,10 +36,18 @@ public class MainActivity extends AppCompatActivity implements
     final Fragment fragment2 = new ToursFragment();
     final Fragment fragment3 = new PublishFragment();
     final Fragment fragment4 = new ProfileFragment();
+    BottomNavigationView navigation;
 
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
 
+    public void moveToToursPage(){
+        ToursFragment aux = (ToursFragment) fragment2;
+        aux.recyclerListChanged();
+        fm.beginTransaction().hide(active).show(fragment2).commit();
+        navigation.getMenu().getItem(1).setChecked(true);
+        active = fragment2;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements
         fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }

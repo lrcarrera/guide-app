@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.Adapters.AdapterTour;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
 
@@ -29,10 +31,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ToursFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -42,6 +41,7 @@ public class ToursFragment extends Fragment {
     private ArrayList<Post> searchList;
     RecyclerView recycler;
     Context context;
+    AdapterTour adapterSearch;
 
     public ToursFragment() {
         // Required empty public constructor
@@ -58,88 +58,40 @@ public class ToursFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static ToursFragment newInstance(String param1, String param2) {
         ToursFragment fragment = new ToursFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
+        searchList = DefValues.getMockYourToursList();
+        adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
 
+        recycler = view.findViewById(R.id.recyclerid);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+
+        recycler.setAdapter(adapterSearch);
+        recycler.setItemAnimator(new DefaultItemAnimator());
 
         return view;
+    }
+
+    public void recyclerListChanged(){
+        searchList = DefValues.getMockYourToursList();
+        adapterSearch.setToursList(searchList);
+        adapterSearch.notifyDataSetChanged();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        recycler = getView().findViewById(R.id.recyclerid);
-
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
-        searchList = createMockList();
-
-
-        AdapterSearch adapterSearch = new AdapterSearch(searchList);
-        adapterSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "verga seleccionada: " +  searchList.get(recycler.getChildAdapterPosition(v)).getGuide().getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        recycler.setAdapter(adapterSearch);
-        recycler.setItemAnimator(new DefaultItemAnimator());
-
     }
 
-    public ArrayList<Post> createMockList(){
-        ArrayList<Post> list = new ArrayList<Post>();
-
-        User user1 = new User();
-        user1.setScore(1.0f);
-        user1.setName("Bonifacia la piedra");
-        user1.setImage(R.drawable.stock_girl);
-
-        Post post1 = new Post();
-        post1.setGuide(user1);
-        post1.setPrice(30.0f);
-
-        User user2 = new User();
-        user2.setScore(5.0f);
-        user2.setName("Concha Mas");
-        user2.setImage(R.drawable.stock_girl1);
-
-        Post post2 = new Post();
-        post2.setGuide(user2);
-        post2.setPrice(30.0f);
-
-        User user3 = new User();
-        user3.setScore(5.0f);
-        user3.setName("Cubru Tivisoaro");
-        user3.setImage(R.drawable.stock_man);
-
-        Post post3 = new Post();
-        post3.setGuide(user3);
-        post3.setPrice(30.0f);
-
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-        return list;
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

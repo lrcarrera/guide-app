@@ -89,7 +89,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         View view = getView();
         if(view == null)
-            return;;
+            return;
 
         searchList = DefValues.getMockPostList();
         adapterSearch = new AdapterTour(searchList, getChildFragmentManager());

@@ -67,6 +67,7 @@
     <string name="toursTitle">Tours</string>
     <string name="reviewsTitle">Reviews</string>
     <string name="scoresTitle">Puntuación</string>
+    <string name="yourToursTitle">Mis tours</string>
 
 
 </resources>

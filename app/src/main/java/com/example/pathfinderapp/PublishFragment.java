@@ -74,8 +74,7 @@ public class PublishFragment extends Fragment implements Serializable{
 
 
         post = new Post();
-        user = new User();
-        user.setLanguages(DefValues.DefLanguages());
+        user = DefValues.defUser();
         post.setGuide(user);
 
         seekBar.setOnTouchListener(new View.OnTouchListener() {
@@ -102,6 +101,12 @@ public class PublishFragment extends Fragment implements Serializable{
         if(Integer.parseInt(time[0]) >= 21)
             return true;
         return false;
+    }
+
+    public void confirmButtonPressed(){
+        DefValues.AddPostToToursList(post);
+        MainActivity mainActivity = (MainActivity)  getActivity();
+        mainActivity.moveToToursPage();
     }
 
     public void cancelButtonPressed(){

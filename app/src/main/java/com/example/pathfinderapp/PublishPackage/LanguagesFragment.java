@@ -116,26 +116,12 @@ public class LanguagesFragment extends Fragment {
         return view;
     }
 
-    /*@Override
-    public void onStart(Bundle savedInstanceState){
-
-    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
-    /*private void checkPrevSelectedLanguages(){
-        if(parent.post.getLanguages().size() != 0){
-            ArrayList<Language> userLanguages = parent.user.getLanguages();
-            for(Language language : parent.post.getLanguages()){
-                int pos = userLanguages.indexOf(language);
-                RecyclerView.ViewHolder v = recycler.findViewHolderForAdapterPosition(pos);
-                v.itemView.setBackgroundColor(Color.parseColor(AdapterLanguage.SELECTED_COLOR));
-            }
-        }
-    }*/
 
     private void addContinueButton()
     {

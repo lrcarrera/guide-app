@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:text="@string/yourToursTitle"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp"/>
+
+    <!--<androidx.recyclerview.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recyclerid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -26,6 +26,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ramotion.foldingcell.FoldingCell;
 
@@ -33,6 +35,7 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 
@@ -57,6 +60,10 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         this.originalSearchList = new ArrayList<>();
 
         originalSearchList.addAll(searchList);
+    }
+
+    public void setToursList(ArrayList<Post> searchList){
+        this.searchList = searchList;
     }
 
     @Override
@@ -106,6 +113,8 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         String aux = "+" + String.valueOf(current.getLanguages().size());
         viewHolder.topItemLanguages.setText(aux);
         viewHolder.itemLanguages.setText(aux);
+        viewHolder.mapPosition = current.getPlace().getCoord();
+        viewHolder.places = current.getPlaces();
     }
 
     private void processProfilePicture(Post current, ViewHolderItem viewHolder){
@@ -172,15 +181,12 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         MapView mapView;
         GoogleMap mMap;
         FloatingActionButton topMapButton, mapButton;
-
-
         TextView  title, info;
         ImageView picture;
-
         TextView  topTitle, topInfo, topItemScore, topItemLanguages;
         ImageView topPicture;
-
-        //FoldingCell foldingCell;
+        LatLng mapPosition;
+        List<Marker> places;
         boolean isNight = false;
 
         public ViewHolderItem(View itemView) {
@@ -269,15 +275,21 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.750580, -73.993584),11));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapPosition,11));
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             if(isNight)
                 setMapStyle();
+
+            for (Marker marker : places){
+                mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
+            }
             //new NamedLocation("New York", new LatLng(40.750580, -73.993584)),
         }
 
         public void setMapStyle(){
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night));
         }
+
+
     }
 }
