@@ -1,6 +1,7 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,10 +10,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
@@ -91,6 +96,39 @@ public class RouteSelectionFragment extends Fragment  {
         //mMap = new GoogleMap();
         View view = inflater.inflate(R.layout.fragment_route_selection, container, false);
         continueButton = (FloatingActionButton) view.findViewById(R.id.continueButton);
+        setMap();
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                continueButtonPressed();
+            }
+        });
+
+        return view;
+    }
+
+    private void continueButtonPressed(){
+        if(mMarkerArrayList.size() > 0){
+            parent.post.setPlaces(mMarkerArrayList);
+            nextStep();
+        } else {
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.selection_route_custom_toast,
+                    (ViewGroup) getActivity().findViewById(R.id.toastRoot));
+
+            Toast toast = new Toast(getContext());
+            toast.setGravity(Gravity.CENTER |Gravity.FILL_HORIZONTAL, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+        }
+    }
+
+    private void nextStep(){
+        parent.setCurrentPage();
+    }
+
+    private void setMap(){
         FragmentManager fm = getChildFragmentManager();
         mMarkerArrayList = new ArrayList<>();
         SupportMapFragment supportMapFragment =  SupportMapFragment.newInstance();
@@ -134,16 +172,7 @@ public class RouteSelectionFragment extends Fragment  {
                 mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        //allPoints.add(point);
-                        //mMap.clear();
-                        //mMap.addMarker(new MarkerOptions().position(latLng));
-                        MarkerOptions marker_onclick = new MarkerOptions().position(latLng); //.draggable(true);
-
-                        /*if (mMarkerArrayList.size() > 0){
-                            Marker marker_to_remove = mMarkerArrayList.get(0);
-                            marker_to_remove.remove();
-                        }*/
-                        //mCurrentMarker = mMap.addMarker(marker_onclick);
+                        MarkerOptions marker_onclick = new MarkerOptions().position(latLng);
                         Marker m = mMap.addMarker(marker_onclick);
                         m.setTag(mMarkerArrayList.size());
                         mMarkerArrayList.add(m);
@@ -151,54 +180,8 @@ public class RouteSelectionFragment extends Fragment  {
                 });
             }
         });
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                parent.post.setPlaces(mMarkerArrayList);
-                nextStep();
-            }
-        });
-
-        return view;
     }
 
-    private void nextStep(){
-        parent.setCurrentPage();
-    }
-
-    /*private void addContinueButton()
-    {
-        continueButton = new TextView(getContext());
-        LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
-        params.topMargin = 20;
-        continueButton.setLayoutParams(params);
-        continueButton.setGravity(Gravity.CENTER);
-        continueButton.setTextSize(23);
-        continueButton.setClickable(true);
-        continueButton.setFocusable(true);
-        continueButton.setText(getResources().getString(R.string.continueText));
-        continueButton.setTextColor(getResources().getColorStateList(R.color.text_button_colors));
-
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addLanguagesToPost();
-                nextStep();
-            }
-        });
-
-        mapLayout.addView(continueButton);
-    }*/
-
-    /* @Override
-    public boolean onMarkerClick(final Marker marker) {
-
-        if (marker.equals(myMarker))
-        {
-            //handle click here
-        }
-    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -225,16 +208,6 @@ public class RouteSelectionFragment extends Fragment  {
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

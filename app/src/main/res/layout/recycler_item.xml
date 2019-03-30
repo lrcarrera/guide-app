@@ -40,6 +40,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/topMapButton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:src="@drawable/ic_action_tours"
+            app:backgroundTint="@color/colorWhite"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/colorWhite"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,36 +68,93 @@
                 android:src="@mipmap/ic_launcher"
                 android:scaleType="centerCrop" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 app:layout_constraintStart_toEndOf="@+id/imageId"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/linearLayout"
-                android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp">
 
                 <TextView
                     android:id="@+id/ItemTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="test"
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
-                    app:layout_constraintBottom_toTopOf="@+id/ItemInfo"
+                    app:layout_constraintBottom_toTopOf="@+id/topItemInfo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed" />
 
-                <TextView
-                    android:id="@+id/ItemInfo"
+
+                <LinearLayout
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="test"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/ItemTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/ItemTitle" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ItemInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="test"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+
+                    <TextView
+                        android:layout_marginStart="15dp"
+                        android:id="@+id/ItemStar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="★"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                    <TextView
+                        android:id="@+id/ItemScore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="5.0"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/languages"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+
+                    <TextView
+                        android:layout_marginStart="2dp"
+                        android:id="@+id/ItemLanguages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="+4"
+                        android:textColor="@color/colorBlack"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/topItemTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/topItemTitle" />
+                </LinearLayout>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

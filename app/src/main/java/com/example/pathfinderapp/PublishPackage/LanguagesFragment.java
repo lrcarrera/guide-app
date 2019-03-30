@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,15 +42,10 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class LanguagesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private String ENGLISH = "English";
+    private String EN = "EN";
+    private String DEFAULT_COLOR = "#b6fcd5";
     private PublishFragment parent;
     private LinearLayout containLayout;
     private List<Integer> toAdd;
@@ -79,22 +76,17 @@ public class LanguagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_languages, container, false);
         containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        //placesList = new ArrayList<Place>();
 
         adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
         adapterLanguages.setOnClickListener(new View.OnClickListener() {
@@ -114,26 +106,12 @@ public class LanguagesFragment extends Fragment {
         return view;
     }
 
-    /*@Override
-    public void onStart(Bundle savedInstanceState){
-
-    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
-    /*private void checkPrevSelectedLanguages(){
-        if(parent.post.getLanguages().size() != 0){
-            ArrayList<Language> userLanguages = parent.user.getLanguages();
-            for(Language language : parent.post.getLanguages()){
-                int pos = userLanguages.indexOf(language);
-                RecyclerView.ViewHolder v = recycler.findViewHolderForAdapterPosition(pos);
-                v.itemView.setBackgroundColor(Color.parseColor(AdapterLanguage.SELECTED_COLOR));
-            }
-        }
-    }*/
 
     private void addContinueButton()
     {
@@ -162,13 +140,14 @@ public class LanguagesFragment extends Fragment {
                     ImageView image = (ImageView) layout.findViewById(R.id.imageId);
                     image.setImageResource(R.drawable.english_flag);
                     TextView text = (TextView) layout.findViewById(R.id.ItemTitle);
-                    text.setText("English");
+                    text.setText(ENGLISH);
                     TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
-                    text2.setText("EN");
+                    text2.setText(EN);
+                    View aux = layout.findViewById(R.id.image);
+                    aux.setBackgroundColor(Color.parseColor(DEFAULT_COLOR));
 
-                    layout.setBackgroundColor(Color.parseColor("#b6fcd5"));
                     Toast toast = new Toast(getContext());
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.setGravity(Gravity.BOTTOM |Gravity.FILL_HORIZONTAL, 0, 0);
                     toast.setDuration(Toast.LENGTH_LONG);
                     toast.setView(layout);
                     toast.show();
@@ -182,7 +161,6 @@ public class LanguagesFragment extends Fragment {
 
     private int addLanguagesToPost()
     {
-        int added = 0;
         ArrayList<Language> userLanguages = parent.user.getLanguages();
         ArrayList<Language> postLanguages = new ArrayList<>();
         for(Language language : userLanguages)
@@ -191,7 +169,7 @@ public class LanguagesFragment extends Fragment {
                 postLanguages.add(language);
         }
         parent.post.setLanguages(postLanguages);
-        return added;
+        return postLanguages.size();
     }
 
     private void nextStep(){

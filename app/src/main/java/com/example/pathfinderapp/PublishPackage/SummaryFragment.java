@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
+import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,8 +28,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -94,10 +97,45 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_summary, container, false);
-
+        FloatingActionButton confirm = view.findViewById(R.id.continueButton);
+        FloatingActionButton cancel = view.findViewById(R.id.cancelButton);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPressed(false);
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonPressed(true);
+            }
+        });
         getDataResume(view);
         /* Al confirmar ficar els llenguatges seleccionats a isAdded=false*/
         return view;
+    }
+
+    private void buttonPressed(boolean isCancel){
+        ArrayList<Language> aux = new ArrayList<Language>();
+        for(Language language : parent.user.getLanguages()){
+            language.setAdded(false);
+            aux.add(language);
+        }
+        parent.user.setLanguages(aux);
+        if(isCancel)
+            cancelButtonPressed();
+
+        if(!isCancel)
+            confirmButtonPressed();
+    }
+
+    private void confirmButtonPressed(){
+        parent.confirmButtonPressed();
+    }
+
+    private void cancelButtonPressed(){
+        parent.cancelButtonPressed();
     }
 
     private void getDataResume(View view){

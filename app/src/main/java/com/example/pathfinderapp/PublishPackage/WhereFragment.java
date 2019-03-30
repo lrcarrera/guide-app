@@ -24,6 +24,7 @@ import android.os.Looper;
 
 import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.MainActivity;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
@@ -139,18 +140,7 @@ public class WhereFragment extends Fragment {
         mRequestingLocationUpdates = true;
         recycler = getView().findViewById(R.id.places);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        placesList = new ArrayList<Place>();
-
-        /*LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);
-        LatLng LONDON = new LatLng(51.528308, -0.3817765);
-        LatLng BARCELONA = new LatLng(41.3948975, 2.0785566);
-        LatLng PARIS = new LatLng(48.8589506, 2.2768488);
-        41.889363, 12.490389*/
-
-        placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation /*new LatLng(48.8589506, 2.2768488)*/));
-        placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
-        placesList.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
-        placesList.add(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
+        placesList = DefValues.defPlaces();
         AdapterPlace adapterPlace = new AdapterPlace(placesList);
         adapterPlace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,17 +162,6 @@ public class WhereFragment extends Fragment {
         } else if (!checkPermissions()) {
             requestPermissions();
         }
-
-        /*mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                mCurrentLocation = locationResult.getLastLocation();
-                //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                //updateLocationUI();
-            }
-        };*/
-
     }
 
     private void buildLocationSettingsRequest() {
@@ -205,12 +184,22 @@ public class WhereFragment extends Fragment {
 
         Place aux = placesList.get(position);
         if(position == 0) {
-            aux.setCoord(new LatLng(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude()));
-            stopLocationUpdates();
+            if(mCurrentLocation == null){
+                Toast.makeText(getContext(), R.string.location, Toast.LENGTH_SHORT).show();
+            } else {
+                aux.setCoord(new LatLng(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude()));
+                stopLocationUpdates();
+                parent.post.setPlace(aux);
+                nextStep();
+            }
+        } else {
+            parent.post.setPlace(aux);
+            nextStep();
         }
-        parent.post.setPlace(aux);
-        nextStep();
+
     }
+
+
 
     private void startLocationUpdates() {
         // Begin by checking if the device has the necessary location settings.

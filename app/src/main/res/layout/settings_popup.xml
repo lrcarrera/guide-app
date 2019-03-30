@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="475dp"
+    android:layout_gravity="center"
+    android:background="@drawable/background_popup"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <ImageButton
+        android:id="@+id/btnclose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:background="@drawable/com_facebook_close"
+        android:gravity="center"
+        android:text="X"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10px"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/settings"
+                android:textSize="20sp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/notifications"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkbox_notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/colorBlack" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/connectivity"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:id="@+id/radio_group_connectivity"
+            android:checkedButton="@+id/wifiandmore" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wifi"
+                android:text="@string/wifi"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wifiandmore"
+                android:text="@string/wifiandco" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Languages"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/frenchflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/french_flag" />
+        <ImageView
+            android:id="@+id/englishflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/english_flag" />
+        <ImageView
+            android:id="@+id/germanflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/german_flag" />
+        <ImageView
+            android:id="@+id/italianflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/italy_flag" />
+        <ImageView
+            android:id="@+id/spanishflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/spain_flag" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--<include
+            android:id="@+id/image"
+            layout="@layout/languages_recycler_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal" />-->
+
+        <CheckBox
+            android:id="@+id/checkbox_french"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_german"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_italian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:buttonTint="@color/colorBlack" />
+        <CheckBox
+            android:id="@+id/checkbox_spanish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:buttonTint="@color/colorBlack" />
+
+
+
+        <!--<Button
+            android:id="@+id/sadasdfasdff"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/save"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/sadf"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/logout"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"/>-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/save"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnlogout"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonstylepopup"
+            android:text="@string/logout"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

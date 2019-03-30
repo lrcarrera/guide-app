@@ -3,6 +3,8 @@ package com.example.pathfinderapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 
 import android.os.Build;
@@ -20,10 +23,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +42,8 @@ import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.victor.loading.newton.NewtonCradleLoading;
+import com.victor.loading.rotate.RotateLoading;
 
 
 import org.json.JSONException;
@@ -56,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private static final String DUMMY_PASSWORD = "ThEpASs";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -64,10 +72,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
+    //private View mProgressView;
     private View mLoginFormView;
     CallbackManager callbackManager;
     SharedPreferences prefs;
+    ProgressBar rotateLoading;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -81,6 +90,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         prefs = this.getSharedPreferences(
                 "com.example.pathfinderapp", MODE_PRIVATE);
+        mLoginFormView = findViewById(R.id.login_form);
+        mPasswordView = findViewById(R.id.password);
+        rotateLoading = findViewById(R.id.rotate_loading);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -94,9 +106,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -108,7 +117,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-
         //Facebook integration
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -118,7 +126,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
         if ( isLoggedIn ) {
-            Toast.makeText(this, "You are login with FB", Toast.LENGTH_LONG);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -138,7 +145,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             new GraphRequest.GraphJSONObjectCallback() {
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
-                                    //Log.d("SATAN", response.toString());
                                     try {
                                         String facebookId = object.getString("id");
                                         String facebookName = object.getString("name");
@@ -231,8 +237,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+
+            prefs.edit().putString("email", DUMMY_CREDENTIALS[0]).apply();
+            prefs.edit().putString("password", DUMMY_PASSWORD).apply();
+
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -256,6 +267,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -268,19 +285,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+        if(show){
+            rotateLoading.setVisibility(View.VISIBLE);
+        }else{
+            rotateLoading.setVisibility(View.GONE);
         }
     }
 

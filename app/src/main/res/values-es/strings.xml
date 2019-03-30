@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PathfinderApp</string>
+    <string name="title_search">Buscar</string>
+    <string name="title_tours">Tours</string>
+    <string name="title_publish">Publicar</string>
+    <string name="title_profile">Perfil</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña (optional)</string>
+    <string name="action_sign_in">Sign in o registrarse</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">El correo electronico es incorrecto</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">El campo es necesario</string>
+    <string name="permission_rationale">"Es necesario acceder a sus contactos para completar los correos."
+    </string>
+
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">293971671262365</string>
+    <string name="fb_login_protocol_scheme">fb293971671262365</string>
+
+    <!-- WHEN FRAGMENT -->
+    <string name="when_title">¿Cuándo va a ser el tour?</string>
+    <string name="whichTimeTitle">¿A qué hora va a empezar?</string>
+    <string name="durationTitle">¿A qué hora va a acabar?</string>
+    <string name="continueText">Continuar</string>
+    <string name="languagesTitle">¿En qué idiomas vas a guiar?</string>
+    <string name="english">English</string>
+    <string name="german">German</string>
+    <string name="french">French</string>
+    <string name="italian">Italian</string>
+    <string name="spanish">Spanish</string>
+    <string name="turists_allowed_title">¿Cuántos turistas va a tener este tour como máximo?</string>
+    <string name="whereTitle">¿Dónde quieres guiar?</string>
+    <string name="routeSelectionTitle">¡Seleccione los puntos que va a visitar!</string>
+    <string name="title_activity_fragment_map">map</string>
+    <string name="priceTitle">Esta es nuestra recomendación por turista.¿Te parece bien?</string>
+    <string name="defaultPrice">15</string>
+    <string name="defaultCurrency">€</string>
+    <string name="summaryTitle">Resumen del Tour</string>
+    <string name="day">Día:</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="separator">-</string>
+
+    <!-- SETTINGS -->
+    <string name="logout">Cerrar sessión</string>
+    <string name="save">Guardar</string>
+    <string name="notifications">Notificaciones:</string>
+    <string name="connectivity">Conectividad:</string>
+    <string name="settings">Ajustes</string>
+    <string name="wifi">Wifi</string>
+    <string name="wifiandco">Wifi and Datos</string>
+
+    <string name="alertTitle">¡Hey!</string>
+    <string name="selectLanguageAlert">Seleccione alemnos un idioma</string>
+    <string name="search_bar">Search a city</string>
+    <string name="languages">Idiomas:</string>
+    <string name="scoreTitle">Puntuación:</string>
+    <string name="toursTitle">Tours</string>
+    <string name="reviewsTitle">Reviews</string>
+    <string name="scoresTitle">Puntuación</string>
+    <string name="yourToursTitle">Mis tours</string>
+    <string name="inscriptionSuccessful">Te has apuntado correctamente</string>
+    <string name="creationSuccessful">Tu tour se ha creado correctamente</string>
+    <string name="mapToastMessage">Marque almenos un punto en el mapa</string>
+    <string name="location">Asegurese de que la geolocalización este activada.</string>
+
+    <!-- KEYS -->
+
+    <string name="facebook_picture_link">facebook_picture_link</string>
+    <string name="facebook_name">facebook_name</string>
+    <string name="facebook_email">facebook_email</string>
+    <string name="notification">notifications</string>
+    <string name="full_connectivity">full_connectivity</string>
+    <string name="french_key">french_key</string>
+    <string name="english_key">english_key</string>
+    <string name="german_key">german_key</string>
+    <string name="italian_key">italian_key</string>
+    <string name="spanish_key">spanish_key</string>
+
+    <!--TOAST -->
+    <string name="configuration_stored_message">¡Tú configuración se ha guardado correctamente!</string>
+</resources>

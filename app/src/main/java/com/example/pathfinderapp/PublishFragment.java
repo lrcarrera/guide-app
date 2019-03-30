@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,34 +37,20 @@ import java.util.Arrays;
 import java.util.List;
 
 
-/*/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PublishFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PublishFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PublishFragment extends Fragment implements Serializable{
 
-    public CustomPageAdapter pagerAdapter;
-    public ViewPager pager;
-    public SeekBar seekBar;
+    private CustomPageAdapter pagerAdapter;
+    private ViewPager pager;
+    private SeekBar seekBar;
     public Post post;
     public User user;
     private int currentItem = 0;
-    private OnFragmentInteractionListener mListener;
 
 
     public PublishFragment() {
-        // Required empty public constructor
-        //super(fragmenManager);
+
     }
 
-    /*@Override
-    public int getCount() {
-        return NUM_ITEMS;
-    }*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +67,9 @@ public class PublishFragment extends Fragment implements Serializable{
 
 
         post = new Post();
-        user = new User();
-        user.setLanguages(DefValues.DefLanguages());
-
+        post.setTourists(new ArrayList<User>());
+        user = DefValues.defUser();
+        post.setGuide(user);
 
         seekBar.setOnTouchListener(new View.OnTouchListener() {
 
@@ -109,17 +97,41 @@ public class PublishFragment extends Fragment implements Serializable{
         return false;
     }
 
+    public void confirmButtonPressed(){
+        makeSuccessToast();
+        DefValues.AddPostToToursList(post);
+        MainActivity mainActivity = (MainActivity)  getActivity();
+        mainActivity.moveToToursPage();
+        cancelButtonPressed();
+    }
+
+    private void makeSuccessToast(){
+        Toast toast = Toast.makeText(getContext(), R.string.creationSuccessful, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+    }
+
+    public void cancelButtonPressed(){
+        seekBarInitialProgress();
+        currentItem = 0;
+        post = new Post();
+        post.setTourists(new ArrayList<User>());
+        post.setGuide(user);
+        pager.setCurrentItem(0);
+    }
+
+    private void seekBarInitialProgress(){
+        seekBar.setProgress(5);
+    }
 
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        //ImageView imageView = (ImageView) getView().findViewById(R.id.foo);
-        // or  (ImageView) view.findViewById(R.id.foo);
         pager = getView().findViewById(R.id.pager);
 
         List<Fragment> fragments = getFragments();
         pagerAdapter = new CustomPageAdapter(getFragmentManager(), fragments);
-        seekBar.setProgress(((pager.getCurrentItem() + 1) /getFragments().size() * 100));
+        seekBarInitialProgress();
 
         pager.setAdapter(pagerAdapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -157,52 +169,18 @@ public class PublishFragment extends Fragment implements Serializable{
     }
 
     public void setCurrentPage(){
-        if(pager == null)
-        {
-            Toast.makeText(getContext(), "es un null", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            setSeekBarStatus();
-            currentItem++;
-            pager.setCurrentItem(pager.getCurrentItem() + 1);
-        }
+        setSeekBarStatus();
+        currentItem++;
+        pager.setCurrentItem(pager.getCurrentItem() + 1);
     }
 
     public void setSeekBarStatus(){
-        //seekBar.setProgress((int) ((pager.getCurrentItem() + 1) /getFragments().size() * 100));
         seekBar.setProgress(seekBar.getProgress() + 10);
         seekBar.refreshDrawableState();
-        //setCurrentPage();
     }
-
-    /*/**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PublishFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    /*public static PublishFragment newInstance(String param1, String param2) {
-       /* PublishFragment fragment = new PublishFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-        List<Fragment> fragments = getFragments();
-
-        pageAdapter = new CustomPageAdapter(getSupportFragmentManager(), fragments);
-        ViewPager pager = (ViewPager)findViewById(R.id.viewpager);
-        pager.setAdapter(pageAdapter);
-
-    }*/
 
     private List<Fragment> getFragments(){
         List<Fragment> fList = new ArrayList<Fragment>();
-        //summaryFragment = SummaryFragment.newInstance(this);
         fList.add(WhereFragment.newInstance(this));
         fList.add(WhenFragment.newInstance(this));
         fList.add(WhichTimeFragment.newInstance(this, false));
@@ -307,10 +285,5 @@ public class PublishFragment extends Fragment implements Serializable{
         {
             return this.fragments.size();
         }
-
-        /*@Override
-        public boolean onTouchEvent(MotionEvent event ){
-            return false;
-        }*/
     }
 }
