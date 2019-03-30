@@ -260,41 +260,29 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"/>-->
 
-    <LinearLayout
-        android:id="@+id/buttonsLayout"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/continueButton"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_action_next"
+        android:layout_gravity="bottom|end"
         android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true">
+        android:text="@string/confirm"
+        android:drawableLeft="@drawable/ic_action_confirmation"
+        app:backgroundTint="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"/>
 
-        <Button
-            android:id="@+id/continueButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_action_next"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="@string/confirm"
-            android:drawableLeft="@drawable/ic_action_confirmation"
-            app:backgroundTint="@color/colorWhite"
-            android:backgroundTint="@color/colorWhite"/>
-
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_action_next"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:text="@string/cancel"
-            android:drawableLeft="@drawable/ic_action_cancel"
-            app:backgroundTint="@color/colorWhite"
-            android:backgroundTint="@color/colorWhite"/>
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_action_next"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:text="@string/cancel"
+        android:drawableLeft="@drawable/ic_action_cancel"
+        app:backgroundTint="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"/>
 
 
 

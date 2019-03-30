@@ -167,9 +167,9 @@ public class ProfileFragment extends Fragment {
         //Log.d(TAG, "onCreate: Starting.");
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("About"));
-        tabLayout.addTab(tabLayout.newTab().setText("Contact"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.reviewsTitle));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.toursTitle));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.scoresTitle));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);

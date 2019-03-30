@@ -185,7 +185,6 @@ public class LanguagesFragment extends Fragment {
 
     private int addLanguagesToPost()
     {
-        int added = 0;
         ArrayList<Language> userLanguages = parent.user.getLanguages();
         ArrayList<Language> postLanguages = new ArrayList<>();
         for(Language language : userLanguages)
@@ -194,7 +193,7 @@ public class LanguagesFragment extends Fragment {
                 postLanguages.add(language);
         }
         parent.post.setLanguages(postLanguages);
-        return added;
+        return postLanguages.size();
     }
 
     private void nextStep(){

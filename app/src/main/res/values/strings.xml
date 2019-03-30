@@ -64,6 +64,9 @@
     <string name="search_bar">Search a city</string>
     <string name="languages">Idiomas:</string>
     <string name="scoreTitle">Puntuación:</string>
+    <string name="toursTitle">Tours</string>
+    <string name="reviewsTitle">Reviews</string>
+    <string name="scoresTitle">Puntuación</string>
 
 
 </resources>
