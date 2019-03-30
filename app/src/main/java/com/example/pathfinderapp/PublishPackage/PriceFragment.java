@@ -1,7 +1,6 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
@@ -28,7 +27,6 @@ public class PriceFragment extends Fragment {
 
     private PublishFragment parent;
     private TextView priceText;
-    private TextView currencyText;
     private final static int DEFAULT_PRICE = 15;
 
     private OnFragmentInteractionListener mListener;
@@ -71,7 +69,7 @@ public class PriceFragment extends Fragment {
 
     private void setListeners(View view){
         priceText = (TextView) view.findViewById(R.id.priceQuantity);
-        currencyText = (TextView) view.findViewById(R.id.currency);
+        TextView currencyText = (TextView) view.findViewById(R.id.currency);
         ImageView btnIncrease = (ImageView) view.findViewById(R.id.btnIncrease);
         btnIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +97,7 @@ public class PriceFragment extends Fragment {
 
     private void nextStep(){ parent.summaryFragmentChange(); }
 
-    public void setPrice(boolean increase)
+    private void setPrice(boolean increase)
     {
         int new_price = Integer.parseInt(priceText.getText().toString());
         if(increase)
@@ -113,9 +111,9 @@ public class PriceFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -148,6 +146,6 @@ public class PriceFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

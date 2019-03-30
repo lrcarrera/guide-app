@@ -1,10 +1,8 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -24,7 +22,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -48,15 +45,10 @@ public class SummaryFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    View view;
+    private View view;
     private GoogleMap mMap;
-    RecyclerView recycler;
-    PublishFragment parent;
-    public TextView priceNumber;
+    private PublishFragment parent;
+    private TextView priceNumber;
     private OnFragmentInteractionListener mListener;
 
     public SummaryFragment() {
@@ -81,8 +73,9 @@ public class SummaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -111,7 +104,7 @@ public class SummaryFragment extends Fragment {
                 buttonPressed(true);
             }
         });
-        getDataResume(view);
+        getDataResume();
         /* Al confirmar ficar els llenguatges seleccionats a isAdded=false*/
         return view;
     }
@@ -138,7 +131,7 @@ public class SummaryFragment extends Fragment {
         parent.cancelButtonPressed();
     }
 
-    private void getDataResume(View view){
+    private void getDataResume(){
         addTextViewsContent();
         addLanguages();
         addMapMarkers();
@@ -164,7 +157,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private void addLanguages(){
-        recycler = view.findViewById(R.id.languages);
+        RecyclerView recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
         AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(parent.post.getLanguages());
         recycler.setAdapter(adapterLanguages);
@@ -204,9 +197,9 @@ public class SummaryFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -239,6 +232,6 @@ public class SummaryFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

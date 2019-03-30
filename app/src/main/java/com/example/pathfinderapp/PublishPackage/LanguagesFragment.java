@@ -3,9 +3,8 @@ package com.example.pathfinderapp.PublishPackage;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.IntegerRes;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,16 +41,13 @@ import java.util.List;
  */
 public class LanguagesFragment extends Fragment {
 
-    private String ENGLISH = "English";
-    private String EN = "EN";
-    private String DEFAULT_COLOR = "#b6fcd5";
+    private final String ENGLISH = "English";
+    private final String EN = "EN";
+    private final String DEFAULT_COLOR = "#b6fcd5";
     private PublishFragment parent;
     private LinearLayout containLayout;
     private List<Integer> toAdd;
-    private AdapterLanguage adapterLanguages;
-    private FloatingActionButton continueButton;
-    RecyclerView recycler;
-    View view;
+    private RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
 
     public LanguagesFragment() {
@@ -82,13 +77,13 @@ public class LanguagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_languages, container, false);
+        View view = inflater.inflate(R.layout.fragment_languages, container, false);
         containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
-        adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
+        AdapterLanguage adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
         adapterLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +110,7 @@ public class LanguagesFragment extends Fragment {
 
     private void addContinueButton()
     {
-        continueButton = new FloatingActionButton(getContext());
+        FloatingActionButton continueButton = new FloatingActionButton(getContext());
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.END;
         params.bottomMargin = 20;
@@ -177,9 +172,9 @@ public class LanguagesFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -212,6 +207,6 @@ public class LanguagesFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

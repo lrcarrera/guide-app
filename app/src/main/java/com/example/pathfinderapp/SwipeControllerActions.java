@@ -1,8 +1,8 @@
 package com.example.pathfinderapp;
 
-public abstract class SwipeControllerActions {
+abstract class SwipeControllerActions {
 
-    public void onLeftClicked(int position) { }
+    public void onLeftClicked() { }
 
     public void onRightClicked(int position) { }
 

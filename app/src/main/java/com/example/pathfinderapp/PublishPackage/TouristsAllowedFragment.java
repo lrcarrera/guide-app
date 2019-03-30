@@ -1,7 +1,6 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
@@ -94,7 +93,7 @@ public class TouristsAllowedFragment extends Fragment {
         return view;
     }
 
-    public void setTouristNumber(boolean increase)
+    private void setTouristNumber(boolean increase)
     {
         int tourists = Integer.parseInt(touristNumber.getText().toString());
         int new_tourist = 0;
@@ -119,9 +118,9 @@ public class TouristsAllowedFragment extends Fragment {
     private void nextStep(){ parent.setCurrentPage(); }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -154,6 +153,6 @@ public class TouristsAllowedFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

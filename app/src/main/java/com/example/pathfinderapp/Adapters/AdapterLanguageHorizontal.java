@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLanguageHorizontal.ViewHolderItem>
         implements View.OnClickListener {
 
-    private ArrayList<Language> languagesList;
+    private final ArrayList<Language> languagesList;
     private View.OnClickListener listener;
 
     public  AdapterLanguageHorizontal(java.util.ArrayList<Language> placesList){
@@ -53,10 +53,10 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
 
-        TextView title;
-        ImageView picture;
+        final TextView title;
+        final ImageView picture;
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.languageName);
             picture = itemView.findViewById(R.id.imageId);

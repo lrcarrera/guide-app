@@ -23,7 +23,7 @@ public class AdapterSearch
         extends RecyclerView.Adapter<AdapterSearch.ViewHolderItem>
         implements View.OnClickListener {
 
-    private ArrayList<Post> searchList;
+    private final ArrayList<Post> searchList;
     private View.OnClickListener listener;
     private Context context;
 
@@ -91,10 +91,11 @@ public class AdapterSearch
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
 
-        TextView title, info;
-        ImageView picture;
+        final TextView title;
+        final TextView info;
+        final ImageView picture;
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.ItemTitle);

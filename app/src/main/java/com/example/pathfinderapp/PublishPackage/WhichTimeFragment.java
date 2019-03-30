@@ -1,7 +1,6 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
@@ -13,10 +12,6 @@ import android.widget.TimePicker;
 
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
-
-import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -127,9 +122,9 @@ public class WhichTimeFragment extends Fragment {
     private void nextStep(){ parent.setCurrentPage(); }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -162,6 +157,6 @@ public class WhichTimeFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

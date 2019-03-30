@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,9 +28,6 @@ import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
-import com.example.pathfinderapp.ProfileTabFragments.ProfileTab1Fragment;
-import com.example.pathfinderapp.ProfileTabFragments.ProfileTab2Fragment;
-import com.example.pathfinderapp.ProfileTabFragments.ProfileTab3Fragment;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -66,28 +62,21 @@ public class ProfileFragment extends Fragment {
     private static final String NO_EMAIL = "no_email";
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
-    Dialog myDialog;
-    ImageButton settings;
+    private Dialog myDialog;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    SharedPreferences prefs;
-    ImageView profilePicture;
-    TextView textViewName;
+    private SharedPreferences prefs;
+    private ImageView profilePicture;
     //TextView textViewEmail;
 
-    CheckBox checkboxNotifications;
-    CheckBox checkboxFrench;
-    CheckBox checkboxEnglish;
-    CheckBox checkboxGerman;
-    CheckBox checkboxItalian;
-    CheckBox checkboxSpanish;
+    private CheckBox checkboxNotifications;
+    private CheckBox checkboxFrench;
+    private CheckBox checkboxEnglish;
+    private CheckBox checkboxGerman;
+    private CheckBox checkboxItalian;
+    private CheckBox checkboxSpanish;
 
-    RadioGroup radioGroupConnectivity;
-    RadioButton radioWifi;
-    RadioButton radioWifiAndMore;
+    private RadioButton radioWifi;
+    private RadioButton radioWifiAndMore;
 
     //private static final String TAG = "MainActivity";
 
@@ -123,8 +112,9 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -135,7 +125,7 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         myDialog = new Dialog(getContext());
-        settings = (ImageButton) rootView.findViewById(R.id.configure_button);
+        ImageButton settings = (ImageButton) rootView.findViewById(R.id.configure_button);
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +136,7 @@ public class ProfileFragment extends Fragment {
 
 
         profilePicture = rootView.findViewById(R.id.profilePicture);
-        textViewName = rootView.findViewById(R.id.tv_name);
+        TextView textViewName = rootView.findViewById(R.id.tv_name);
         //textViewEmail = rootView.findViewById(R.id.tv_email);
 
         //From facebook login
@@ -197,7 +187,7 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
-    public void openSettings(){
+    private void openSettings(){
 
         myDialog.setContentView(R.layout.settings_popup);
 
@@ -208,7 +198,7 @@ public class ProfileFragment extends Fragment {
         checkboxItalian = (CheckBox) myDialog.findViewById(R.id.checkbox_italian);
         checkboxSpanish = (CheckBox) myDialog.findViewById(R.id.checkbox_spanish);
 
-        radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
+        RadioGroup radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
         radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
         radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);
 
@@ -354,7 +344,7 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();
     }
 
-    public void logOut(){
+    private void logOut(){
 
         myDialog.dismiss();
 
@@ -385,9 +375,9 @@ public class ProfileFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -448,6 +438,6 @@ public class ProfileFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

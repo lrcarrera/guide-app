@@ -1,9 +1,7 @@
 package com.example.pathfinderapp;
 
-import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -17,9 +15,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
-import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
@@ -33,7 +29,6 @@ import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -92,9 +87,7 @@ public class PublishFragment extends Fragment implements Serializable{
             return true;
 
         time = post.getEndHour().split(":");
-        if(Integer.parseInt(time[0]) >= 21)
-            return true;
-        return false;
+        return Integer.parseInt(time[0]) >= 21;
     }
 
     public void confirmButtonPressed(){
@@ -262,14 +255,14 @@ public class PublishFragment extends Fragment implements Serializable{
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 
     private class CustomPageAdapter extends FragmentPagerAdapter implements Serializable {
-        private List<Fragment> fragments;
+        private final List<Fragment> fragments;
         private int[] mResources;
 
-        public CustomPageAdapter(FragmentManager fm, List<Fragment> fragments ) {
+        CustomPageAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }

@@ -2,7 +2,6 @@ package com.example.pathfinderapp;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,13 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
-import com.example.pathfinderapp.Models.User;
 
 import java.util.ArrayList;
 
@@ -41,9 +37,8 @@ public class ToursFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ArrayList<Post> searchList;
-    RecyclerView recycler;
-    Context context;
-    AdapterTour adapterSearch;
+    private RecyclerView recycler;
+    private AdapterTour adapterSearch;
     public SwipeController swipeController;
 
     public ToursFragment() {
@@ -54,14 +49,11 @@ public class ToursFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ToursFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ToursFragment newInstance(String param1, String param2) {
-        ToursFragment fragment = new ToursFragment();
-        return fragment;
+    public static ToursFragment newInstance() {
+        return new ToursFragment();
     }
 
     @Override
@@ -73,7 +65,7 @@ public class ToursFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
         searchList = DefValues.getMockYourToursList();
-        adapterSearch = new AdapterTour(searchList, getChildFragmentManager(), true, this);
+        adapterSearch = new AdapterTour(searchList, true, this);
 
         recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -99,9 +91,9 @@ public class ToursFragment extends Fragment {
 
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -115,7 +107,7 @@ public class ToursFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
 
-        this.context = context;
+        Context context1 = context;
     }
 
     @Override
@@ -159,6 +151,6 @@ public class ToursFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

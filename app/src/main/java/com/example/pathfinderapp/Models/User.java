@@ -75,7 +75,8 @@ public class User implements Serializable {
         this.toursCound = toursCound;
     }
 
-    public void setCompany(String company) {
+    public void setCompany(
+            String company) {
         this.company = company;
     }
 

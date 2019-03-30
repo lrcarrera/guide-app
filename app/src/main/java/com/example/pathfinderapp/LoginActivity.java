@@ -42,8 +42,6 @@ import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.victor.loading.newton.NewtonCradleLoading;
-import com.victor.loading.rotate.RotateLoading;
 
 
 import org.json.JSONException;
@@ -74,9 +72,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     //private View mProgressView;
     private View mLoginFormView;
-    CallbackManager callbackManager;
-    SharedPreferences prefs;
-    ProgressBar rotateLoading;
+    private CallbackManager callbackManager;
+    private SharedPreferences prefs;
+    private ProgressBar rotateLoading;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -323,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;

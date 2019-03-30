@@ -1,13 +1,8 @@
 package com.example.pathfinderapp;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -39,13 +34,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private ArrayList<Post> searchList;
-    private RecyclerView recycler;
-    private Context context;
     private AdapterTour adapterSearch;
 
     private OnFragmentInteractionListener mListener;
@@ -76,8 +64,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -96,10 +85,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         if(view == null)
             return;
 
-        searchList = DefValues.getMockPostList();
-        adapterSearch = new AdapterTour(searchList, getChildFragmentManager(), false, null);
+        ArrayList<Post> searchList = DefValues.getMockPostList();
+        adapterSearch = new AdapterTour(searchList, false, null);
 
-        recycler = view.findViewById(R.id.recyclerid);
+        RecyclerView recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
         recycler.setAdapter(adapterSearch);
@@ -112,9 +101,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -127,7 +116,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        this.context = context;
     }
 
     @Override
@@ -159,6 +147,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

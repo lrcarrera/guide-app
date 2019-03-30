@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
-import com.example.pathfinderapp.SearchFragment;
 import com.example.pathfinderapp.ToursFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,7 +40,6 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,12 +51,12 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private Context context;
     private View.OnClickListener listener;
     private ArrayList<Post> searchList;
-    private ArrayList<Post> originalSearchList;
+    private final ArrayList<Post> originalSearchList;
     private FragmentManager fragmentManager;
-    private boolean isAdded;
-    public ToursFragment searchFragment;
+    private final boolean isAdded;
+    private final ToursFragment searchFragment;
 
-    public AdapterTour(ArrayList<Post> searchList, FragmentManager fragmentManagerm, boolean isAdded, ToursFragment searchFragment) {
+    public AdapterTour(ArrayList<Post> searchList, boolean isAdded, ToursFragment searchFragment) {
         this.searchList = searchList;
         this.fragmentManager = fragmentManager;
         this.originalSearchList = new ArrayList<>();
@@ -194,7 +191,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         notifyDataSetChanged();
     }
 
-    public void reset(){
+    private void reset(){
         searchList = new ArrayList<>(searchList);
         notifyDataSetChanged();
         searchFragment.resetController();
@@ -209,15 +206,27 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
         //LinearLayout background;
         Post post;
-        TextView dateContent, fromHourNumber, toHourNumber, touristAllowedNumber, priceNumber, itemScore, itemLanguages;
-        RecyclerView languages;
+        final TextView dateContent;
+        final TextView fromHourNumber;
+        final TextView toHourNumber;
+        final TextView touristAllowedNumber;
+        final TextView priceNumber;
+        final TextView itemScore;
+        final TextView itemLanguages;
+        final RecyclerView languages;
         MapView mapView;
         GoogleMap mMap;
-        FloatingActionButton topMapButton, mapButton, inscriptionButton;
-        TextView  title, info;
-        ImageView picture;
-        TextView  topTitle, topInfo, topItemScore, topItemLanguages;
-        ImageView topPicture;
+        final FloatingActionButton topMapButton;
+        final FloatingActionButton mapButton;
+        final FloatingActionButton inscriptionButton;
+        final TextView  title;
+        final TextView info;
+        final ImageView picture;
+        final TextView  topTitle;
+        final TextView topInfo;
+        final TextView topItemScore;
+        final TextView topItemLanguages;
+        final ImageView topPicture;
         AdapterTour adapterTour;
 
         FoldingCell foldingCell;
@@ -227,7 +236,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         int currentTourists,  numTouristsAllowed;
         //boolean isAdded = false;
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
             dateContent = itemView.findViewById(R.id.dateContent);
             fromHourNumber = itemView.findViewById(R.id.fromHourNumber);
@@ -271,11 +280,12 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 @Override
                 public void onClick(View view) {
                     fc.toggle(false);
-                    if (adapterTour.searchFragment.swipeController.rectangleActive) // lul
-                    {
-                        adapterTour.reset();
-                        adapterTour.searchFragment.swipeController.rectangleActive = false;
-                    }
+
+                    if (adapterTour.searchFragment == null || !adapterTour.searchFragment.swipeController.rectangleActive)
+                        return;
+
+                    adapterTour.reset();
+                    adapterTour.searchFragment.swipeController.rectangleActive = false;
                 }
             });
 
@@ -378,7 +388,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             //new NamedLocation("New York", new LatLng(40.750580, -73.993584)),
         }
 
-        public void setMapStyle(){
+        void setMapStyle(){
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night));
         }
 

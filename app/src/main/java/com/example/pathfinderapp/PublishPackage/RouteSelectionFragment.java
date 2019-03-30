@@ -1,8 +1,6 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -14,9 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pathfinderapp.PublishFragment;
@@ -45,7 +41,6 @@ public class RouteSelectionFragment extends Fragment  {
     private LinearLayout mapLayout;
     private Marker mCurrentMarker;
     private ArrayList<Marker> mMarkerArrayList;
-    private FloatingActionButton continueButton;
 
     private PublishFragment parent;
     private GoogleMap mMap;
@@ -95,7 +90,7 @@ public class RouteSelectionFragment extends Fragment  {
         // Inflate the layout for this fragment
         //mMap = new GoogleMap();
         View view = inflater.inflate(R.layout.fragment_route_selection, container, false);
-        continueButton = (FloatingActionButton) view.findViewById(R.id.continueButton);
+        FloatingActionButton continueButton = (FloatingActionButton) view.findViewById(R.id.continueButton);
         setMap();
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,9 +179,9 @@ public class RouteSelectionFragment extends Fragment  {
 
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction();
         }
     }
 
@@ -210,6 +205,6 @@ public class RouteSelectionFragment extends Fragment  {
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.pathfinderapp;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,15 +30,14 @@ public class MainActivity extends AppCompatActivity implements
 
     SharedPreferences prefs;
 
-    private TextView mTextMessage;
-    final Fragment fragment1 = new SearchFragment();
-    final Fragment fragment2 = new ToursFragment();
-    final Fragment fragment3 = new PublishFragment();
-    final Fragment fragment4 = new ProfileFragment();
-    BottomNavigationView navigation;
+    private final Fragment fragment1 = new SearchFragment();
+    private final Fragment fragment2 = new ToursFragment();
+    private final Fragment fragment3 = new PublishFragment();
+    private final Fragment fragment4 = new ProfileFragment();
+    private BottomNavigationView navigation;
 
-    final FragmentManager fm = getSupportFragmentManager();
-    Fragment active = fragment1;
+    private final FragmentManager fm = getSupportFragmentManager();
+    private Fragment active = fragment1;
 
     public void moveToToursPage(){
         ToursFragment aux = (ToursFragment) fragment2;
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         active = fragment2;
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
         fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
         fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        TextView mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction() {
 
     }
 }

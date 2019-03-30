@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 public class AsyncTaskLoadImage  extends AsyncTask<String, String, Bitmap> {
     private final static String TAG = "AsyncTaskLoadImage";
-    private ImageView imageView;
+    private final ImageView imageView;
     public AsyncTaskLoadImage(ImageView imageView) {
         this.imageView = imageView;
     }

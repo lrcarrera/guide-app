@@ -16,7 +16,7 @@ public class AdapterPlace
         extends RecyclerView.Adapter<AdapterPlace.ViewHolderItem>
         implements View.OnClickListener{
 
-    private ArrayList<Place> placesList;
+    private final ArrayList<Place> placesList;
     private View.OnClickListener listener;
 
     public AdapterPlace(ArrayList<Place> placesList) {
@@ -56,10 +56,11 @@ public class AdapterPlace
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
 
-        TextView title, info;
-        ImageView picture;
+        final TextView title;
+        final TextView info;
+        final ImageView picture;
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.ItemTitle);

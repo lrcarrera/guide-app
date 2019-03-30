@@ -19,12 +19,12 @@ public class AdapterLanguage
         extends RecyclerView.Adapter<AdapterLanguage.ViewHolderItem>
         implements View.OnClickListener{
 
-    public static String DEFAULT_COLOR = "#ffffff";
-    public static String SELECTED_COLOR = "#b6fcd5";
+    private static final String DEFAULT_COLOR = "#ffffff";
+    private static final String SELECTED_COLOR = "#b6fcd5";
 
     private View view;
 
-    private ArrayList<Language> languagesList;
+    private final ArrayList<Language> languagesList;
     private View.OnClickListener listener;
 
     public AdapterLanguage(java.util.ArrayList<Language> placesList) {
@@ -62,7 +62,7 @@ public class AdapterLanguage
             listener.onClick(v);
     }
 
-    public void changeColor(View v){
+    private void changeColor(View v){
         Drawable background = v.getBackground();
         int color = ((ColorDrawable) background).getColor();
         if(color == Color.parseColor(DEFAULT_COLOR)){
@@ -80,10 +80,11 @@ public class AdapterLanguage
     public class ViewHolderItem extends RecyclerView.ViewHolder {
 
         //LinearLayout background;
-        TextView title, info;
-        ImageView picture;
+        final TextView title;
+        final TextView info;
+        final ImageView picture;
 
-        public ViewHolderItem(View itemView) {
+        ViewHolderItem(View itemView) {
             super(itemView);
             //background = itemView.findViewById(R.id.backgroundLayout);
             title = itemView.findViewById(R.id.ItemTitle);

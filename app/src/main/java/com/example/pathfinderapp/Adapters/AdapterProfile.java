@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class AdapterProfile extends FragmentStatePagerAdapter {
 
-    int mNumOfTabs;
+    private final int mNumOfTabs;
     public AdapterProfile(FragmentManager fm, int NoofTabs){
         super(fm);
         this.mNumOfTabs = NoofTabs;
@@ -31,14 +31,11 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
     public Fragment getItem(int position){
         switch (position){
             case 0:
-                ProfileTab1Fragment home = new ProfileTab1Fragment();
-                return home;
+                return new ProfileTab1Fragment();
             case 1:
-                ProfileTab2Fragment about = new ProfileTab2Fragment();
-                return about;
+                return new ProfileTab2Fragment();
             case 2:
-                ProfileTab3Fragment contact = new ProfileTab3Fragment();
-                return contact;
+                return new ProfileTab3Fragment();
             default:
                 return null;
         }
