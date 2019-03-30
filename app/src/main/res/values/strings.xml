@@ -74,8 +74,6 @@
     <string name="location">Be sure that geolocation is active.</string>
 
     <!-- KEYS -->
-    <string name="languages">Idiomas:</string>
-    <string name="scoreTitle">Puntuación:</string>
     <string name="delete">BORRAR</string>
 
     <string name="facebook_picture_link">facebook_picture_link</string>

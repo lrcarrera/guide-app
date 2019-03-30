@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
+import com.example.pathfinderapp.SearchFragment;
+import com.example.pathfinderapp.ToursFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -39,6 +42,7 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,12 +57,14 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private ArrayList<Post> originalSearchList;
     private FragmentManager fragmentManager;
     private boolean isAdded;
+    public ToursFragment searchFragment;
 
-    public AdapterTour(ArrayList<Post> searchList, FragmentManager fragmentManagerm, boolean isAdded) {
+    public AdapterTour(ArrayList<Post> searchList, FragmentManager fragmentManagerm, boolean isAdded, ToursFragment searchFragment) {
         this.searchList = searchList;
         this.fragmentManager = fragmentManager;
         this.originalSearchList = new ArrayList<>();
         this.isAdded = isAdded;
+        this.searchFragment = searchFragment;
         originalSearchList.addAll(searchList);
     }
 
@@ -94,6 +100,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         checkNightMode(current.getStartHour(), current.getEndHour(), viewHolder);
         createLanguagesRecycler(viewHolder, current);
         processProfilePicture(current, viewHolder);
+        viewHolder.adapterTour = this;
     }
 
     private void processPostData(Post current, ViewHolderItem viewHolder){
@@ -187,6 +194,17 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         notifyDataSetChanged();
     }
 
+    public void reset(){
+        searchList = new ArrayList<>(searchList);
+        notifyDataSetChanged();
+        searchFragment.resetController();
+    }
+
+    public void removeItem(int pos) {
+        searchList.remove(pos);
+        notifyItemRemoved(pos);
+    }
+
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         //LinearLayout background;
@@ -200,6 +218,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         ImageView picture;
         TextView  topTitle, topInfo, topItemScore, topItemLanguages;
         ImageView topPicture;
+        AdapterTour adapterTour;
+
+        FoldingCell foldingCell;
         LatLng mapPosition;
         List<Marker> places;
         boolean isNight = false;
@@ -220,7 +241,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             topTitle = itemView.findViewById(R.id.topItemTitle);
             topInfo = itemView.findViewById(R.id.topItemInfo);
             topPicture = itemView.findViewById(R.id.topImageId);
-            //mapView = itemView.findViewById(R.id.map);
             itemScore = itemView.findViewById(R.id.ItemScore);
             topItemScore = itemView.findViewById(R.id.topItemScore);
             itemLanguages = itemView.findViewById(R.id.ItemLanguages);
@@ -251,6 +271,11 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 @Override
                 public void onClick(View view) {
                     fc.toggle(false);
+                    if (adapterTour.searchFragment.swipeController.rectangleActive) // lul
+                    {
+                        adapterTour.reset();
+                        adapterTour.searchFragment.swipeController.rectangleActive = false;
+                    }
                 }
             });
 

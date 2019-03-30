@@ -21,9 +21,10 @@ enum ButtonsState {
 }
 
 
-class SwipeController extends Callback {
+public class SwipeController extends Callback {
 
     private boolean swipeBack = false;
+    public boolean rectangleActive = false;
     private ButtonsState buttonShowedState = ButtonsState.GONE;
     private RectF buttonInstance = null;
     private RecyclerView.ViewHolder currentItemViewHolder = null;
@@ -81,6 +82,7 @@ class SwipeController extends Callback {
         float buttonWidthWithoutPadding = buttonWidth - 20;
         float corners = 16;
 
+        rectangleActive = true;
         View itemView = viewHolder.itemView;
         Paint p = new Paint();
 
@@ -106,6 +108,7 @@ class SwipeController extends Callback {
     }
 
     // SwipeController.java
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchListener(final Canvas c, final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final float dX, final float dY, final int actionState, final boolean isCurrentlyActive) {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -124,6 +127,7 @@ class SwipeController extends Callback {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchDownListener(final Canvas c, final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final float dX, final float dY, final int actionState, final boolean isCurrentlyActive) {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -136,6 +140,7 @@ class SwipeController extends Callback {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchUpListener(final Canvas c, final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final float dX, final float dY, final int actionState, final boolean isCurrentlyActive) {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -152,10 +157,10 @@ class SwipeController extends Callback {
                     swipeBack = false;
 
                     if (buttonsActions != null && buttonInstance != null && buttonInstance.contains(event.getX(), event.getY())) {
-                        if (buttonShowedState == ButtonsState.RIGHT_VISIBLE)
+                        if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
                             buttonsActions.onRightClicked(viewHolder.getAdapterPosition());
+                        }
                     }
-
                     buttonShowedState = ButtonsState.GONE;
                     currentItemViewHolder = null;
                 }

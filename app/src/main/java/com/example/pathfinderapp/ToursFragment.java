@@ -1,11 +1,13 @@
 package com.example.pathfinderapp;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,6 +44,7 @@ public class ToursFragment extends Fragment {
     RecyclerView recycler;
     Context context;
     AdapterTour adapterSearch;
+    public SwipeController swipeController;
 
     public ToursFragment() {
         // Required empty public constructor
@@ -70,7 +73,7 @@ public class ToursFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
         searchList = DefValues.getMockYourToursList();
-        adapterSearch = new AdapterTour(searchList, getChildFragmentManager(), true);
+        adapterSearch = new AdapterTour(searchList, getChildFragmentManager(), true, this);
 
         recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -90,6 +93,8 @@ public class ToursFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        resetController();
     }
 
 
@@ -117,6 +122,29 @@ public class ToursFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void resetController(){
+        View view = getView();
+        if(view == null)
+            return;
+
+        swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                adapterSearch.removeItem(position);
+            }
+        });
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recycler);
+
+        recycler.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
     }
 
     /**
