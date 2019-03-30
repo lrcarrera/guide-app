@@ -2,6 +2,7 @@ package com.example.pathfinderapp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
@@ -238,7 +240,6 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //myDialog.dismiss();
                 logOut();
             }
         });
@@ -256,13 +257,11 @@ public class ProfileFragment extends Fragment {
         Boolean isNotificationsOn = prefs.getBoolean("notifications", false);
         Boolean isFullConnectivityOn = prefs.getBoolean("full_connectivity", false);
 
-        Boolean isFrenchChecked = prefs.getBoolean("french", false);
-        Boolean isEnglishChecked = prefs.getBoolean("french", false);
-       /* Boolean isFrenchChecked = prefs.getBoolean("french", false);
-        Boolean isFrenchChecked = prefs.getBoolean("french", false);
-        Boolean isFrenchChecked = prefs.getBoolean("french", false);
-*///TODO: CONTINUE HANDLING CHECKBOXES
-
+        if(isNotificationsOn){
+            checkboxNotifications.setChecked(true);
+        }else{
+            checkboxNotifications.setChecked(false);
+        }
         if(isFullConnectivityOn){
             //radioGroupConnectivity.check(R.id.wifiandmore);
             radioWifi.setChecked(false);
@@ -272,10 +271,42 @@ public class ProfileFragment extends Fragment {
             radioWifi.setChecked(true);
             radioWifiAndMore.setChecked(false);
         }
-        if(isNotificationsOn){
-            checkboxNotifications.setChecked(true);
+
+        setLanguagesStatuses();
+    }
+
+    private void setLanguagesStatuses(){
+
+        Boolean isFrenchChecked = prefs.getBoolean("french", false);
+        Boolean isEnglishChecked = prefs.getBoolean("english", false);
+        Boolean isGermanChecked = prefs.getBoolean("german", false);
+        Boolean isItalianChecked = prefs.getBoolean("italian", false);
+        Boolean isSpanishChecked = prefs.getBoolean("spanish", false);
+
+        if(isFrenchChecked){
+            checkboxFrench.setChecked(true);
         }else{
-            checkboxNotifications.setChecked(false);
+            checkboxFrench.setChecked(false);
+        }
+        if(isEnglishChecked){
+            checkboxEnglish.setChecked(true);
+        }else{
+            checkboxEnglish.setChecked(false);
+        }
+        if(isGermanChecked){
+            checkboxGerman.setChecked(true);
+        }else{
+            checkboxGerman.setChecked(false);
+        }
+        if(isItalianChecked){
+            checkboxItalian.setChecked(true);
+        }else{
+            checkboxItalian.setChecked(false);
+        }
+        if(isSpanishChecked){
+            checkboxSpanish.setChecked(true);
+        }else{
+            checkboxSpanish.setChecked(false);
         }
     }
 
@@ -294,37 +325,44 @@ public class ProfileFragment extends Fragment {
             prefs.edit().putBoolean("full_connectivity", true).apply();
         }
 
-        //RadioGroup
-       /* radioGroupConnectivity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        if(checkboxFrench.isChecked()){
+            prefs.edit().putBoolean("french", true).apply();
+        }else{
+            prefs.edit().putBoolean("french", false).apply();
+        }
+        if(checkboxEnglish.isChecked()){
+            prefs.edit().putBoolean("english", true).apply();
+        }else{
+            prefs.edit().putBoolean("english", false).apply();
+        }
+        if(checkboxGerman.isChecked()){
+            prefs.edit().putBoolean("german", true).apply();
+        }else{
+            prefs.edit().putBoolean("german", false).apply();
+        }
+        if(checkboxItalian.isChecked()){
+            prefs.edit().putBoolean("italian", true).apply();
+        }else{
+            prefs.edit().putBoolean("italian", false).apply();
+        }
+        if(checkboxSpanish.isChecked()){
+            prefs.edit().putBoolean("spanish", true).apply();
+        }else{
+            prefs.edit().putBoolean("spanish", false).apply();
+        }
 
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // find which radio button is selected
-                if(checkedId == R.id.wifiandmore) {
-                    prefs.edit().putBoolean("full_connectivity", true).apply();
-                } else{
-                }
-            }
-        });*/
+        myDialog.dismiss();
+        Toast.makeText(getContext(), "Your configuration was stored!", Toast.LENGTH_SHORT).show();
     }
-
-   /* private void showProgressDialog(){
-        ProgressDialog progress = new ProgressDialog(getContext());
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-        progress.show();
-// To dismiss the dialog
-        progress.dismiss();
-    }*/
 
     public void logOut(){
 
         myDialog.dismiss();
 
         if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
-
             getActivity().finish();//TODO: implement logout for credentials from Firebase
+            Intent toLogin = new Intent(getActivity(), LoginActivity.class);
+            startActivity(toLogin);
         }else{
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
                     .Callback() {
@@ -333,6 +371,8 @@ public class ProfileFragment extends Fragment {
 
                     LoginManager.getInstance().logOut();
                     getActivity().finish();
+                    Intent toLogin = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(toLogin);
 
                 }
             }).executeAsync();
