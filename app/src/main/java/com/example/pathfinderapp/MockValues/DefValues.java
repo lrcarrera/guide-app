@@ -19,6 +19,7 @@ public class DefValues {
     private static ArrayList<Post> YOUR_POSTS;
     private static ArrayList<Language> LANGUAGES;
     private static User DEF_USER;
+    private static ArrayList<Place> PLACES;
 
     public static ArrayList<Language> defLanguages(){
         if(LANGUAGES == null){
@@ -42,6 +43,19 @@ public class DefValues {
             DEF_USER.setLanguages(DefValues.defLanguages());
         }
         return DEF_USER;
+    }
+
+    public static ArrayList<Place> defPlaces(){
+        if(PLACES == null){
+            /*  NEW york new LatLng(40.750580, -73.993584),11)*/
+            PLACES = new ArrayList<>();
+            PLACES.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation, new LatLng(41.6082387, 0.6212267)));
+            PLACES.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
+            PLACES.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
+            PLACES.add(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
+            PLACES.add(new Place("London", "United Kingdom", R.drawable.ic_action_place, new LatLng(51.528308, -0.3817765)));
+        }
+        return PLACES;
     }
 
     public static ArrayList<Post> getMockPostList(){
@@ -73,17 +87,6 @@ public class DefValues {
             post1.setLanguages(DefValues.defLanguages());
             post1.setTourists(new ArrayList<User>());
             post1.setPlace(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
-
-            /*
-
-             placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation ));
-            placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
-            placesList.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
-            placesList.add(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
-
-            NEW york new LatLng(40.750580, -73.993584),11)
-             */
-
 
             User user2 = new User();
             user2.setScore(12.0f);

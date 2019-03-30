@@ -42,15 +42,10 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class LanguagesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private String ENGLISH = "English";
+    private String EN = "EN";
+    private String DEFAULT_COLOR = "#b6fcd5";
     private PublishFragment parent;
     private LinearLayout containLayout;
     private List<Integer> toAdd;
@@ -81,22 +76,17 @@ public class LanguagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_languages, container, false);
         containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        //placesList = new ArrayList<Place>();
 
         adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
         adapterLanguages.setOnClickListener(new View.OnClickListener() {
@@ -150,11 +140,11 @@ public class LanguagesFragment extends Fragment {
                     ImageView image = (ImageView) layout.findViewById(R.id.imageId);
                     image.setImageResource(R.drawable.english_flag);
                     TextView text = (TextView) layout.findViewById(R.id.ItemTitle);
-                    text.setText("English");
+                    text.setText(ENGLISH);
                     TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
-                    text2.setText("EN");
+                    text2.setText(EN);
                     View aux = layout.findViewById(R.id.image);
-                    aux.setBackgroundColor(Color.parseColor("#b6fcd5"));
+                    aux.setBackgroundColor(Color.parseColor(DEFAULT_COLOR));
 
                     Toast toast = new Toast(getContext());
                     toast.setGravity(Gravity.BOTTOM |Gravity.FILL_HORIZONTAL, 0, 0);

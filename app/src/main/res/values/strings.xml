@@ -69,6 +69,8 @@
     <string name="scoresTitle">Puntuación</string>
     <string name="yourToursTitle">Mis tours</string>
     <string name="inscriptionSuccessful">Te has apuntado correctamente</string>
+    <string name="creationSuccessful">Tu tour se ha creado correctamente</string>
+    <string name="mapToastMessage">Marque almenos un punto en el mapa</string>
 
 
 </resources>

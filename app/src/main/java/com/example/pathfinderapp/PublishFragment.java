@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,14 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-/*/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PublishFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PublishFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PublishFragment extends Fragment implements Serializable{
 
     private CustomPageAdapter pagerAdapter;
@@ -51,7 +45,6 @@ public class PublishFragment extends Fragment implements Serializable{
     public Post post;
     public User user;
     private int currentItem = 0;
-    private OnFragmentInteractionListener mListener;
 
 
     public PublishFragment() {
@@ -105,9 +98,17 @@ public class PublishFragment extends Fragment implements Serializable{
     }
 
     public void confirmButtonPressed(){
+        makeSuccessToast();
         DefValues.AddPostToToursList(post);
         MainActivity mainActivity = (MainActivity)  getActivity();
         mainActivity.moveToToursPage();
+        cancelButtonPressed();
+    }
+
+    private void makeSuccessToast(){
+        Toast toast = Toast.makeText(getContext(), R.string.creationSuccessful, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 
     public void cancelButtonPressed(){

@@ -24,6 +24,7 @@ import android.os.Looper;
 
 import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.MainActivity;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
@@ -139,18 +140,7 @@ public class WhereFragment extends Fragment {
         mRequestingLocationUpdates = true;
         recycler = getView().findViewById(R.id.places);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        placesList = new ArrayList<Place>();
-
-        /*LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);
-        LatLng LONDON = new LatLng(51.528308, -0.3817765);
-        LatLng BARCELONA = new LatLng(41.3948975, 2.0785566);
-        LatLng PARIS = new LatLng(48.8589506, 2.2768488);
-        41.889363, 12.490389*/
-
-        placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation /*new LatLng(48.8589506, 2.2768488)*/));
-        placesList.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
-        placesList.add(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
-        placesList.add(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
+        placesList = DefValues.defPlaces();
         AdapterPlace adapterPlace = new AdapterPlace(placesList);
         adapterPlace.setOnClickListener(new View.OnClickListener() {
             @Override
