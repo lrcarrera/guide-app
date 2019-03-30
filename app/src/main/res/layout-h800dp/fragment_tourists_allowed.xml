@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="23sp"
+        android:layout_centerHorizontal="true"
         android:text="@string/turists_allowed_title"
         android:textColor="@color/colorBlack"
         android:layout_gravity="center"

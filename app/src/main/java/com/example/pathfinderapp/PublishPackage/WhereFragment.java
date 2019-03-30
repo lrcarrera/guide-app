@@ -162,17 +162,6 @@ public class WhereFragment extends Fragment {
         } else if (!checkPermissions()) {
             requestPermissions();
         }
-
-        /*mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                mCurrentLocation = locationResult.getLastLocation();
-                //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                //updateLocationUI();
-            }
-        };*/
-
     }
 
     private void buildLocationSettingsRequest() {
@@ -195,12 +184,22 @@ public class WhereFragment extends Fragment {
 
         Place aux = placesList.get(position);
         if(position == 0) {
-            aux.setCoord(new LatLng(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude()));
-            stopLocationUpdates();
+            if(mCurrentLocation == null){
+                Toast.makeText(getContext(), R.string.location, Toast.LENGTH_SHORT).show();
+            } else {
+                aux.setCoord(new LatLng(mCurrentLocation.getLongitude(), mCurrentLocation.getLatitude()));
+                stopLocationUpdates();
+                parent.post.setPlace(aux);
+                nextStep();
+            }
+        } else {
+            parent.post.setPlace(aux);
+            nextStep();
         }
-        parent.post.setPlace(aux);
-        nextStep();
+
     }
+
+
 
     private void startLocationUpdates() {
         // Begin by checking if the device has the necessary location settings.

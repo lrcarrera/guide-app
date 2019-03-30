@@ -38,8 +38,8 @@ public class DefValues {
         if(DEF_USER == null){
             DEF_USER = new User();
             DEF_USER.setScore(1.0f);
-            DEF_USER.setName("DEF_USER");
-            DEF_USER.setImage(R.drawable.stock_man1);
+            DEF_USER.setName("Llui Spaimoc Rosales");
+            DEF_USER.setImage(R.drawable.ic_user);
             DEF_USER.setLanguages(DefValues.defLanguages());
         }
         return DEF_USER;

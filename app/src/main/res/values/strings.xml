@@ -27,27 +27,27 @@
     <string name="fb_login_protocol_scheme">fb293971671262365</string>
 
     <!-- WHEN FRAGMENT -->
-    <string name="when_title">¿Cuándo va a ser el tour?</string>
-    <string name="whichTimeTitle">¿A qué hora va a empezar?</string>
-    <string name="durationTitle">¿A qué hora va a acabar?</string>
-    <string name="continueText">Continuar</string>
-    <string name="languagesTitle">¿En qué idiomas vas a guiar?</string>
+    <string name="when_title">When will it be?</string>
+    <string name="whichTimeTitle">What does the tour start?</string>
+    <string name="durationTitle">When does the tour finish?</string>
+    <string name="continueText">Continue</string>
+    <string name="languagesTitle">Which languages will it be?</string>
     <string name="english">English</string>
     <string name="german">German</string>
     <string name="french">French</string>
     <string name="italian">Italian</string>
     <string name="spanish">Spanish</string>
-    <string name="turists_allowed_title">¿Cuántos turistas va a tener este tour como máximo?</string>
-    <string name="whereTitle">¿Dónde quieres guiar?</string>
-    <string name="routeSelectionTitle">¡Seleccione los puntos que va a visitar!</string>
+    <string name="turists_allowed_title">How many tourists will it have?</string>
+    <string name="whereTitle">Where do you want to guide?</string>
+    <string name="routeSelectionTitle">Select the highlights!</string>
     <string name="title_activity_fragment_map">map</string>
-    <string name="priceTitle">Esta es nuestra recomendación por turista.¿Te parece bien?</string>
+    <string name="priceTitle">This is our recommendation.¿Is it ok?</string>
     <string name="defaultPrice">15</string>
     <string name="defaultCurrency">€</string>
-    <string name="summaryTitle">Resumen del Tour</string>
-    <string name="day">Día:</string>
-    <string name="cancel">Cancelar</string>
-    <string name="confirm">Confirmar</string>
+    <string name="summaryTitle">Tour Summary</string>
+    <string name="day">Day:</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
     <string name="separator">-</string>
 
     <!-- SETTINGS -->
@@ -60,17 +60,18 @@
     <string name="wifiandco">Wifi and Mobile data</string>
 
     <string name="alertTitle">¡Hey!</string>
-    <string name="selectLanguageAlert">Seleccione alemnos un idioma</string>
+    <string name="selectLanguageAlert">You must choose at least one language</string>
     <string name="search_bar">Search a city</string>
-    <string name="languages">Idiomas:</string>
-    <string name="scoreTitle">Puntuación:</string>
+    <string name="languages">Languages:</string>
+    <string name="scoreTitle">Score:</string>
     <string name="toursTitle">Tours</string>
     <string name="reviewsTitle">Reviews</string>
-    <string name="scoresTitle">Puntuación</string>
-    <string name="yourToursTitle">Mis tours</string>
-    <string name="inscriptionSuccessful">Te has apuntado correctamente</string>
-    <string name="creationSuccessful">Tu tour se ha creado correctamente</string>
-    <string name="mapToastMessage">Marque almenos un punto en el mapa</string>
+    <string name="scoresTitle">Score</string>
+    <string name="yourToursTitle">My tours</string>
+    <string name="inscriptionSuccessful">You have joined correctly</string>
+    <string name="creationSuccessful">Your tour has been created correctly</string>
+    <string name="mapToastMessage">You must choose at least one point</string>
+    <string name="location">Be sure that geolocation is active.</string>
 
     <!-- KEYS -->
 
