@@ -119,6 +119,8 @@ public class Post implements Serializable {
         this.tourists = tourists;
     }
 
+    public void addTourist(User user){this.tourists.add(user);}
+
     public float getPrice() {
         return price;
     }

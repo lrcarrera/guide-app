@@ -68,6 +68,7 @@
     <string name="reviewsTitle">Reviews</string>
     <string name="scoresTitle">Puntuación</string>
     <string name="yourToursTitle">Mis tours</string>
+    <string name="inscriptionSuccessful">Te has apuntado correctamente</string>
 
 
 </resources>

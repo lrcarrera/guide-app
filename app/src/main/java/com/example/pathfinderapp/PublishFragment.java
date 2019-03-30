@@ -74,6 +74,7 @@ public class PublishFragment extends Fragment implements Serializable{
 
 
         post = new Post();
+        post.setTourists(new ArrayList<User>());
         user = DefValues.defUser();
         post.setGuide(user);
 
@@ -113,6 +114,7 @@ public class PublishFragment extends Fragment implements Serializable{
         seekBarInitialProgress();
         currentItem = 0;
         post = new Post();
+        post.setTourists(new ArrayList<User>());
         post.setGuide(user);
         pager.setCurrentItem(0);
     }

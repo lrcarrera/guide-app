@@ -70,7 +70,7 @@ public class ToursFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
         searchList = DefValues.getMockYourToursList();
-        adapterSearch = new AdapterTour(searchList, getChildFragmentManager());
+        adapterSearch = new AdapterTour(searchList, getChildFragmentManager(), true);
 
         recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));

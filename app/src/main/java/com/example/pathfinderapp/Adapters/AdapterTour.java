@@ -6,32 +6,30 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.pathfinderapp.AdapterSearch;
-import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ramotion.foldingcell.FoldingCell;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +38,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,12 +52,13 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private ArrayList<Post> searchList;
     private ArrayList<Post> originalSearchList;
     private FragmentManager fragmentManager;
+    private boolean isAdded;
 
-    public AdapterTour(ArrayList<Post> searchList, FragmentManager fragmentManager) {
+    public AdapterTour(ArrayList<Post> searchList, FragmentManager fragmentManagerm, boolean isAdded) {
         this.searchList = searchList;
         this.fragmentManager = fragmentManager;
         this.originalSearchList = new ArrayList<>();
-
+        this.isAdded = isAdded;
         originalSearchList.addAll(searchList);
     }
 
@@ -97,6 +97,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     private void processPostData(Post current, ViewHolderItem viewHolder){
+        viewHolder.setPost(current);
         viewHolder.info.setText(String.valueOf(current.getGuide().getName()));
         viewHolder.title.setText(current.getPlace().getName());
         viewHolder.topInfo.setText(String.valueOf(current.getGuide().getName()));
@@ -105,7 +106,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.dateContent.setText(sdf.format(current.getDueTo()));
         viewHolder.fromHourNumber.setText(current.getStartHour());
         viewHolder.toHourNumber.setText(current.getEndHour());
-        viewHolder.touristAllowedNumber.setText(String.valueOf(current.getNumTourists()));
+        touristsAllowed(current, viewHolder);
         viewHolder.priceNumber.setText(String.valueOf(current.getPrice()));
         String auxScore = String.valueOf(current.getGuide().getScore());
         viewHolder.topItemScore.setText(auxScore);
@@ -115,6 +116,19 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.itemLanguages.setText(aux);
         viewHolder.mapPosition = current.getPlace().getCoord();
         viewHolder.places = current.getPlaces();
+        if(isAdded){
+            viewHolder.messageAppearance();
+        } else {
+            viewHolder.inscriptionAppearance();
+        }
+    }
+
+    private void touristsAllowed(Post current, ViewHolderItem viewHolder){
+        int numTouristsAllowed = current.getNumTourists();
+        int currentNumTourists = current.getTourists().size();
+        String value = String.valueOf(currentNumTourists) + " / " + String.valueOf(numTouristsAllowed);
+        viewHolder.touristAllowedNumber.setText(value);
+        viewHolder.inscriptionStatus(currentNumTourists, numTouristsAllowed);
     }
 
     private void processProfilePicture(Post current, ViewHolderItem viewHolder){
@@ -176,11 +190,12 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         //LinearLayout background;
+        Post post;
         TextView dateContent, fromHourNumber, toHourNumber, touristAllowedNumber, priceNumber, itemScore, itemLanguages;
         RecyclerView languages;
         MapView mapView;
         GoogleMap mMap;
-        FloatingActionButton topMapButton, mapButton;
+        FloatingActionButton topMapButton, mapButton, inscriptionButton;
         TextView  title, info;
         ImageView picture;
         TextView  topTitle, topInfo, topItemScore, topItemLanguages;
@@ -188,6 +203,8 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         LatLng mapPosition;
         List<Marker> places;
         boolean isNight = false;
+        int currentTourists,  numTouristsAllowed;
+        //boolean isAdded = false;
 
         public ViewHolderItem(View itemView) {
             super(itemView);
@@ -224,19 +241,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                     mapPopupSettings();
                 }
             });
-
-
-
-
-
-            /*if (mapView != null) {
-                // Initialise the MapView
-                mapView.onCreate(null);
-                // Set the map ready callback to receive the GoogleMap object
-                mapView.getMapAsync(this);
-            }*/
-
-
+            inscriptionButton = itemView.findViewById(R.id.inscribeButton);
+            //if(isAdded)
+               // messageAppearance();
             final FoldingCell fc = itemView.findViewById(R.id.folding_cell);
             fc.initialize(30,1000, Color.DKGRAY, 2);
             // attach click listener to folding cell
@@ -247,6 +254,66 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 }
             });
 
+
+        }
+
+        private void inscriptionStatus(int currentTourists, int numTouristsAllowed){
+            this.currentTourists = currentTourists;
+            this.numTouristsAllowed = numTouristsAllowed;
+            if(currentTourists == numTouristsAllowed){
+                touristAllowedNumber.setTextColor(ContextCompat.getColor(context, R.color.red));
+            } else {
+                touristAllowedNumber.setTextColor(ContextCompat.getColor(context, R.color.green));
+            }
+        }
+
+        private void inscriptionAppearance(){
+            if(currentTourists == numTouristsAllowed){
+                inscriptionButton.hide();
+            } else {
+                inscriptionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                       makeSuccessToast();
+                       inscribe();
+                    }
+                });
+            }
+        }
+
+        private void inscribe(){
+            post.addTourist(new User());
+            DefValues.AddPostToToursList(post);
+            MainActivity mainActivity = (MainActivity) context;
+            mainActivity.moveToToursPage();
+            inscriptionButton.hide();
+        }
+
+        private void makeSuccessToast(){
+            Toast toast = Toast.makeText(context, R.string.inscriptionSuccessful, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+
+        private void setPost(Post post){
+            this.post = post;
+        }
+
+        private void messageAppearance(){
+            //inscriptionButton.setBackgroundColor(ContextCompat.getColor(context, R.color.com_facebook_blue));
+            //inscriptionButton.setBackgroundTintList(ContextCompat.getColorStateList(context,  R.color.com_facebook_blue));
+            inscriptionButton.setImageResource(R.drawable.ic_action_chat);
+            inscriptionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+
+        private void inscribeTour(){
 
         }
 

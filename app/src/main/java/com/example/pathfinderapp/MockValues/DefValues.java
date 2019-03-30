@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class DefValues {
 
@@ -46,7 +47,14 @@ public class DefValues {
     public static ArrayList<Post> getMockPostList(){
         if(POSTS == null){
             POSTS = new ArrayList<Post>();
-            User user1 = new User();
+            ArrayList<User> users = new ArrayList<User>();
+            users.add(new User());
+            users.add(new User());
+            users.add(new User());
+            users.add(new User());
+            users.add(new User());
+            users.add(new User());
+            final User user1 = new User();
             user1.setScore(5.0f);
             user1.setName("Maria Carrera");
             user1.setImage(R.drawable.stock_girl);
@@ -63,6 +71,7 @@ public class DefValues {
             post1.setPrice(14.5f);
             post1.setPlaces(new ArrayList<Marker>());
             post1.setLanguages(DefValues.defLanguages());
+            post1.setTourists(new ArrayList<User>());
             post1.setPlace(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
 
             /*
@@ -87,10 +96,11 @@ public class DefValues {
             post2.setDueTo(new Date());
             post2.setStartHour("12:00");
             post2.setEndHour("14:00");
-            post2.setNumTourists(6);
+            post2.setNumTourists(8);
             post2.setPrice(14.5f);
             post2.setPlaces(new ArrayList<Marker>());
             post2.setLanguages(DefValues.defLanguages());
+            post2.setTourists(users);
             post2.setPlace(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
 
             User user3 = new User();
@@ -106,6 +116,7 @@ public class DefValues {
             post3.setEndHour("24:00");
             post3.setNumTourists(6);
             post3.setPrice(14.5f);
+            post3.setTourists(users);
             post3.setPlaces(new ArrayList<Marker>());
             post3.setLanguages(DefValues.defLanguages());
             post3.setPlace(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
@@ -126,6 +137,7 @@ public class DefValues {
             post4.setEndHour("13:00");
             post4.setNumTourists(6);
             post4.setPrice(14.5f);
+            post4.setTourists(users);
             post4.setPlaces(new ArrayList<Marker>());
             post4.setLanguages(DefValues.defLanguages());
             post4.setPlace(new Place("New York", "EEUU", R.drawable.ic_action_place, new LatLng(40.750580, -73.993584)));
@@ -148,6 +160,8 @@ public class DefValues {
 
     public static ArrayList<Post> getMockYourToursList(){
         if(YOUR_POSTS == null){
+            ArrayList<User> users = new ArrayList<User>();
+            users.add(new User());
             YOUR_POSTS = new ArrayList<Post>();
             User user1 = new User();
             user1.setScore(5.0f);
@@ -164,6 +178,7 @@ public class DefValues {
             post1.setEndHour("21:00");
             post1.setNumTourists(6);
             post1.setPrice(14.5f);
+            post1.setTourists(users);
             post1.setLanguages(DefValues.defLanguages());
             post1.setPlace(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
             post1.setPlaces(new ArrayList<Marker>());
@@ -181,6 +196,7 @@ public class DefValues {
             post2.setEndHour("14:00");
             post2.setNumTourists(6);
             post2.setPrice(14.5f);
+            post2.setTourists(users);
             post2.setLanguages(DefValues.defLanguages());
             post2.setPlace(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
             post2.setPlaces(new ArrayList<Marker>());
@@ -198,6 +214,7 @@ public class DefValues {
             post3.setEndHour("24:00");
             post3.setNumTourists(6);
             post3.setPrice(14.5f);
+            post3.setTourists(users);
             post3.setLanguages(DefValues.defLanguages());
             post3.setPlace(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
             post3.setPlaces(new ArrayList<Marker>());
@@ -218,6 +235,7 @@ public class DefValues {
             post4.setEndHour("13:00");
             post4.setNumTourists(6);
             post4.setPrice(14.5f);
+            post4.setTourists(users);
             post4.setLanguages(DefValues.defLanguages());
             post4.setPlace(new Place("New York", "EEUU", R.drawable.ic_action_place, new LatLng(40.750580, -73.993584)));
             post4.setPlaces(new ArrayList<Marker>());
