@@ -186,7 +186,7 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:textColor="@color/text_button_colors"
-                android:drawableRight="@drawable/ic_person"
+                android:drawableRight="@drawable/ic_action_pass"
                 android:maxLines="1"
                 android:singleLine="true" />
 
