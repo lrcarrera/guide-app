@@ -1,12 +1,14 @@
 package com.example.pathfinderapp;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -104,6 +106,22 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         searchView.setFocusable(false);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(this);
+
+        final SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+            }
+        });
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recycler);
+
+        recycler.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
