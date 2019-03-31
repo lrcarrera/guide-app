@@ -23,7 +23,7 @@ import java.util.Locale;
  * Use the {@link PriceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PriceFragment extends Fragment {
+public class PriceFragment extends Fragment implements INexStep{
 
     private PublishFragment parent;
     private TextView priceText;
@@ -95,7 +95,7 @@ public class PriceFragment extends Fragment {
         });
     }
 
-    private void nextStep(){ parent.summaryFragmentChange(); }
+    public void nextStep(){ parent.summaryFragmentChange(); }
 
     private void setPrice(boolean increase)
     {

@@ -30,11 +30,6 @@ import java.util.ArrayList;
  */
 public class ToursFragment extends Fragment {
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
     private ArrayList<Post> searchList;
     private RecyclerView recycler;

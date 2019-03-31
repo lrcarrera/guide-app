@@ -40,10 +40,6 @@ import java.util.Locale;
  * create an instance of this fragment.
  */
 public class SummaryFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private View view;
     private GoogleMap mMap;
@@ -72,23 +68,13 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // TODO: Rename and change types of parameters
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
-    /*public void setPrice(){
-
-        priceNumber.setText(Integer.parseInt(String.valueOf(parent.post.getPrice())));
-        //onCreateView(getLayoutInflater(), g)
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_summary, container, false);
         FloatingActionButton confirm = view.findViewById(R.id.continueButton);
         FloatingActionButton cancel = view.findViewById(R.id.cancelButton);
@@ -105,7 +91,6 @@ public class SummaryFragment extends Fragment {
             }
         });
         getDataResume();
-        /* Al confirmar ficar els llenguatges seleccionats a isAdded=false*/
         return view;
     }
 
