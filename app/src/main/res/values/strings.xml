@@ -75,7 +75,6 @@
 
     <!-- KEYS -->
     <string name="delete">BORRAR</string>
-
     <string name="facebook_picture_link">facebook_picture_link</string>
     <string name="facebook_name">facebook_name</string>
     <string name="facebook_email">facebook_email</string>
@@ -86,6 +85,13 @@
     <string name="german_key">german_key</string>
     <string name="italian_key">italian_key</string>
     <string name="spanish_key">spanish_key</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="facebook_id">facebook_id</string>
+
+
+
+
 
     <!--TOAST -->
     <string name="configuration_stored_message">Your configuration was stored!</string>

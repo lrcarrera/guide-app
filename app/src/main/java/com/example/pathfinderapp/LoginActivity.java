@@ -62,6 +62,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             "foo@example.com:hello", "bar@example.com:world"
     };
     private static final String DUMMY_PASSWORD = "ThEpASs";
+    private static final String NO_PSSWRD = "no_password";
+    private static final String NO_EMAIL = "no_email";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -88,6 +90,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         prefs = this.getSharedPreferences(
                 "com.example.pathfinderapp", MODE_PRIVATE);
+
+        if (hasbeenLoggedInBefore()){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         mLoginFormView = findViewById(R.id.login_form);
         mPasswordView = findViewById(R.id.password);
         rotateLoading = findViewById(R.id.rotate_loading);
@@ -149,10 +157,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         String facebookMail = object.getString("email");
                                         String facebookPictureLink = "https://graph.facebook.com/" + facebookId + "/picture?type=large";
 
-                                        prefs.edit().putString("facebook_id", facebookId).apply();
-                                        prefs.edit().putString("facebook_name", facebookName).apply();
-                                        prefs.edit().putString("facebook_email", facebookMail).apply();
-                                        prefs.edit().putString("facebook_picture_link", facebookPictureLink).apply();
+                                        prefs.edit().putString(getResources().getString(R.string.facebook_id), facebookId).apply();
+                                        prefs.edit().putString(getResources().getString(R.string.facebook_name), facebookName).apply();
+                                        prefs.edit().putString(getResources().getString(R.string.facebook_email), facebookMail).apply();
+                                        prefs.edit().putString(getResources().getString(R.string.facebook_picture_link), facebookPictureLink).apply();
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -182,6 +190,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
         }
+    }
+
+    private boolean hasbeenLoggedInBefore(){
+        String userEmail =  prefs.getString(getResources().getString(R.string.email), NO_EMAIL);
+        String password =  prefs.getString(getResources().getString(R.string.password), NO_PSSWRD);
+
+        if(userEmail.equals(NO_EMAIL) || password.equals(NO_PSSWRD))
+            return false;
+        return true;
     }
 
     private void populateAutoComplete() {
@@ -236,8 +253,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            prefs.edit().putString("email", DUMMY_CREDENTIALS[0]).apply();
-            prefs.edit().putString("password", DUMMY_PASSWORD).apply();
+            prefs.edit().putString(getResources().getString(R.string.email), DUMMY_CREDENTIALS[0]).apply();
+            prefs.edit().putString(getResources().getString(R.string.password), DUMMY_PASSWORD).apply();
 
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);

@@ -60,6 +60,8 @@ public class ProfileFragment extends Fragment {
     private static final String NO_PHOTO = "no_photo";
     private static final String NO_NAME = "no_name";
     private static final String NO_EMAIL = "no_email";
+    private static final String NO_PSSWRD = "no_password";
+
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
     private Dialog myDialog;
@@ -349,6 +351,9 @@ public class ProfileFragment extends Fragment {
         myDialog.dismiss();
 
         if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
+            prefs.edit().putString(getResources().getString(R.string.email), NO_EMAIL).apply();
+            prefs.edit().putString(getResources().getString(R.string.password), NO_PSSWRD).apply();
+
             getActivity().finish();//TODO: implement logout for credentials from Firebase
             Intent toLogin = new Intent(getActivity(), LoginActivity.class);
             startActivity(toLogin);
