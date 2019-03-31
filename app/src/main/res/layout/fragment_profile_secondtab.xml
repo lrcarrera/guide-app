@@ -8,6 +8,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="About Tab"
+        android:text="Tours"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 </RelativeLayout>
