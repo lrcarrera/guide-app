@@ -68,6 +68,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private static final String EMAIL = "email";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String URL ="https://graph.facebook.com/";
+    private static final String PICTURE_REFERENCE = "/picture?type=large";
+
+    private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -89,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         prefs = this.getSharedPreferences(
-                "com.example.pathfinderapp", MODE_PRIVATE);
+                PACKAGE_NAME, MODE_PRIVATE);
 
         if (hasbeenLoggedInBefore()){
             Intent intent = new Intent(this, MainActivity.class);
@@ -140,7 +147,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             callbackManager = CallbackManager.Factory.create();
 
             LoginButton loginButton = (LoginButton) findViewById(R.id.fbButton);
-            loginButton.setReadPermissions("email");
+            loginButton.setReadPermissions(EMAIL);
+
 
             // Callback registration
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -152,10 +160,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
                                     try {
-                                        String facebookId = object.getString("id");
-                                        String facebookName = object.getString("name");
-                                        String facebookMail = object.getString("email");
-                                        String facebookPictureLink = "https://graph.facebook.com/" + facebookId + "/picture?type=large";
+                                        String facebookId = object.getString(ID);
+                                        String facebookName = object.getString(NAME);
+                                        String facebookMail = object.getString(EMAIL);
+                                        String facebookPictureLink = URL + facebookId + PICTURE_REFERENCE;
 
                                         prefs.edit().putString(getResources().getString(R.string.facebook_id), facebookId).apply();
                                         prefs.edit().putString(getResources().getString(R.string.facebook_name), facebookName).apply();

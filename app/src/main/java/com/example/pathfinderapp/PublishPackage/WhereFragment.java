@@ -54,14 +54,14 @@ import java.util.ArrayList;
  * Use the {@link WhereFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WhereFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class WhereFragment extends Fragment implements INexStep{
 
+    private static final String LOCATION_INADEQUATE = "Location settings are inadequate, and cannot be fixed here. Fix in Settings.";
+    private static final String LOCATION_NOT_SATISFIED = "Location settings are not satisfied. Attempting to upgrade ";
+    private static final String LOCATION_SETTINGS = "location settings ";
+    private static final String PENDING_INTENT_UNABLE = "PendingIntent unable to execute request.";
+    private static String STOP_LOCATION_UPDATES = "stopLocationUpdates: updates never requested, no-op.";
     private static final String TAG = MainActivity.class.getSimpleName();
-
     /**
      * Code used in requesting runtime permissions.
      */
@@ -103,30 +103,17 @@ public class WhereFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // TODO: Rename and change types of parameters
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //mRequestingLocationUpdates = false;
+
         View view = inflater.inflate(R.layout.fragment_where, container, false);
-        //if(savedInstanceState != null)
-        //    parent = (PublishFragment) savedInstanceState.getSerializable("parent");
         parent.setSeekBarStatus();
         return view;
     }
 
-    /*@Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putSerializable("parent", parent);
-    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -213,20 +200,18 @@ public class WhereFragment extends Fragment {
                        int statusCode = ((ApiException) e).getStatusCode();
                        switch (statusCode) {
                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                               Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " +
-                                       "location settings ");
+                               Log.i(TAG, LOCATION_NOT_SATISFIED + LOCATION_SETTINGS);
                                try {
                                    // Show the dialog by calling startResolutionForResult(), and check the
                                    // result in onActivityResult().
                                    ResolvableApiException rae = (ResolvableApiException) e;
                                    rae.startResolutionForResult(parent.getActivity(), REQUEST_CHECK_SETTINGS);
                                } catch (IntentSender.SendIntentException sie) {
-                                   Log.i(TAG, "PendingIntent unable to execute request.");
+                                   Log.i(TAG, PENDING_INTENT_UNABLE);
                                }
                                break;
                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                               String errorMessage = "Location settings are inadequate, and cannot be " +
-                                       "fixed here. Fix in Settings.";
+                               String errorMessage = LOCATION_INADEQUATE;
                                Log.e(TAG, errorMessage);
                                Toast.makeText(parent.getActivity(), errorMessage, Toast.LENGTH_LONG).show();
                                mRequestingLocationUpdates = false;
@@ -237,7 +222,7 @@ public class WhereFragment extends Fragment {
 
     private void stopLocationUpdates() {
         if (!mRequestingLocationUpdates) {
-            Log.d(TAG, "stopLocationUpdates: updates never requested, no-op.");
+            Log.d(TAG, STOP_LOCATION_UPDATES);
             return;
         }
         mFusedLocationClient.removeLocationUpdates(mLocationCallback)
@@ -281,54 +266,7 @@ public class WhereFragment extends Fragment {
         startLocationPermissionRequest();
     }
 
-    /*private boolean checkPermissions(){
-        int permissionState = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void locationPermissionRequest(){
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-        getLastLocation();
-    }*/
-
-    /*private void getLastLocation(){
-        final LatLng aux = null;
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {
-            mFusedLocationClient.getLastLocation().addOnSuccessListener(parent.getActivity(), new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    LatLng a = new LatLng(location.getLatitude(), location.getLongitude());
-                    Toast.makeText(getContext(), "some location detected", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(parent.getActivity(), new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "No location detected", Toast.LENGTH_SHORT).show();
-                }
-            });
-             /*@Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if(task.isSuccessful() && task.getResult() != null)
-                    {
-                        LatLng a = new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude());
-                        Toast.makeText(getContext(), "some location detected", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(), "No location detected", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        } else {
-            locationPermissionRequest();
-        }
-    }*/
-
-    private void nextStep(){
+    public void nextStep(){
         parent.setCurrentPage();
     }
 

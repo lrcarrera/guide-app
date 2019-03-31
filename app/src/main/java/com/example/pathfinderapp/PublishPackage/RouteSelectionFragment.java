@@ -35,27 +35,18 @@ import java.util.ArrayList;
  * Use the {@link RouteSelectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RouteSelectionFragment extends Fragment  {
+public class RouteSelectionFragment extends Fragment implements INexStep {
 
 
-    private LinearLayout mapLayout;
-    private Marker mCurrentMarker;
     private ArrayList<Marker> mMarkerArrayList;
-
     private PublishFragment parent;
     private GoogleMap mMap;
     private static final LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);
     private static final LatLng LONDON = new LatLng(51.528308, -0.3817765);
     private static final LatLng BARCELONA = new LatLng(41.3948975, 2.0785566);
     private static final LatLng PARIS = new LatLng(48.8589506, 2.2768488);
-
-
-    // Barcelona 41.3948975,2.0785566,12
-    // London 51.528308,-0.3817765
-    // Paris 48.8589506,2.2768488,12
-
-
     private OnFragmentInteractionListener mListener;
+
 
     public RouteSelectionFragment() {
         // Required empty public constructor
@@ -119,7 +110,7 @@ public class RouteSelectionFragment extends Fragment  {
         }
     }
 
-    private void nextStep(){
+    public void nextStep(){
         parent.setCurrentPage();
     }
 

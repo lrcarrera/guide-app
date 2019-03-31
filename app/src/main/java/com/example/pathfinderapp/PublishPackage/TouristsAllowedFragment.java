@@ -23,7 +23,7 @@ import java.util.Locale;
  * Use the {@link TouristsAllowedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TouristsAllowedFragment extends Fragment {
+public class TouristsAllowedFragment extends Fragment implements INexStep {
 
 
     private TextView touristNumber;
@@ -52,18 +52,13 @@ public class TouristsAllowedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_tourists_allowed, container, false);
-        //parent.setSeekBarStatus();
         touristNumber = (TextView) view.findViewById(R.id.touristNumber);
         touristNumber.setText(String.valueOf(parent.post.getNumTourists()));
         ImageView btnIncrease = (ImageView) view.findViewById(R.id.btnIncrease);
@@ -115,7 +110,7 @@ public class TouristsAllowedFragment extends Fragment {
 
     }
 
-    private void nextStep(){ parent.setCurrentPage(); }
+    public void nextStep(){ parent.setCurrentPage(); }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {

@@ -39,7 +39,7 @@ import java.util.List;
  * Use the {@link LanguagesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LanguagesFragment extends Fragment {
+public class LanguagesFragment extends Fragment implements INexStep {
 
     private final String ENGLISH = "English";
     private final String EN = "EN";
@@ -167,7 +167,7 @@ public class LanguagesFragment extends Fragment {
         return postLanguages.size();
     }
 
-    private void nextStep(){
+    public void nextStep(){
         parent.setCurrentPage();
     }
 

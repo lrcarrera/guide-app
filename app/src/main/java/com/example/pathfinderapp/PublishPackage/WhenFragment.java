@@ -25,12 +25,14 @@ import java.util.Locale;
  * Use the {@link WhenFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WhenFragment extends Fragment {
+public class WhenFragment extends Fragment implements INexStep {
 
     private CalendarView calendarView;
     private PublishFragment parent;
-
     private OnFragmentInteractionListener mListener;
+    private static String DATE_PATTERN = "dd/MM/yyyy";
+    private static String CONTENT_PATTERN = "/";
+
 
     public WhenFragment() {
         // Required empty public constructor
@@ -60,7 +62,7 @@ public class WhenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_when, container, false);
         calendarView = (CalendarView) view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -76,15 +78,15 @@ public class WhenFragment extends Fragment {
         return view;
     }
 
-    private void nextStep(){
+    public void nextStep(){
         parent.setCurrentPage();
     }
 
     private void setFocus(){
         if(parent.post.getDueTo() != null){
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.getDefault());
             String date = sdf.format(parent.post.getDueTo());
-            String parts[] = date.split("/");
+            String parts[] = date.split(CONTENT_PATTERN);
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, Integer.parseInt(parts[2]));
             calendar.set(Calendar.MONTH, Integer.parseInt(parts[1]));
@@ -94,9 +96,8 @@ public class WhenFragment extends Fragment {
     }
 
     private void  setCalendarMinDate() {
-        Calendar calendar = Calendar.getInstance();
-        long milis = System.currentTimeMillis();
-        calendarView.setMinDate(milis);
+        long millis = System.currentTimeMillis();
+        calendarView.setMinDate(millis);
     }
 
 

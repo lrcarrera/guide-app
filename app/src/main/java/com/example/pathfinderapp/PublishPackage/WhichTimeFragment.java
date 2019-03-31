@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
@@ -21,13 +22,14 @@ import com.example.pathfinderapp.R;
  * Use the {@link WhichTimeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WhichTimeFragment extends Fragment {
+public class WhichTimeFragment extends Fragment implements INexStep {
 
     private PublishFragment parent;
     private boolean isDuration;
     private TextView whenTitle;
     private TimePicker timePicker;
     private OnFragmentInteractionListener mListener;
+    private static String TOUR_DURATION = "The tour must be longer than 1 hour.";
 
     public WhichTimeFragment() {
         // Required empty public constructor
@@ -40,13 +42,6 @@ public class WhichTimeFragment extends Fragment {
      * @param parent Parameter 1.
      * @return A new instance of fragment WhichTimeFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    /*public static WhichTimeFragment newInstance(PublishFragment parent) {
-        WhichTimeFragment fragment = new WhichTimeFragment();
-        fragment.parent = parent;
-        return fragment;
-    }*/
-
     public static WhichTimeFragment newInstance(PublishFragment parent, boolean isDuration){
         WhichTimeFragment fragment = new WhichTimeFragment();
         fragment.parent = parent;
@@ -57,46 +52,54 @@ public class WhichTimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_which_time, container, false);
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         whenTitle = (TextView) view.findViewById(R.id.whenTitle);
 
         checkHours();
 
-
-
         FloatingActionButton continueButton =  view.findViewById(R.id.continueButton);
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                String aux = timePicker.getHour() + ":" + timePicker.getMinute();
-                if(!isDuration)
-                    parent.post.setStartHour(aux);
-                if(isDuration)
-                    parent.post.setEndHour(aux);
-                nextStep();
+                continueButtonClicked();
             }
         });
 
-        /*continueButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                    continueButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-            }
-        });*/
-
         return view;
+    }
+
+    private void continueButtonClicked(){
+        String aux = timePicker.getHour() + ":" + timePicker.getMinute();
+        if(!isDuration){
+            parent.post.setStartHour(aux);
+            nextStep();
+
+        }
+        if(isDuration){
+            if(isMoreThanHour()){
+                parent.post.setEndHour(aux);
+                nextStep();
+            } else {
+                Toast.makeText(getContext(), TOUR_DURATION, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private boolean isMoreThanHour(){
+        String[] time = new String[]{"1", "2"};
+        time = parent.post.getStartHour().split(":");
+        int total = Integer.parseInt(time[0])*60 + Integer.parseInt(time[1]);
+        if((timePicker.getHour()* 60 + timePicker.getMinute()) - total > 60){
+            return true;
+        }
+        return false;
     }
 
     private void checkHours(){
@@ -115,11 +118,9 @@ public class WhichTimeFragment extends Fragment {
                 timePicker.setMinute(Integer.parseInt(time[1]));
             }
         }
-
-
     }
 
-    private void nextStep(){ parent.setCurrentPage(); }
+    public void nextStep(){ parent.setCurrentPage(); }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {

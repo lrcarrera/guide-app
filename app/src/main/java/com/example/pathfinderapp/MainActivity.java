@@ -56,23 +56,19 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.navigation_search:
                     fm.beginTransaction().hide(active).show(fragment1).commit();
                     active = fragment1;
-                    //mTextMessage.setText(R.string.title_search);
                     return true;
                 case R.id.navigation_tours:
 
                     fm.beginTransaction().hide(active).show(fragment2).commit();
                     active = fragment2;
-                    //mTextMessage.setText(R.string.title_tours);
                     return true;
                 case R.id.navigation_publish:
                     fm.beginTransaction().hide(active).show(fragment3).commit();
                     active = fragment3;
-                    //mTextMessage.setText(R.string.title_publish);
                     return true;
                 case R.id.navigation_profile:
                     fm.beginTransaction().hide(active).show(fragment4).commit();
                     active = fragment4;
-                    //mTextMessage.setText(R.string.title_profile);
                     return true;
             }
             return false;
