@@ -97,18 +97,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         prefs = this.getSharedPreferences(
                 PACKAGE_NAME, MODE_PRIVATE);
+        rotateLoading = findViewById(R.id.rotate_loading);
+        mLoginFormView = findViewById(R.id.login_form);
+        mPasswordView = findViewById(R.id.password);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
+        showProgress(true);
         if (hasbeenLoggedInBefore()){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
-        mLoginFormView = findViewById(R.id.login_form);
-        mPasswordView = findViewById(R.id.password);
-        rotateLoading = findViewById(R.id.rotate_loading);
+        showProgress(false);
 
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -261,8 +262,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            prefs.edit().putString(getResources().getString(R.string.email), DUMMY_CREDENTIALS[0]).apply();
-            prefs.edit().putString(getResources().getString(R.string.password), DUMMY_PASSWORD).apply();
+            prefs.edit().putString(getResources().getString(R.string.email), email).apply();
+            prefs.edit().putString(getResources().getString(R.string.password), password).apply();
 
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
