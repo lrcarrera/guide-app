@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.User;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -167,7 +168,7 @@ public class ProfileFragment extends Fragment {
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
             final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);
-            AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount());
+            AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews());
             viewPager.setAdapter(tabsAdapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

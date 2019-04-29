@@ -1,8 +1,12 @@
 package com.example.pathfinderapp.MockValues;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -10,8 +14,13 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
+import javax.sql.RowSetEvent;
 
 public class DefValues {
 
@@ -20,6 +29,7 @@ public class DefValues {
     private static ArrayList<Language> LANGUAGES;
     private static User DEF_USER;
     private static ArrayList<Place> PLACES;
+    private static List<Review> REVIEWS;
 
     private static ArrayList<Language> defLanguages(){
         if(LANGUAGES == null){
@@ -41,6 +51,7 @@ public class DefValues {
             DEF_USER.setName("Llui Spaimoc Rosales");
             DEF_USER.setImage(R.drawable.ic_user);
             DEF_USER.setLanguages(DefValues.defLanguages());
+            //DEF_USER.setReviews(getMockReviews());
         }
         return DEF_USER;
     }
@@ -249,5 +260,21 @@ public class DefValues {
             YOUR_POSTS.add(post4);
         }
         return YOUR_POSTS;
+    }
+
+    public static List<Review> getMockReviews(){
+        if(REVIEWS == null){
+            User guide = getMockPostList().get(0).getGuide();
+            Review aux = new Review("Muy buen tour, guía majisimo oye!", guide, new Date());
+            Review aux2 = new Review("Muy buen tour1, guía majisimo oye!", guide, new Date());
+            Review aux3 = new Review("Muy buen tour2, guía majisimo oye!", guide, new Date());
+            REVIEWS = new ArrayList<Review>();
+            REVIEWS.add(aux);
+            REVIEWS.add(aux2);
+            REVIEWS.add(aux3);
+
+        }
+        return REVIEWS;
+
     }
 }
