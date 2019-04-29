@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -35,6 +36,8 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,8 +91,10 @@ public class ProfileFragment extends Fragment {
 
     private User user;
 
-
     private OnFragmentInteractionListener mListener;
+
+    private FirebaseAuth mAuth;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -125,7 +130,23 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         TextView textViewName = rootView.findViewById(R.id.tv_name);
-        if (user == null){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+
+            textViewName.setText(user.getEmail());
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+
             myDialog = new Dialog(getContext());
             ImageButton settings = (ImageButton) rootView.findViewById(R.id.configure_button);
 
@@ -145,14 +166,15 @@ public class ProfileFragment extends Fragment {
             prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
                     PACKAGE_NAME, Context.MODE_PRIVATE);
 
-            String facebookImageLink =  prefs.getString(getResources().getString(R.string.facebook_picture_link), NO_PHOTO);
-            String name = prefs.getString(getResources().getString(R.string.facebook_name), NO_NAME);
-            String email = prefs.getString(getResources().getString(R.string.facebook_email), NO_EMAIL);
+            //String facebookImageLink =  prefs.getString(getResources().getString(R.string.facebook_picture_link), NO_PHOTO);
+            //String name = prefs.getString(getResources().getString(R.string.facebook_name), NO_NAME);
+            //String email = prefs.getString(getResources().getString(R.string.facebook_email), NO_EMAIL);
 
-            if(!Objects.equals(facebookImageLink, NO_PHOTO))
+            /*if(!Objects.equals(facebookImageLink, NO_PHOTO))
                 new AsyncTaskLoadImage(profilePicture).execute(facebookImageLink);
 
             if(!Objects.equals(name, NO_NAME)) textViewName.setText(name);
+            */
             // if(!Objects.equals(email, NO_EMAIL)) textViewEmail.setText(email);
 
             //TODO: From normal login
@@ -184,9 +206,12 @@ public class ProfileFragment extends Fragment {
 
                 }
             });
-        } else {
+        }/* else {
             textViewName.setText(user.getName());
-        }
+        }*/
+
+
+
 
 
 
@@ -354,7 +379,12 @@ public class ProfileFragment extends Fragment {
 
         myDialog.dismiss();
 
-        if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
+        FirebaseAuth.getInstance().signOut();
+        getActivity().finish();
+        Intent toLogin = new Intent(getActivity(), LoginActivity.class);
+        startActivity(toLogin);
+
+       /* if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
             prefs.edit().putString(getResources().getString(R.string.email), NO_EMAIL).apply();
             prefs.edit().putString(getResources().getString(R.string.password), NO_PSSWRD).apply();
 
@@ -374,7 +404,7 @@ public class ProfileFragment extends Fragment {
 
                 }
             }).executeAsync();
-        }
+        }*/
     }
 
     @Override
