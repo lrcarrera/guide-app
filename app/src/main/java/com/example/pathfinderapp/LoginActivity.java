@@ -129,6 +129,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //Add login
+
+        if (currentUser != null) {
+            // User is signed in.
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         /*showProgress(true);
         if (hasbeenLoggedInBefore()){
             Intent intent = new Intent(this, MainActivity.class);

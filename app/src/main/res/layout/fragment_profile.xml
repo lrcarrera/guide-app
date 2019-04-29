@@ -47,7 +47,7 @@
             android:fontFamily="sans-serif-light"
             android:text="Lluis Spaimoc Rosales"
             android:textColor="@color/white"
-            android:textSize="32sp" />
+            android:textSize="12sp" />
 
 
         <TextView

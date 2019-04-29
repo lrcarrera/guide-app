@@ -71,7 +71,6 @@ public class ProfileDialog extends DialogFragment{
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), guide.getImage());
             bitmap = CroppedImage.getCroppedBitmap(bitmap);
             profilePicture.setImageBitmap(bitmap);
-
         }
 
         //Fragment fragment = ProfileFragment.newInstance(guide);
