@@ -14,6 +14,7 @@ public class User implements Serializable {
     private float score;
     private ArrayList<Language> languages;
     private int image;
+    private List<Review> reviews;
 
 
     public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
@@ -24,6 +25,25 @@ public class User implements Serializable {
         this.score = score;
         this.languages = languages;
         this.image = image;
+    }
+
+    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, List<Review> reviews) {
+        this.name = name;
+        this.postList = postList;
+        this.toursCound = toursCound;
+        this.company = company;
+        this.score = score;
+        this.languages = languages;
+        this.image = image;
+        this.reviews = reviews;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public int getImage() {

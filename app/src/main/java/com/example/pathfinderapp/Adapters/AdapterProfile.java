@@ -1,15 +1,14 @@
 package com.example.pathfinderapp.Adapters;
 
-import com.example.pathfinderapp.ProfileTabFragments.ProfileTab1Fragment;
+import com.example.pathfinderapp.Models.Review;
+import com.example.pathfinderapp.ProfileTabFragments.ReviewsCaroussel;
 import com.example.pathfinderapp.ProfileTabFragments.ProfileTab2Fragment;
 import com.example.pathfinderapp.ProfileTabFragments.ProfileTab3Fragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 /**
@@ -19,9 +18,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class AdapterProfile extends FragmentStatePagerAdapter {
 
     private final int mNumOfTabs;
-    public AdapterProfile(FragmentManager fm, int NoofTabs){
+    List<Review> reviews;
+
+    public AdapterProfile(FragmentManager fm, int NoofTabs, List<Review> reviews){
         super(fm);
         this.mNumOfTabs = NoofTabs;
+        this.reviews = reviews;
     }
     @Override
     public int getCount() {
@@ -31,7 +33,7 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
     public Fragment getItem(int position){
         switch (position){
             case 0:
-                return new ProfileTab1Fragment();
+                return new ReviewsCaroussel(reviews);
             case 1:
                 return new ProfileTab2Fragment();
             case 2:
