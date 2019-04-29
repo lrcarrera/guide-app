@@ -190,7 +190,7 @@ public class ProfileFragment extends Fragment {
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
             final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);
-            AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews());
+            AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews(), DefValues.getMockPostList());
             viewPager.setAdapter(tabsAdapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -3,11 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/textView"
+
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/carouselView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillColor="#FFFFFFFF"
+        android:radius="6dp"
+        android:strokeColor="#FF777777"/>
+
+    <com.synnapps.carouselview.CirclePageIndicator
+        android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Tours"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

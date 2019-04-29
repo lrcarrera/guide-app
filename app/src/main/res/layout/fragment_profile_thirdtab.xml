@@ -8,6 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Score"
+        android:text="98"
+        android:textStyle="bold"
+        android:textSize="64sp"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 </RelativeLayout>

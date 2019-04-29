@@ -87,7 +87,7 @@ public class ReviewsCaroussel extends Fragment {
             //fruitImageView.setImageResource(sampleImages[position]);
             //labelTextView.setText(sampleTitles[position]);
 
-            reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+            reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
 
             return customView;
         }

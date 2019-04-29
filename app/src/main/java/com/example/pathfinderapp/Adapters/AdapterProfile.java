@@ -1,8 +1,9 @@
 package com.example.pathfinderapp.Adapters;
 
+import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.ProfileTabFragments.ReviewsCaroussel;
-import com.example.pathfinderapp.ProfileTabFragments.ProfileTab2Fragment;
+import com.example.pathfinderapp.ProfileTabFragments.ToursDone;
 import com.example.pathfinderapp.ProfileTabFragments.ProfileTab3Fragment;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
 
     private final int mNumOfTabs;
     List<Review> reviews;
+    List<Post> posts;
 
-    public AdapterProfile(FragmentManager fm, int NoofTabs, List<Review> reviews){
+    public AdapterProfile(FragmentManager fm, int NoofTabs, List<Review> reviews, List<Post> posts){
         super(fm);
         this.mNumOfTabs = NoofTabs;
         this.reviews = reviews;
+        this.posts = posts;
     }
     @Override
     public int getCount() {
@@ -35,7 +38,7 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
             case 0:
                 return new ReviewsCaroussel(reviews);
             case 1:
-                return new ProfileTab2Fragment();
+                return new ToursDone(posts);
             case 2:
                 return new ProfileTab3Fragment();
             default:
