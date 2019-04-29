@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
+import com.example.pathfinderapp.Models.User;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -85,6 +86,8 @@ public class ProfileFragment extends Fragment {
     private AdapterProfile mSectionsPageAdapter;
     private ViewPager mViewPager;
 
+    private User user;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -96,17 +99,13 @@ public class ProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param user Parameter 1.
      * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
+    public static ProfileFragment newInstance(User user) {
         ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.user = user;
         return fragment;
     }
 
@@ -125,65 +124,70 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        myDialog = new Dialog(getContext());
-        ImageButton settings = (ImageButton) rootView.findViewById(R.id.configure_button);
-
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSettings();
-            }
-        });
-
-
-        profilePicture = rootView.findViewById(R.id.profilePicture);
         TextView textViewName = rootView.findViewById(R.id.tv_name);
-        //textViewEmail = rootView.findViewById(R.id.tv_email);
+        if (user == null){
+            myDialog = new Dialog(getContext());
+            ImageButton settings = (ImageButton) rootView.findViewById(R.id.configure_button);
 
-        //From facebook login
-        prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
-                PACKAGE_NAME, Context.MODE_PRIVATE);
-
-        String facebookImageLink =  prefs.getString(getResources().getString(R.string.facebook_picture_link), NO_PHOTO);
-        String name = prefs.getString(getResources().getString(R.string.facebook_name), NO_NAME);
-        String email = prefs.getString(getResources().getString(R.string.facebook_email), NO_EMAIL);
-
-        if(!Objects.equals(facebookImageLink, NO_PHOTO))
-            new AsyncTaskLoadImage(profilePicture).execute(facebookImageLink);
-
-        if(!Objects.equals(name, NO_NAME)) textViewName.setText(name);
-       // if(!Objects.equals(email, NO_EMAIL)) textViewEmail.setText(email);
-
-        //TODO: From normal login
+            settings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openSettings();
+                }
+            });
 
 
-        //Log.d(TAG, "onCreate: Starting.");
+            profilePicture = rootView.findViewById(R.id.profilePicture);
+            //TextView textViewName = rootView.findViewById(R.id.tv_name);
+            //textViewEmail = rootView.findViewById(R.id.tv_email);
 
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.reviewsTitle));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.toursTitle));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.scoresTitle));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+            //From facebook login
+            prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
+                    PACKAGE_NAME, Context.MODE_PRIVATE);
 
-        final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);
-        AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(tabsAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+            String facebookImageLink =  prefs.getString(getResources().getString(R.string.facebook_picture_link), NO_PHOTO);
+            String name = prefs.getString(getResources().getString(R.string.facebook_name), NO_NAME);
+            String email = prefs.getString(getResources().getString(R.string.facebook_email), NO_EMAIL);
 
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            if(!Objects.equals(facebookImageLink, NO_PHOTO))
+                new AsyncTaskLoadImage(profilePicture).execute(facebookImageLink);
 
-            }
-        });
+            if(!Objects.equals(name, NO_NAME)) textViewName.setText(name);
+            // if(!Objects.equals(email, NO_EMAIL)) textViewEmail.setText(email);
+
+            //TODO: From normal login
+
+
+            //Log.d(TAG, "onCreate: Starting.");
+
+            TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.reviewsTitle));
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.toursTitle));
+            tabLayout.addTab(tabLayout.newTab().setText(R.string.scoresTitle));
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);
+            AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount());
+            viewPager.setAdapter(tabsAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+        } else {
+            textViewName.setText(user.getName());
+        }
+
 
 
         return rootView;

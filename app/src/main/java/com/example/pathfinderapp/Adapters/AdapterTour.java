@@ -1,7 +1,9 @@
 package com.example.pathfinderapp.Adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,10 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.GuideProfileActivity;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
+import com.example.pathfinderapp.ProfileDialog;
+import com.example.pathfinderapp.ProfileFragment;
 import com.example.pathfinderapp.R;
 import com.example.pathfinderapp.ToursFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,10 +45,15 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem>
         implements View.OnClickListener {
@@ -55,8 +65,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private FragmentManager fragmentManager;
     private final boolean isAdded;
     private final ToursFragment searchFragment;
+    //private FragmentManager fragmentManager;
 
-    public AdapterTour(ArrayList<Post> searchList, boolean isAdded, ToursFragment searchFragment) {
+    public AdapterTour(FragmentManager fragmentManager, ArrayList<Post> searchList, boolean isAdded, ToursFragment searchFragment) {
         this.searchList = searchList;
         this.fragmentManager = fragmentManager;
         this.originalSearchList = new ArrayList<>();
@@ -234,6 +245,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         List<Marker> places;
         boolean isNight = false;
         int currentTourists,  numTouristsAllowed;
+
+        ProfileDialog dialog;
+        View view;
         //boolean isAdded = false;
 
         ViewHolderItem(View itemView) {
@@ -247,9 +261,21 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             title = itemView.findViewById(R.id.ItemTitle);
             info = itemView.findViewById(R.id.ItemInfo);
             picture = itemView.findViewById(R.id.imageId);
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    profilePopupSettings();
+                }
+            });
             topTitle = itemView.findViewById(R.id.topItemTitle);
             topInfo = itemView.findViewById(R.id.topItemInfo);
             topPicture = itemView.findViewById(R.id.topImageId);
+            topPicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    profilePopupSettings();
+                }
+            });
             itemScore = itemView.findViewById(R.id.ItemScore);
             topItemScore = itemView.findViewById(R.id.topItemScore);
             itemLanguages = itemView.findViewById(R.id.ItemLanguages);
@@ -272,7 +298,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             });
             inscriptionButton = itemView.findViewById(R.id.inscribeButton);
             //if(isAdded)
-               // messageAppearance();
+               // messageAppearance();profilePopupSettings()
             final FoldingCell fc = itemView.findViewById(R.id.folding_cell);
             fc.initialize(30,1000, Color.DKGRAY, 2);
             // attach click listener to folding cell
@@ -349,6 +375,100 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         }
 
         private void inscribeTour(){
+
+        }
+
+        public void dismiss(View view){
+            this.view = view;
+            /*FragmentTransaction ft2 = fragmentManager.beginTransaction();
+            ft2.remove(fragmentManager.findFragmentByTag("profile_fragment"));
+            ft2.commit();*/
+            //dismiss();
+            dialog.dismiss();
+        }
+
+        private void profilePopupSettings(){
+            dialog = new ProfileDialog(post.getGuide(), fragmentManager, view, this, post.getPlace());
+            //Fragment fragment = ProfileFragment.newInstance(post.getGuide());
+            FragmentTransaction ft2 = fragmentManager.beginTransaction();
+            //ft2.add(R.id.profile_popup_linear, new ProfileFragment(), "profile_fragment");
+            //ft2.commit();
+            //dialog.show(fragmentManager, "profile_fragment");
+            dialog.show(ft2, "profile_fragment_popup");
+
+            //dialog.sh
+            //final Dialog auxDialog = new Dialog(context);
+
+            //auxDialog.setContentView(R.layout.profile_popup);
+            //View view = auxDialog.findViewById(R.id.profile_popup_fragment);
+
+           /* Fragment fragment = ProfileFragment.newInstance(post.getGuide());
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.profile_popup_fragment, fragment, "profile_fragment")
+                    .commit();
+            //View btnClose = auxDialog.findViewById(R.id.profile_popup_fragment);
+            /*
+            FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+            SectionDescriptionFragment bdf = new SectionDescriptionFragment();
+            ft.replace(R.id.book_description_fragment, bdf);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.addToBackStack(null);
+            ft.commit();
+                        */
+            /*ProfileDialog dialog = new ProfileDialog();
+            //FragmentManager fragmentManager =
+            Fragment fragment = ProfileFragment.newInstance(post.getGuide());
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.profile_popup_linear, fragment);
+            dialog.show(fragmentTransaction, "profile_fragment");
+            //dialog.show();
+            //Intent intent = new Intent(context, GuideProfileActivity.class);
+            //intent.putExtra("guide", g);
+            //context.startActivity(intent);
+            //ProfileDialog dialog = ProfileDialog.newInstance(post.getGuide(), fragmentManager, context);
+            //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //dialog.setContentView(R.layout.profile_popup);
+
+            //Fragment fragment = ProfileFragment.newInstance(post.getGuide());
+            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //fragmentTransaction.add(R.id.profile_layout, fragment);
+
+            //dialog.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //dialog.show(fragment, "profile_fragment");
+            //dialog.aux();
+            //dialog.show();
+            //fragmentTransaction.commit();
+            //dialogFragment.show(fragmentManager, "profile_fragment");
+            //Dialog auxDialog = new ProfileDialog(context, fragmentManager);
+
+            //final Dialog auxDialog = new Dialog(context);
+            //auxDialog.setContentView(R.layout.profile_popup);
+            //View auxFragment = auxDialog.findViewById(R.id.profile_popup);
+
+            //ProfileFragment fragment = new ProfileFragment();
+            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //fragmentTransaction.add(R.id.profile_popup, fragment);
+            //fragmentTransaction.commit();
+
+            /*FloatingActionButton btnClose = auxDialog.findViewById(R.id.btnClose);
+            MapView map = auxDialog.findViewById(R.id.map);
+            if (map != null) {
+                // Initialise the MapView
+                map.onCreate(null);
+                // Set the map ready callback to receive the GoogleMap object
+                map.getMapAsync(this);
+            }*/
+            //ViewGroup.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            //dialog.addContentView(fragment);
+            //auxDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //auxDialog.show();
+            /*btnClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    auxDialog.dismiss();
+                }
+            });*/
 
         }
 

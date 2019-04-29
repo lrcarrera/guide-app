@@ -15,6 +15,7 @@ public class User implements Serializable {
     private ArrayList<Language> languages;
     private int image;
 
+
     public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
         this.name = name;
         this.postList = postList;

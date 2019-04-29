@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +66,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             return;
 
         ArrayList<Post> searchList = DefValues.getMockPostList();
-        adapterSearch = new AdapterTour(searchList, false, null);
+        FragmentManager fragmentManager = getFragmentManager();
+        adapterSearch = new AdapterTour(fragmentManager, searchList, false, null);
 
         RecyclerView recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));

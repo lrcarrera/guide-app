@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/profile_popup_linear"
+    android:tag="profile_fragment_popup"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+
+
+   <fragment android:name="com.example.pathfinderapp.ProfileFragment"
+       android:layout_weight="1"
+       android:layout_width="wrap_content"
+       android:layout_height="0dp" />
+
+    <!--<LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/myFragmentHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         />-->
+
+</LinearLayout>
