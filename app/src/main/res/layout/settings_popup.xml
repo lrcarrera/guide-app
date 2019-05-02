@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="350dp"
-    android:layout_height="475dp"
+    android:layout_height="525dp"
     android:layout_gravity="center"
     android:background="@drawable/background_popup"
     android:orientation="vertical"
@@ -150,9 +150,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp">
 
-        <ImageView
+        <androidx.recyclerview.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/languages"
+            android:layout_marginStart="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"/>
+
+        <!--ImageView
             android:id="@+id/frenchflag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/spain_flag" />
+            app:srcCompat="@drawable/spain_flag" /-->
 
 
     </LinearLayout>
@@ -191,14 +202,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!--<include
-            android:id="@+id/image"
-            layout="@layout/languages_recycler_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal" />-->
 
-        <CheckBox
+
+        <!--CheckBox
             android:id="@+id/checkbox_french"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -227,7 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="38dp"
-            android:buttonTint="@color/colorBlack" />
+            android:buttonTint="@color/colorBlack" /-->
 
 
 
@@ -254,12 +260,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/btnSave"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/buttonstylepopup"
             android:text="@string/save"
             android:layout_marginLeft="60dp"
@@ -268,7 +274,7 @@
         <Button
             android:id="@+id/btnlogout"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/buttonstylepopup"
             android:text="@string/logout"
             android:layout_marginLeft="20dp"

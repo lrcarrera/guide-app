@@ -10,8 +10,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -22,14 +27,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
 import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
 import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.User;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -46,6 +54,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -95,6 +104,9 @@ public class ProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private FirebaseAuth mAuth;
+
+    private AdapterLanguageHorizontal adapterLanguages;
+    private ArrayList<Language> languagesList;
 
 
     public ProfileFragment() {
@@ -219,16 +231,37 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
+    private void addLanguages(Dialog dialog){
+        languagesList = DefValues.getMockPostList().get(0).getLanguages();
+        RecyclerView recycler = dialog.findViewById(R.id.languages);
+        /*recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                newState = newState % languagesList.size();
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });*/
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
+        adapterLanguages = new AdapterLanguageHorizontal(languagesList, true, setLanguagesStatuses(languagesList));
+        recycler.setAdapter(adapterLanguages);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+    }
+
     private void openSettings(){
 
         myDialog.setContentView(R.layout.settings_popup);
-
+        addLanguages(myDialog);
         checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
-        checkboxFrench = (CheckBox) myDialog.findViewById(R.id.checkbox_french);
+        /*checkboxFrench = (CheckBox) myDialog.findViewById(R.id.checkbox_french);
         checkboxEnglish = (CheckBox) myDialog.findViewById(R.id.checkbox_english);
         checkboxGerman = (CheckBox) myDialog.findViewById(R.id.checkbox_german);
         checkboxItalian = (CheckBox) myDialog.findViewById(R.id.checkbox_italian);
-        checkboxSpanish = (CheckBox) myDialog.findViewById(R.id.checkbox_spanish);
+        checkboxSpanish = (CheckBox) myDialog.findViewById(R.id.checkbox_spanish);*/
 
         RadioGroup radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
         radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
@@ -293,10 +326,21 @@ public class ProfileFragment extends Fragment {
             radioWifiAndMore.setChecked(false);
         }
 
-        setLanguagesStatuses();
+        //setLanguagesStatuses();
     }
 
-    private void setLanguagesStatuses(){
+    public boolean[] setLanguagesStatuses(ArrayList<Language> languagesList)
+    {
+
+       boolean[] bools = new boolean[languagesList.size()];
+       for (int i=0; i < languagesList.size(); i++)
+       {
+           bools[i] = prefs.getBoolean(languagesList.get(i).getCode(), false);
+       }
+       return bools;
+    }
+
+    /*private void setLanguagesStatuses(){
 
         Boolean isFrenchChecked = prefs.getBoolean(getResources().getString(R.string.french_key), false);
         Boolean isEnglishChecked = prefs.getBoolean(getResources().getString(R.string.english_key), false);
@@ -329,7 +373,7 @@ public class ProfileFragment extends Fragment {
         }else{
             checkboxSpanish.setChecked(false);
         }
-    }
+    }*/
 
     private void storePreferenceValues(){
 
@@ -346,7 +390,15 @@ public class ProfileFragment extends Fragment {
             prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), true).apply();
         }
 
-        if(checkboxFrench.isChecked()){
+        boolean[] listPrefs = adapterLanguages.getCheckBoxesStatus();
+        for (int i=0; i < listPrefs.length; i++)
+        {
+            if(listPrefs[i])
+                prefs.edit().putBoolean(languagesList.get(i).getCode(), true).apply();
+            //bools[i] = prefs.getBoolean(languagesList.get(i).getCode(), false);
+        }
+
+        /*if(checkboxFrench.isChecked()){
             prefs.edit().putBoolean(getResources().getString(R.string.french_key), true).apply();
         }else{
             prefs.edit().putBoolean(getResources().getString(R.string.french_key), false).apply();
@@ -370,7 +422,7 @@ public class ProfileFragment extends Fragment {
             prefs.edit().putBoolean(getResources().getString(R.string.spanish_key), true).apply();
         }else{
             prefs.edit().putBoolean(getResources().getString(R.string.spanish_key), false).apply();
-        }
+        }*/
 
         myDialog.dismiss();
         Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();

@@ -38,6 +38,10 @@ public class DefValues {
                     new Language("english_flag", "English", "EN",R.drawable.english_flag),
                     new Language("french_flag" , "French" , "FR",R.drawable.french_flag),
                     new Language("italian_flag", "Italian", "IT",R.drawable.italy_flag),
+                    new Language("german_flag" , "German" , "DE",R.drawable.german_flag),
+                    new Language("german_flag" , "German" , "DE",R.drawable.german_flag),
+                    new Language("german_flag" , "German" , "DE",R.drawable.german_flag),
+                    new Language("german_flag" , "German" , "DE",R.drawable.german_flag),
                     new Language("german_flag" , "German" , "DE",R.drawable.german_flag)
             ));
         }
