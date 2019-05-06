@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PathfinderApp</string>
     <string name="title_search">Search</string>
     <string name="title_tours">Tours</string>
@@ -92,7 +92,7 @@
 
     <!--TOAST -->
     <string name="configuration_stored_message">Your configuration was stored!</string>
-    <string name="is_first_time">isFirstTime</string>
+    <string name="is_first_time" tools:ignore="ExtraTranslation">isFirstTime</string>
     <string name="speaking_languages">Which languages do you speak?</string>
 
 </resources>

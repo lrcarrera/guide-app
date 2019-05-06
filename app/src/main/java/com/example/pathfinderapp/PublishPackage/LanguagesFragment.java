@@ -10,8 +10,13 @@ import android.os.Bundle;
 import com.example.pathfinderapp.LangugesSelectionActivity;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
@@ -19,6 +24,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +38,15 @@ import com.example.pathfinderapp.Adapters.AdapterLanguage;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -216,13 +228,54 @@ public class LanguagesFragment extends Fragment implements INexStep {
         {
             parent.post.setLanguages(postLanguages);
         } else {
-            saveLanguagesInDataBase();
+            saveLanguagesInDataBase(postLanguages);
         }
         return postLanguages.size();
     }
 
-    private void saveLanguagesInDataBase(){
+    private void saveLanguagesInDataBase(ArrayList<Language> languages){
+
         // Logica del luis
+        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> language = new HashMap<>();
+        language.put("code", "EN");
+        language.put("flag", "english_flag");
+        language.put("name", "English");
+        language.put("picture", 1815);
+
+        // Add a new document with a generated ID
+        db.collection("languages")
+                .add(language)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("TEST09", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TEST09", "Error adding document", e);
+                    }
+                });
+
+
+        db.collection("languages")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TEST08", document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.w("TEST08", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+                */
         act.changeFirstTimeStatus();
     }
 

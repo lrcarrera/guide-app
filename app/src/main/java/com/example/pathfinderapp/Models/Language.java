@@ -7,10 +7,20 @@ public class Language {
     private String   code;
     private int   picture;
     private boolean added;
+    private String id;
 
     public Language(String flag, String name) {
         this.flag = flag;
         this.name = name;
+    }
+
+    public Language(String id, String flag, String name, String code, int picture) {
+        this.id = id;
+        this.flag = flag;
+        this.name = name;
+        this.code = code;
+        this.picture = picture;
+        this.added = false;
     }
 
     public Language(String flag, String name, String code, int picture) {
@@ -59,5 +69,13 @@ public class Language {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
