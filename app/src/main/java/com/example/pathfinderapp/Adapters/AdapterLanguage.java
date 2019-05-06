@@ -23,7 +23,6 @@ public class AdapterLanguage
     private static final String SELECTED_COLOR = "#b6fcd5";
 
     private View view;
-    private boolean isSettings;
 
     private final ArrayList<Language> languagesList;
     private View.OnClickListener listener;

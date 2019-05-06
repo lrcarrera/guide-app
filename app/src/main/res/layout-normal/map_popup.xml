@@ -11,12 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:src="@drawable/ic_action_deny"
-        android:gravity="center"
-        android:textColor="@color/white"
-        app:backgroundTint="@color/colorWhite"
         android:backgroundTint="@color/colorWhite"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:src="@drawable/ic_action_deny"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:backgroundTint="@color/colorWhite" />
 
 
 

@@ -133,8 +133,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //Add login
 
         if (currentUser != null) {
-            // User is signed in.
-            Intent intent = new Intent(this, MainActivity.class);
+            boolean aux = prefs.getBoolean(getResources().getString(R.string.is_first_time), true);
+            Intent intent;
+            if(aux){
+                intent = new Intent(this, LangugesSelectionActivity.class);
+            } else {
+                intent = new Intent(this, MainActivity.class);
+
+            }
             startActivity(intent);
             finish();
         }

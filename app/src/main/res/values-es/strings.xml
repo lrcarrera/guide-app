@@ -94,4 +94,6 @@
 
     <!--TOAST -->
     <string name="configuration_stored_message">¡Tú configuración se ha guardado correctamente!</string>
+    <string name="is_first_time">isFirstTime</string>
+    <string name="speaking_languages">¿Qué idiomas hablas?</string>
 </resources>

@@ -31,7 +31,7 @@ public class DefValues {
     private static ArrayList<Place> PLACES;
     private static List<Review> REVIEWS;
 
-    private static ArrayList<Language> defLanguages(){
+    public static ArrayList<Language> defLanguages(){
         if(LANGUAGES == null){
             LANGUAGES = new ArrayList<Language>(Arrays.asList(
                     new Language("spanish_flag", "Spanish", "ES", R.drawable.spain_flag),

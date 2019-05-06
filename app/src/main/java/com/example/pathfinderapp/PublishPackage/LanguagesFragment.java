@@ -1,10 +1,15 @@
 package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.example.pathfinderapp.LangugesSelectionActivity;
+import com.example.pathfinderapp.MainActivity;
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
@@ -49,6 +54,8 @@ public class LanguagesFragment extends Fragment implements INexStep {
     private List<Integer> toAdd;
     private RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
+    private ArrayList<Language> languages;
+    private LangugesSelectionActivity act;
 
     public LanguagesFragment() {
         // Required empty public constructor
@@ -68,6 +75,14 @@ public class LanguagesFragment extends Fragment implements INexStep {
         return fragment;
     }
 
+    public static LanguagesFragment newInstance(ArrayList<Language> languages, LangugesSelectionActivity act){
+        LanguagesFragment fragment = new LanguagesFragment();
+        fragment.languages = languages;
+        fragment.act = act;
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,15 +95,29 @@ public class LanguagesFragment extends Fragment implements INexStep {
         View view = inflater.inflate(R.layout.fragment_languages, container, false);
         containLayout = (LinearLayout) view.findViewById(R.id.switchLayout);
 
+
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-
-        AdapterLanguage adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
+        AdapterLanguage adapterLanguages;
+        if(languages == null)
+        {
+            adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
+        } else {
+            adapterLanguages = new AdapterLanguage(languages);
+            TextView textView = view.findViewById(R.id.whenTitle);
+            textView.setText(R.string.speaking_languages);
+        }
         adapterLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int pos =  recycler.getChildAdapterPosition(v);
-                List<Language> aux = parent.user.getLanguages();
+                List<Language> aux;
+                if(languages == null)
+                {
+                    aux = parent.user.getLanguages();
+                } else {
+                    aux = DefValues.defLanguages();
+                }
                 Language language = aux.get(pos);
                 language.setAdded(!language.isAdded());
                 aux.set(pos, language);
@@ -124,47 +153,77 @@ public class LanguagesFragment extends Fragment implements INexStep {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int added = addLanguagesToPost();
-                if (added > 0){
-                    nextStep();
-                } else {
-                    LayoutInflater inflater = getLayoutInflater();
-                    View layout = inflater.inflate(R.layout.custom_toast,
-                            (ViewGroup) getActivity().findViewById(R.id.toastRoot));
-
-                    ImageView image = (ImageView) layout.findViewById(R.id.imageId);
-                    image.setImageResource(R.drawable.english_flag);
-                    TextView text = (TextView) layout.findViewById(R.id.ItemTitle);
-                    text.setText(ENGLISH);
-                    TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
-                    text2.setText(EN);
-                    View aux = layout.findViewById(R.id.image);
-                    aux.setBackgroundColor(Color.parseColor(DEFAULT_COLOR));
-
-                    Toast toast = new Toast(getContext());
-                    toast.setGravity(Gravity.BOTTOM |Gravity.FILL_HORIZONTAL, 0, 0);
-                    toast.setDuration(Toast.LENGTH_LONG);
-                    toast.setView(layout);
-                    toast.show();
+                if(languages == null)
+                {
+                    int added = addLanguagesToPost();
+                    if (added > 0){
+                        nextStep();
+                    } else {
+                       showErrorMessage();
+                    }
+                }else{
+                    int added = addLanguagesToPost();
+                    if(added > 0){
+                        act.startMainPage();
+                    }else{
+                        showErrorMessage();
+                    }
                 }
-
             }
         });
 
         containLayout.addView(continueButton);
     }
 
+    private void showErrorMessage(){
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast,
+                (ViewGroup) getActivity().findViewById(R.id.toastRoot));
+
+        ImageView image = (ImageView) layout.findViewById(R.id.imageId);
+        image.setImageResource(R.drawable.english_flag);
+        TextView text = (TextView) layout.findViewById(R.id.ItemTitle);
+        text.setText(ENGLISH);
+        TextView text2 = (TextView) layout.findViewById(R.id.ItemInfo);
+        text2.setText(EN);
+        View aux = layout.findViewById(R.id.image);
+        aux.setBackgroundColor(Color.parseColor(DEFAULT_COLOR));
+
+        Toast toast = new Toast(getContext());
+        toast.setGravity(Gravity.BOTTOM |Gravity.FILL_HORIZONTAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+
+
     private int addLanguagesToPost()
     {
-        ArrayList<Language> userLanguages = parent.user.getLanguages();
+        ArrayList<Language> userLanguages;
+        if(languages == null){
+            userLanguages = parent.user.getLanguages();
+        }else{
+            userLanguages = languages;
+        }
+
         ArrayList<Language> postLanguages = new ArrayList<>();
         for(Language language : userLanguages)
         {
             if(language.isAdded())
                 postLanguages.add(language);
         }
-        parent.post.setLanguages(postLanguages);
+        if(languages == null)
+        {
+            parent.post.setLanguages(postLanguages);
+        } else {
+            saveLanguagesInDataBase();
+        }
         return postLanguages.size();
+    }
+
+    private void saveLanguagesInDataBase(){
+        // Logica del luis
+        act.changeFirstTimeStatus();
     }
 
     public void nextStep(){
