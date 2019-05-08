@@ -38,6 +38,8 @@ import com.example.pathfinderapp.Adapters.AdapterLanguage;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -235,10 +237,16 @@ public class LanguagesFragment extends Fragment implements INexStep {
 
     private void saveLanguagesInDataBase(ArrayList<Language> languages){
 
-        // Logica del luis
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Map<String, Object> language = new HashMap<>();
+
+        // Logica del luis
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userUid = user.getUid();
+
+
+       /* Map<String, Object> language = new HashMap<>();
+
         language.put("code", "EN");
         language.put("flag", "english_flag");
         language.put("name", "English");
@@ -259,23 +267,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
                         Log.w("TEST09", "Error adding document", e);
                     }
                 });
-
-
-        db.collection("languages")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TEST08", document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w("TEST08", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-                */
+*/
         act.changeFirstTimeStatus();
     }
 

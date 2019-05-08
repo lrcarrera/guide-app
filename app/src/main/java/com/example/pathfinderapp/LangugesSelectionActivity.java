@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,7 +40,7 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_languges_selection);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final LangugesSelectionActivity activity = this;
 
@@ -56,7 +57,7 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
 
                             languages = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-            //    public Language(long id, String flag, String name, String code, int picture) {
+                                //    public Language(long id, String flag, String name, String code, int picture) {
 
                                 languages.add(new Language(
                                         document.getId(),
@@ -73,6 +74,8 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
 
                             prefs = getApplicationContext().getSharedPreferences(
                                     PACKAGE_NAME, MODE_PRIVATE);
+
+
 
                         } else {
                             Log.w("TEST08", "Error getting documents.", task.getException());

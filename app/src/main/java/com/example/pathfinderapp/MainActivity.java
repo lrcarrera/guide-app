@@ -25,6 +25,8 @@ import com.example.pathfinderapp.PublishPackage.TouristsAllowedFragment;
 import com.example.pathfinderapp.PublishPackage.WhenFragment;
 import com.example.pathfinderapp.PublishPackage.WhereFragment;
 import com.example.pathfinderapp.PublishPackage.WhichTimeFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -108,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
     }
 
     private void changeIcons(BottomNavigationView navigationView)
