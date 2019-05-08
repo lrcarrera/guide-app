@@ -66,22 +66,22 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
                                         document.getString("code"),
                                         document.getLong("picture").intValue()));
                             }
-                            LanguagesFragment fragmentDemo = LanguagesFragment.newInstance(languages, activity);
-
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.dynamic_fragment_frame_layout, fragmentDemo);
-                            fragmentTransaction.commit();
-
-                            prefs = getApplicationContext().getSharedPreferences(
-                                    PACKAGE_NAME, MODE_PRIVATE);
-
-
 
                         } else {
                             Log.w("TEST08", "Error getting documents.", task.getException());
                         }
                     }
                 });
+
+        LanguagesFragment fragmentDemo = LanguagesFragment.newInstance(languages, activity);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.dynamic_fragment_frame_layout, fragmentDemo);
+        fragmentTransaction.commit();
+
+        prefs = getApplicationContext().getSharedPreferences(
+                PACKAGE_NAME, MODE_PRIVATE);
+
 
 
                 /*(DemoFragment)

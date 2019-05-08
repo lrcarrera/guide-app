@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import android.os.Looper;
 import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
@@ -43,6 +45,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -122,18 +128,55 @@ public class WhereFragment extends Fragment implements INexStep{
         mRequestingLocationUpdates = true;
         recycler = getView().findViewById(R.id.places);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        placesList = DefValues.defPlaces();
-        AdapterPlace adapterPlace = new AdapterPlace(placesList);
-        adapterPlace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos =  recycler.getChildAdapterPosition(v);
-                onPlaceClicked(pos);
-            }
-        });
+        //placesList = DefValues.defPlaces();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("places")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
 
-        recycler.setAdapter(adapterPlace);
-        recycler.setItemAnimator(new DefaultItemAnimator());
+                            /*for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TEST08", document.getId() + " => " + document.getData());
+                            }*/
+
+                            placesList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //    public Language(long id, String flag, String name, String code, int picture) {
+
+                                if(placesList.size() == 0 )
+                                    placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation, new LatLng(41.6082387, 0.6212267)));
+
+                                if(placesList.size() != 0 ){
+                                    GeoPoint aux = document.getGeoPoint("coord");
+                                    placesList.add(new Place(document.getString("name"),
+                                            document.getString("country"), R.drawable.ic_action_place, new LatLng(aux.getLatitude(), aux.getLongitude())));
+
+                                }
+                                //Place(String name, String country, int picture, LatLng coord)
+                                /*PLACES.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation, new LatLng(41.6082387, 0.6212267)));
+                                PLACES.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
+                                */
+                            }
+
+                            AdapterPlace adapterPlace = new AdapterPlace(placesList);
+                            adapterPlace.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int pos =  recycler.getChildAdapterPosition(v);
+                                    onPlaceClicked(pos);
+                                }
+                            });
+
+                            recycler.setAdapter(adapterPlace);
+                            recycler.setItemAnimator(new DefaultItemAnimator());
+
+                        } else {
+                            Log.w("TEST08", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         createLocationCallback();
