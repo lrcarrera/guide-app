@@ -48,6 +48,16 @@ public class DefValues {
         return LANGUAGES;
     }
 
+    public static User getPlayerInContext() {
+        return playerInContext;
+    }
+
+    public static void setPlayerInContext(User playerInContext) {
+        DefValues.playerInContext = playerInContext;
+    }
+
+    public static User playerInContext;
+
     public static User defUser(){
         if(DEF_USER == null){
             DEF_USER = new User();

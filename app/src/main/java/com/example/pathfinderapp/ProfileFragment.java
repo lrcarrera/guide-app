@@ -232,6 +232,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addLanguages(Dialog dialog){
+
         languagesList = DefValues.getMockPostList().get(0).getLanguages();
         RecyclerView recycler = dialog.findViewById(R.id.languages);
         /*recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {

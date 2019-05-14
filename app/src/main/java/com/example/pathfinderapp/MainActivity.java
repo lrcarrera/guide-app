@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -12,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -37,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements
         RouteSelectionFragment.OnFragmentInteractionListener, TouristsAllowedFragment.OnFragmentInteractionListener,
         LanguagesFragment.OnFragmentInteractionListener, SummaryFragment.OnFragmentInteractionListener
 {
-
     SharedPreferences prefs;
 
     private final Fragment fragment1 = new SearchFragment();
@@ -111,6 +115,53 @@ public class MainActivity extends AppCompatActivity implements
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
+
+
+/*
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final LangugesSelectionActivity activity = this;
+
+        //after setContentView
+        DefValues userInContext = new DefValues();
+        userInContext.setPlayerInContext(new User());
+
+        db.collection("users").whereEqualTo()
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TEST08", document.getId() + " => " + document.getData());
+                            }
+
+                            languages = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //    public Language(long id, String flag, String name, String code, int picture) {
+
+                                languages.add(new Language(
+                                        document.getId(),
+                                        document.getString("flag"),
+                                        document.getString("name"),
+                                        document.getString("code"),
+                                        document.getLong("picture").intValue()));
+                            }
+                            LanguagesFragment fragmentDemo = LanguagesFragment.newInstance(languages, activity);
+
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.dynamic_fragment_frame_layout, fragmentDemo);
+                            fragmentTransaction.commit();
+
+                            prefs = getApplicationContext().getSharedPreferences(
+                                    PACKAGE_NAME, MODE_PRIVATE);
+                        } else {
+                            Log.w("TEST08", "Error getting documents.", task.getException());
+                        }
+                    }
+                });*/
 
     }
 
