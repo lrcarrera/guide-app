@@ -31,6 +31,11 @@ public class AdapterLanguage
         this.languagesList = placesList;
     }
 
+    public ArrayList<Language>  getLanguagesList()
+    {
+        return this.languagesList;
+    }
+
     @Override
     public AdapterLanguage.ViewHolderItem onCreateViewHolder(ViewGroup parent, int i) {
         view = LayoutInflater.from(parent.getContext())

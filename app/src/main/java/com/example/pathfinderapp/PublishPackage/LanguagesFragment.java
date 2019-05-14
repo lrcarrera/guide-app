@@ -71,6 +71,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
     private OnFragmentInteractionListener mListener;
     private ArrayList<Language> languages;
     private LangugesSelectionActivity act;
+    private AdapterLanguage adapterLanguages;
 
     public LanguagesFragment() {
         // Required empty public constructor
@@ -113,7 +114,6 @@ public class LanguagesFragment extends Fragment implements INexStep {
 
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        AdapterLanguage adapterLanguages;
         if(languages == null)
         {
             adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
@@ -126,7 +126,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
             @Override
             public void onClick(View v) {
                 int pos =  recycler.getChildAdapterPosition(v);
-                List<Language> aux;
+                ArrayList<Language> aux;
                 if(languages == null)
                 {
                     aux = parent.user.getLanguages();
@@ -135,7 +135,11 @@ public class LanguagesFragment extends Fragment implements INexStep {
                 }
                 Language language = aux.get(pos);
                 language.setAdded(!language.isAdded());
+                /*if(languages != null)
+                    languages.get(pos).setAdded(!language.isAdded());*/
                 aux.set(pos, language);
+                if(languages != null)
+                    languages = aux;
             }
         });
 

@@ -135,15 +135,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (currentUser != null) {
             boolean aux = prefs.getBoolean(getResources().getString(R.string.is_first_time), true);
             Intent intent;
-            if(aux){
+            /*if(aux){
                 intent = new Intent(this, LangugesSelectionActivity.class);
             } else {
                 intent = new Intent(this, MainActivity.class);
 
-            }
-            /*intent = new Intent(this, LangugesSelectionActivity.class);
+            }*/
+            intent = new Intent(this, LangugesSelectionActivity.class);
             startActivity(intent);
-            finish();*/
+            finish();
         }
 
         /*showProgress(true);
