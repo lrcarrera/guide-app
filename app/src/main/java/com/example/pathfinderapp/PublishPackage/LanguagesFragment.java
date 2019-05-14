@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.example.pathfinderapp.LangugesSelectionActivity;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -243,18 +244,15 @@ public class LanguagesFragment extends Fragment implements INexStep {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userUid = user.getUid();
+        String name = user.getEmail();
 
 
-       /* Map<String, Object> language = new HashMap<>();
+        Map<String, User> newUser = new HashMap<>();
 
-        language.put("code", "EN");
-        language.put("flag", "english_flag");
-        language.put("name", "English");
-        language.put("picture", 1815);
+        newUser.put("user", new User(userUid, name, null, 0, null, 0, languages, 0, null));
 
-        // Add a new document with a generated ID
-        db.collection("languages")
-                .add(language)
+        db.collection("users")
+                .add(newUser)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -267,7 +265,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
                         Log.w("TEST09", "Error adding document", e);
                     }
                 });
-*/
+
         act.changeFirstTimeStatus();
     }
 

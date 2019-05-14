@@ -7,6 +7,7 @@ import java.util.List;
 
 public class User implements Serializable {
 
+    private String uid;
     private String name;
     private List<Post> postList;
     private int toursCound;
@@ -27,7 +28,8 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, List<Review> reviews) {
+    public User(String uid, String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, List<Review> reviews) {
+        this.uid = uid;
         this.name = name;
         this.postList = postList;
         this.toursCound = toursCound;
@@ -103,5 +105,13 @@ public class User implements Serializable {
 
     public void setScore(float score) {
         this.score = score;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }
