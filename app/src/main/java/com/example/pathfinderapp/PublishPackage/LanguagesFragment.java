@@ -242,8 +242,6 @@ public class LanguagesFragment extends Fragment implements INexStep {
 
     private void saveLanguagesInDataBase(ArrayList<Language> languages){
 
-
-
         // Logica del luis
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

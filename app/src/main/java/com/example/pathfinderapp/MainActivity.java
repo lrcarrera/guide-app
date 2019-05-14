@@ -118,22 +118,21 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-/*
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        final LangugesSelectionActivity activity = this;
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userUid = user.getUid();
 
-        DefValues userInContext = new DefValues();
-        userInContext.setPlayerInContext(new User());
+        /*DefValues userInContext = new DefValues();
+        userInContext.setPlayerInContext(new User());*/
 
-        db.collection("users").whereEqualTo()
+        db.collection("users").whereEqualTo("user.uid", userUid )
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            /*for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("TEST08", document.getId() + " => " + document.getData());
                             }
 
@@ -156,11 +155,16 @@ public class MainActivity extends AppCompatActivity implements
 
                             prefs = getApplicationContext().getSharedPreferences(
                                     PACKAGE_NAME, MODE_PRIVATE);
+                            */
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TESTSEXUAL", document.getId() + " => " + document.getData());
+                            }
+
                         } else {
-                            Log.w("TEST08", "Error getting documents.", task.getException());
+                            Log.w("TESTNOSEXUAL", "Error getting documents.", task.getException());
                         }
                     }
-                });*/
+                });
 
     }
 

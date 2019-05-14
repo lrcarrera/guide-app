@@ -270,7 +270,7 @@
 
 
 
-        <com.facebook.login.widget.LoginButton
+      <!--  <com.facebook.login.widget.LoginButton
             android:id="@+id/fbButton"
             android:layout_width="80px"
             android:layout_height="wrap_content"
@@ -278,7 +278,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/com_facebook_button_icon_blue"/>
-
+-->
 
     </LinearLayout>
 

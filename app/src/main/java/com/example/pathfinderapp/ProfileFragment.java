@@ -39,11 +39,6 @@ import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.User;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.login.LoginManager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -492,9 +487,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void setFacebookProfilePicture(String imageUrl){
-       // URL imageURL = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
-        //Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-        //return bitmap;
         InputStream in = null;
 
         try
