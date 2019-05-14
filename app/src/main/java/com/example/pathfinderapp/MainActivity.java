@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final LangugesSelectionActivity activity = this;
 
-        //after setContentView
         DefValues userInContext = new DefValues();
         userInContext.setPlayerInContext(new User());
 

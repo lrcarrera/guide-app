@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String EMAIL = "email";
     private static final String ID = "id";
     private static final String NAME = "name";
-    private static final String URL ="https://graph.facebook.com/";
+   // private static final String URL ="https://graph.facebook.com/";
     private static final String PICTURE_REFERENCE = "/picture?type=large";
 
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
