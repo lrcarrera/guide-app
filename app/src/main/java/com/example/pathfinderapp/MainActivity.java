@@ -164,15 +164,15 @@ public class MainActivity extends AppCompatActivity implements
                              id=null, picture=2131165341}], reviews=[{createdAt=Timestamp(seconds=1557828000, nanoseconds=0),
                              message=Buen tour, buenas vistas y nuevos lugares descubiertos, user={nom =Andreu Ibañez,
                              email=andreuibañez@gmail.com}}], postList=null, name=raduspaimoc@gmail.com, company=null}}*/
-                           /* for (QueryDocumentSnapshot document : task.getResult()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d("TESTSEXUAL", document.getId() + " => " + );
                                // DefValues.setPlayerInContext(document.getData());
-                                List<String> userInContext = (List<String>) document.getData().get("user");
+                                HashMap<String, String> userInContext = (HashMap<String, String>) document.getData().get("user");
 
-                                DefValues.setUserInContext(userInContext);
+                                DefValues.setUserInContext(null);
 
                             }
-*/
+
                         } else {
                             Log.w("TESTNOSEXUAL", "Error getting documents.", task.getException());
                         }
