@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import javax.sql.RowSetEvent;
 
@@ -51,9 +52,21 @@ public class DefValues {
     public static User getPlayerInContext() {
         return playerInContext;
     }
+    /**{user={toursCound=0, image=0, score=0.0, uid=fJaIJJ14pzdeQj75e3OMIgdU5oR2,
+     languages=[{code=ES, flag=spanish_flag, added=true, name=Spanish, id=null,
+     picture=2131165417}, {code=EN, flag=english_flag, added=true, name=English,
+     id=null, picture=2131165341}], reviews=[{createdAt=Timestamp(seconds=1557828000, nanoseconds=0),
+     message=Buen tour, buenas vistas y nuevos lugares descubiertos, user={nom =Andreu Ibañez,
+     email=andreuibañez@gmail.com}}], postList=null, name=raduspaimoc@gmail.com, company=null}}*/
+    public static void setUserInContext(List<String> userInContext) {
+       // this.playerInContext = new User(playerInContext.get("user");
+        //DefValues.playerInContext = playerInContext;
 
-    public static void setPlayerInContext(User playerInContext) {
-        DefValues.playerInContext = playerInContext;
+        int toursCount = Integer.parseInt(userInContext.get(0));
+        int image = Integer.parseInt(userInContext.get(1));
+        float score = Float.parseFloat(        userInContext.get(2));
+        String uid = userInContext.get(3);
+
     }
 
     public static User playerInContext;
