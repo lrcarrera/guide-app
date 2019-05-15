@@ -11,11 +11,13 @@ import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,6 +33,7 @@ public class DefValues {
     private static User DEF_USER;
     private static ArrayList<Place> PLACES;
     private static List<Review> REVIEWS;
+    private static User USER_IN_CONTEXT;
 
     public static ArrayList<Language> defLanguages(){
         if(LANGUAGES == null){
@@ -49,27 +52,24 @@ public class DefValues {
         return LANGUAGES;
     }
 
-    public static User getPlayerInContext() {
-        return playerInContext;
+    public static User getUserInContext() {
+        return USER_IN_CONTEXT;
     }
-    /**{user={toursCound=0, image=0, score=0.0, uid=fJaIJJ14pzdeQj75e3OMIgdU5oR2,
-     languages=[{code=ES, flag=spanish_flag, added=true, name=Spanish, id=null,
-     picture=2131165417}, {code=EN, flag=english_flag, added=true, name=English,
-     id=null, picture=2131165341}], reviews=[{createdAt=Timestamp(seconds=1557828000, nanoseconds=0),
-     message=Buen tour, buenas vistas y nuevos lugares descubiertos, user={nom =Andreu Ibañez,
-     email=andreuibañez@gmail.com}}], postList=null, name=raduspaimoc@gmail.com, company=null}}*/
-    public static void setUserInContext(List<String> userInContext) {
-       // this.playerInContext = new User(playerInContext.get("user");
-        //DefValues.playerInContext = playerInContext;
+    public static void setUserInContext(QueryDocumentSnapshot doc) {
+        ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
+        ArrayList<Review> reviews = (ArrayList<Review>) doc.get("user.reviews");
+        ArrayList<Post> posts = (ArrayList<Post>) doc.get("user.postList");
+        String name = doc.getString("user.name");
+        String company = doc.getString("user.company");
+        String uid = doc.getString("user.uid");
+        float score = doc.getLong("user.score");
+        int image = doc.getLong("user.image").intValue();
+        int tours = (int) doc.getLong("user.toursCound").intValue();
 
-        int toursCount = Integer.parseInt(userInContext.get(0));
-        int image = Integer.parseInt(userInContext.get(1));
-        float score = Float.parseFloat(        userInContext.get(2));
-        String uid = userInContext.get(3);
-
+        USER_IN_CONTEXT = new User(uid, name, posts, tours, company, score, languages, image, reviews);
     }
 
-    public static User playerInContext;
+    public static User userInContext;
 
     public static User defUser(){
         if(DEF_USER == null){
@@ -304,4 +304,5 @@ public class DefValues {
         return REVIEWS;
 
     }
+
 }

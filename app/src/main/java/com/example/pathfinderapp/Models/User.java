@@ -9,16 +9,16 @@ public class User implements Serializable {
 
     private String uid;
     private String name;
-    private List<Post> postList;
+    private ArrayList<Post> postList;
     private int toursCound;
     private String company;
     private float score;
     private ArrayList<Language> languages;
     private int image;
-    private List<Review> reviews;
+    private ArrayList<Review> reviews;
 
 
-    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
+    public User(String name, ArrayList<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
         this.name = name;
         this.postList = postList;
         this.toursCound = toursCound;
@@ -28,7 +28,7 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public User(String uid, String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, List<Review> reviews) {
+    public User(String uid, String name, ArrayList<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, ArrayList<Review> reviews) {
         this.uid = uid;
         this.name = name;
         this.postList = postList;
@@ -44,7 +44,7 @@ public class User implements Serializable {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }
 
@@ -90,7 +90,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public void setPostList(List<Post> postList) {
+    public void setPostList(ArrayList<Post> postList) {
         this.postList = postList;
     }
 

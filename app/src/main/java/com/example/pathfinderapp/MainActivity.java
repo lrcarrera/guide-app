@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -116,15 +117,9 @@ public class MainActivity extends AppCompatActivity implements
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-
-
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userUid = user.getUid();
-
-        /*DefValues userInContext = new DefValues();
-        userInContext.setPlayerInContext(new User());*/
 
         db.collection("users").whereEqualTo("user.uid", userUid )
                 .get()
@@ -132,49 +127,11 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
-                            /*for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TEST08", document.getId() + " => " + document.getData());
-                            }
-
-                            languages = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //    public Language(long id, String flag, String name, String code, int picture) {
-
-                                languages.add(new Language(
-                                        document.getId(),
-                                        document.getString("flag"),
-                                        document.getString("name"),
-                                        document.getString("code"),
-                                        document.getLong("picture").intValue()));
+                                 DefValues.setUserInContext(document);
                             }
-                            LanguagesFragment fragmentDemo = LanguagesFragment.newInstance(languages, activity);
-
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.dynamic_fragment_frame_layout, fragmentDemo);
-                            fragmentTransaction.commit();
-
-                            prefs = getApplicationContext().getSharedPreferences(
-                                    PACKAGE_NAME, MODE_PRIVATE);
-                            */
-
-                             /**{user={toursCound=0, image=0, score=0.0, uid=fJaIJJ14pzdeQj75e3OMIgdU5oR2,
-                             languages=[{code=ES, flag=spanish_flag, added=true, name=Spanish, id=null,
-                             picture=2131165417}, {code=EN, flag=english_flag, added=true, name=English,
-                             id=null, picture=2131165341}], reviews=[{createdAt=Timestamp(seconds=1557828000, nanoseconds=0),
-                             message=Buen tour, buenas vistas y nuevos lugares descubiertos, user={nom =Andreu Ibañez,
-                             email=andreuibañez@gmail.com}}], postList=null, name=raduspaimoc@gmail.com, company=null}}*/
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d("TESTSEXUAL", document.getId() + " => " + );
-                               // DefValues.setPlayerInContext(document.getData());
-                                HashMap<String, String> userInContext = (HashMap<String, String>) document.getData().get("user");
-
-                                DefValues.setUserInContext(null);
-
-                            }
-
                         } else {
-                            Log.w("TESTNOSEXUAL", "Error getting documents.", task.getException());
+                            Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                         }
                     }
                 });
