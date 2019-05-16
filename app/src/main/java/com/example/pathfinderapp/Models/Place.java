@@ -2,6 +2,9 @@ package com.example.pathfinderapp.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Place {
 
     private String name;
@@ -23,6 +26,15 @@ public class Place {
         this.country = country;
         this.picture = picture;
         this.coord = coord;
+    }
+
+    public Map<String, Object> AddToHashMap(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", name);
+        data.put("country", country);
+        data.put("picture", picture);
+        data.put("coord", coord);
+        return data;
     }
 
     public LatLng getCoord() {

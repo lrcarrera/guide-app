@@ -7,7 +7,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Post implements Serializable {
 
@@ -58,8 +60,24 @@ public class Post implements Serializable {
         this.places = places;
     }
 
-    public void setPrice(Float price) {
+    /*public void setPrice(Float price) {
         this.price = price;
+    }*/
+
+    public Map<String, Object> AddToHashMap(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("createdAt", this.createdAt);
+        data.put("dueTo", this.dueTo);
+        data.put("startHour", this.startHour);
+        data.put("endHour", this.endHour);
+        data.put("guide", this.guide);
+        data.put("numTourists", this.numTourists);
+        data.put("place", this.place);
+        data.put("tourists", this.tourists);
+        data.put("languages", this.languages);
+        data.put("places", this.places);
+        data.put("price", this.price);
+        return data;
     }
 
 

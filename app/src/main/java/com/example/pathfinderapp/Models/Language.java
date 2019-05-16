@@ -1,5 +1,8 @@
 package com.example.pathfinderapp.Models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Language {
 
     private String   flag;
@@ -29,6 +32,17 @@ public class Language {
         this.code = code;
         this.picture = picture;
         this.added = false;
+    }
+
+    public Map<String, Object> AddToHashMap(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("flag", flag);
+        data.put("name", name);
+        data.put("code", code);
+        data.put("picture", picture);
+        data.put("added", added);
+        data.put("id", id);
+        return data;
     }
 
     public boolean isAdded() {
