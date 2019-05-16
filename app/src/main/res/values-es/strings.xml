@@ -46,7 +46,6 @@
     <string name="defaultCurrency">€</string>
     <string name="summaryTitle">Resumen del Tour</string>
     <string name="day">Día:</string>
-    <string name="cancel">Cancelar</string>
     <string name="confirm">Confirmar</string>
     <string name="separator">-</string>
 
@@ -96,4 +95,11 @@
     <string name="configuration_stored_message">¡Tú configuración se ha guardado correctamente!</string>
     <string name="is_first_time">isFirstTime</string>
     <string name="speaking_languages">¿Qué idiomas hablas?</string>
+
+    <string name="review">Añade un comentario</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="review_error">Tienes que añadir un comentario.</string>
+
+
 </resources>

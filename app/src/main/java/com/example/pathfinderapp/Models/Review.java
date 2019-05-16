@@ -1,6 +1,8 @@
 package com.example.pathfinderapp.Models;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Review {
 
@@ -12,6 +14,14 @@ public class Review {
         this.message = review;
         this.author = author;
         this.createdAt = createdAt;
+    }
+
+    public Map<String, Object> AddToHashMap(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("message", message);
+        data.put("author", author);
+        data.put("createdAt", createdAt);
+        return data;
     }
 
     public String getMessage() {

@@ -12,8 +12,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +26,7 @@ import com.example.pathfinderapp.GuideProfileActivity;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.ProfileDialog;
 import com.example.pathfinderapp.ProfileFragment;
@@ -39,6 +45,7 @@ import com.ramotion.foldingcell.FoldingCell;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -367,11 +374,57 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             inscriptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    final Dialog myDialog = new Dialog(context);
+                    myDialog.setContentView(R.layout.review_popup);
+                    final EditText editText = myDialog.findViewById(R.id.editText);
+                    Button close = myDialog.findViewById(R.id.btnCancel);
+                    close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            myDialog.cancel();
+                        }
+                    });
+                    Button accept = myDialog.findViewById(R.id.btnAccept);
+                    accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String text = editText.getText().toString();
+                            if(text.length() == 0) {
+                                TextView errorMessage = myDialog.findViewById(R.id.editText);
+                                errorMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                Review review = new Review(text, DefValues.getUserInContext(), new Date());
+                                //Toast toast = Toast.makeText(context, review, Toast.LENGTH_SHORT);
+                                /*Falta añadirlo al usuario que hizo el tour*/
+                                /*User user = DefValues.getPlayerInContext();
+                                user.getReviews().add(new Review(()))*/
+                            }
+
+                        }
+                    });
+                    //addLanguages(myDialog);
+           /* checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
+
+            RadioGroup radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
+            radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
+            radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);*/
+
+
+                    myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    myDialog.show();
+                }
+            });
+
+
+
+            /*inscriptionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     Toast toast = Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 }
-            });
+            });*/
         }
 
         private void inscribeTour(){

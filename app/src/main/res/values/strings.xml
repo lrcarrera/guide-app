@@ -46,7 +46,6 @@
     <string name="defaultCurrency">€</string>
     <string name="summaryTitle">Tour Summary</string>
     <string name="day">Day:</string>
-    <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="separator">-</string>
 
@@ -94,5 +93,9 @@
     <string name="configuration_stored_message">Your configuration was stored!</string>
     <string name="is_first_time" tools:ignore="ExtraTranslation">isFirstTime</string>
     <string name="speaking_languages">Which languages do you speak?</string>
+    <string name="review">Review</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="review_error">You must add a review.</string>
 
 </resources>

@@ -3,7 +3,9 @@ package com.example.pathfinderapp.Models;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User implements Serializable {
 
@@ -40,7 +42,21 @@ public class User implements Serializable {
         this.reviews = reviews;
     }
 
-    public List<Review> getReviews() {
+    public Map<String, Object> AddToHashMap(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("uid", this.uid);
+        data.put("name", this.name);
+        data.put("postList", this.postList);
+        data.put("toursCound", this.toursCound);
+        data.put("company", this.company);
+        data.put("score", this.score);
+        data.put("languages", this.languages);
+        data.put("image", this.image);
+        data.put("reviews", this.reviews);
+        return data;
+    }
+
+    public ArrayList<Review> getReviews() {
         return reviews;
     }
 
@@ -70,7 +86,7 @@ public class User implements Serializable {
         return name;
     }
 
-    public List<Post> getPostList() {
+    public ArrayList<Post> getPostList() {
         return postList;
     }
 
