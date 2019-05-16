@@ -274,7 +274,7 @@ public class ProfileFragment extends Fragment {
 
                             RecyclerView recycler = dialog.findViewById(R.id.languages);
                             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
-                            adapterLanguages = new AdapterLanguageHorizontal(languages, true, setLanguagesStatuses());
+                            adapterLanguages = new AdapterLanguageHorizontal(languages, true, setLanguagesStatuses(languages));
                             recycler.setAdapter(adapterLanguages);
                             recycler.setItemAnimator(new DefaultItemAnimator());
 
@@ -362,21 +362,21 @@ public class ProfileFragment extends Fragment {
             radioWifiAndMore.setChecked(false);
         }
 
-        setLanguagesStatuses();
+
     }
 
-    public boolean[] setLanguagesStatuses() {
+    public boolean[] setLanguagesStatuses(ArrayList<Language> rootLanguages) {
 
         //ArrayList<HashMap<String, String>> languggs = DefValues.getUserInContext().getLanguages();
         //HashMap<String, String> language = (HashMap<String, String>) languggs;
 
-        int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
+       /* int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
 
         boolean[] bools = new boolean[userLanguagesSize];
         for (int i = 0; i < userLanguagesSize; i++) {
             bools[i] = DefValues.getUserInContext().getLanguages().get(i).isAdded();
-        }
-        return bools;
+        }*/
+        return null;
     }
 
     /*private void setLanguagesStatuses(){

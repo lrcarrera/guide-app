@@ -13,13 +13,14 @@ public class Language {
     private boolean added;
     private String id;
 
-    public Language(HashMap<String, String> languagesInHashMap) {
+    public Language(HashMap<String, Object> languagesInHashMap) {
         this.added = Objects.equals(languagesInHashMap.get("added"), "true");
-        this.id = languagesInHashMap.get("id");
-        this.flag = languagesInHashMap.get("flag");
-        this.name = languagesInHashMap.get("name");
-        this.code = languagesInHashMap.get("code");
-        this.picture = Integer.parseInt(Objects.requireNonNull(languagesInHashMap.get("picture")));
+        this.id = (String) languagesInHashMap.get("id");
+        this.flag = (String) languagesInHashMap.get("flag");
+        this.name = (String) languagesInHashMap.get("name");
+        this.code = (String) languagesInHashMap.get("code");
+        Long pictureReceived = (Long) languagesInHashMap.get("picture");
+        this.picture = pictureReceived.intValue();
     }
 
     public Language(String flag, String name) {
