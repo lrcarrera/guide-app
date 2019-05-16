@@ -54,6 +54,12 @@ public class DefValues {
         return userInContext;
     }
     public static void setUserInContext(QueryDocumentSnapshot doc) {
+
+        ArrayList<HashMap<String, String>> ads  = (ArrayList<HashMap<String, String>>) doc.get("user.languages");
+        for (HashMap<String, String> language : ads) {
+            new Language(language);
+        }
+
         ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
         ArrayList<Review> reviews = (ArrayList<Review>) doc.get("user.reviews");
         ArrayList<Post> posts = (ArrayList<Post>) doc.get("user.postList");

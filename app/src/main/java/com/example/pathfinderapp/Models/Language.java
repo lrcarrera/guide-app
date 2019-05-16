@@ -2,6 +2,7 @@ package com.example.pathfinderapp.Models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Language {
 
@@ -11,6 +12,15 @@ public class Language {
     private int   picture;
     private boolean added;
     private String id;
+
+    public Language(HashMap<String, String> languagesInHashMap) {
+        this.added = Objects.equals(languagesInHashMap.get("added"), "true");
+        this.id = languagesInHashMap.get("id");
+        this.flag = languagesInHashMap.get("flag");
+        this.name = languagesInHashMap.get("name");
+        this.code = languagesInHashMap.get("code");
+        this.picture = Integer.parseInt(Objects.requireNonNull(languagesInHashMap.get("picture")));
+    }
 
     public Language(String flag, String name) {
         this.flag = flag;
@@ -44,6 +54,8 @@ public class Language {
         data.put("id", id);
         return data;
     }
+
+
 
     public boolean isAdded() {
         return added;
