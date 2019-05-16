@@ -118,23 +118,24 @@ public class PublishFragment extends Fragment implements Serializable{
     private void savePostInToDatabase(){
 
         User user = DefValues.getUserInContext();
-        ArrayList<Post> postList = user.getPostList();
+        user.addPost(post);
+        /*ArrayList<Post> postList = user.getPostList();
         if(postList == null)
             postList = new ArrayList<Post>();
 
-        postList.add(post);
+        postList.add(post);*/
         final Map<String, Object> newUser;
-        final User realNigga = new User(user.getUid(), user.getName(), postList, user.getToursCound(), user.getCompany(),
-                user.getScore(), user.getLanguages(), user.getImage(), user.getReviews());
-        newUser = realNigga.AddToHashMap();
+        /*final User realNigga = new User(user.getUid(), user.getName(), user.getPostList(), user.getToursCound(), user.getCompany(),
+                user.getScore(), user.getLanguages(), user.getImage(), user.getReviews());*/
+        newUser = user.AddToHashMap();
 
         /*newUser.put("user", new User(user.getUid(), user.getName(), postList, user.getToursCound(), user.getCompany(),
                 user.getScore(), user.getLanguages(), user.getImage(), user.getReviews()));*/
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
-        documentReference.set(newUser);
+        DocumentReference documentReference = DefValues.getUserInContextDocument();
+        documentReference.update(newUser);
         db.collection("posts").add(post);
         //ApiFuture<String, Object>
         /*db.collection("users").whereEqualTo("user.uid", user.getUid())
@@ -224,6 +225,7 @@ public class PublishFragment extends Fragment implements Serializable{
         post = new Post();
         post.setTourists(new ArrayList<User>());
         post.setGuide(user);
+        post.setUuid(user.getUid() + (user.getScore() + 1));
         pager.setCurrentItem(0);
     }
 
