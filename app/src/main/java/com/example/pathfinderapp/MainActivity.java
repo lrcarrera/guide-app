@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 DefValues.setDocumentReference(document.getReference());
-                                 DefValues.setUserInContext(document);
+                                 //DefValues.setUserInContext(document);
                             }
                         } else {
                             Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());

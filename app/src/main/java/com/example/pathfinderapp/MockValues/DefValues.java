@@ -59,7 +59,6 @@ public class DefValues {
         for (HashMap<String, String> language : ads) {
             new Language(language);
         }
-
         ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
         ArrayList<Review> reviews = (ArrayList<Review>) doc.get("user.reviews");
         ArrayList<Post> posts = (ArrayList<Post>) doc.get("user.postList");
