@@ -278,9 +278,9 @@ public class ProfileFragment extends Fragment {
                             recycler.setAdapter(adapterLanguages);
                             recycler.setItemAnimator(new DefaultItemAnimator());
 
-
                             handleActionButtons();
                             setInitialValuesToTogglesItems();
+
 
                         } else {
                             Log.w("TEST08", "Error getting documents.", task.getException());
@@ -307,6 +307,8 @@ public class ProfileFragment extends Fragment {
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
+
+
 
     }
 
@@ -367,16 +369,18 @@ public class ProfileFragment extends Fragment {
 
     public boolean[] setLanguagesStatuses(ArrayList<Language> rootLanguages) {
 
-        //ArrayList<HashMap<String, String>> languggs = DefValues.getUserInContext().getLanguages();
-        //HashMap<String, String> language = (HashMap<String, String>) languggs;
+        ArrayList<Language> aux = DefValues.getUserInContext().getLanguages();
+        int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
+        boolean[] bools = new boolean[rootLanguages.size()];
 
-       /* int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
-
-        boolean[] bools = new boolean[userLanguagesSize];
-        for (int i = 0; i < userLanguagesSize; i++) {
-            bools[i] = DefValues.getUserInContext().getLanguages().get(i).isAdded();
-        }*/
-        return null;
+        for (int i = 0; i < rootLanguages.size(); i++) {
+            for (int j = 0; j < userLanguagesSize; j++) {
+                if (DefValues.getUserInContext().getLanguages().get(j).getCode().equals(rootLanguages.get(i).getCode())) {
+                    bools[i] = true;
+                }
+            }
+        }
+        return bools;
     }
 
     /*private void setLanguagesStatuses(){
