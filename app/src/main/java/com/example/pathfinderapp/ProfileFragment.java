@@ -14,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,12 +40,19 @@ import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.User;
+import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -101,7 +109,6 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     private AdapterLanguageHorizontal adapterLanguages;
-    private ArrayList<Language> languagesList;
 
 
     public ProfileFragment() {
@@ -196,7 +203,7 @@ public class ProfileFragment extends Fragment {
             tabLayout.addTab(tabLayout.newTab().setText(R.string.scoresTitle));
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-            final ViewPager viewPager =(ViewPager) rootView.findViewById(R.id.view_pager);
+            final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
             AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews(), DefValues.getMockPostList());
             viewPager.setAdapter(tabsAdapter);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -205,10 +212,12 @@ public class ProfileFragment extends Fragment {
                 public void onTabSelected(TabLayout.Tab tab) {
                     viewPager.setCurrentItem(tab.getPosition());
                 }
+
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
 
                 }
+
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
 
@@ -219,36 +228,56 @@ public class ProfileFragment extends Fragment {
         }*/
 
 
-
-
-
-
         return rootView;
     }
 
-    private void addLanguages(Dialog dialog){
+    private void addLanguages(final Dialog dialog) {
 
-        languagesList = DefValues.getMockPostList().get(0).getLanguages();
-        RecyclerView recycler = dialog.findViewById(R.id.languages);
-        /*recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                newState = newState % languagesList.size();
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+        // ArrayList<Language> userLanguages = DefValues.getUserInContext().getLanguages();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // String userUid = user.getUid();
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });*/
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
-        adapterLanguages = new AdapterLanguageHorizontal(languagesList, true, setLanguagesStatuses(languagesList));
-        recycler.setAdapter(adapterLanguages);
-        recycler.setItemAnimator(new DefaultItemAnimator());
+
+        db.collection("languages")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TEST08", document.getId() + " => " + document.getData());
+                            }
+                            ArrayList<Language> languages;
+
+                            languages = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //    public Language(long id, String flag, String name, String code, int picture) {
+
+                                languages.add(new Language(
+                                        document.getId(),
+                                        document.getString("flag"),
+                                        document.getString("name"),
+                                        document.getString("code"),
+                                        document.getLong("picture").intValue()));
+                            }
+
+                            RecyclerView recycler = dialog.findViewById(R.id.languages);
+                            recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
+                            adapterLanguages = new AdapterLanguageHorizontal(languages, true, setLanguagesStatuses(languages));
+                            recycler.setAdapter(adapterLanguages);
+                            recycler.setItemAnimator(new DefaultItemAnimator());
+                        } else {
+                            Log.w("TEST08", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+
     }
 
-    private void openSettings(){
+    private void openSettings() {
 
         myDialog.setContentView(R.layout.settings_popup);
         addLanguages(myDialog);
@@ -271,7 +300,7 @@ public class ProfileFragment extends Fragment {
         setInitialValuesToTogglesItems();
     }
 
-    private void handleActionButtons(){
+    private void handleActionButtons() {
 
         ImageButton btnClose;
         Button btnLogout;
@@ -288,36 +317,37 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btnLogout.setOnClickListener(new View.OnClickListener(){
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logOut();
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener(){
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 storePreferenceValues();
             }
         });
     }
-    private void setInitialValuesToTogglesItems(){
+
+    private void setInitialValuesToTogglesItems() {
 
         Boolean isNotificationsOn = prefs.getBoolean(getResources().getString(R.string.notification), false);
         Boolean isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
 
-        if(isNotificationsOn){
+        if (isNotificationsOn) {
             checkboxNotifications.setChecked(true);
-        }else{
+        } else {
             checkboxNotifications.setChecked(false);
         }
-        if(isFullConnectivityOn){
+        if (isFullConnectivityOn) {
             //radioGroupConnectivity.check(R.id.wifiandmore);
             radioWifi.setChecked(false);
             radioWifiAndMore.setChecked(true);
-        }else{
-           // radioGroupConnectivity.check(R.id.wifi);
+        } else {
+            // radioGroupConnectivity.check(R.id.wifi);
             radioWifi.setChecked(true);
             radioWifiAndMore.setChecked(false);
         }
@@ -325,15 +355,13 @@ public class ProfileFragment extends Fragment {
         //setLanguagesStatuses();
     }
 
-    public boolean[] setLanguagesStatuses(ArrayList<Language> languagesList)
-    {
+    public boolean[] setLanguagesStatuses(ArrayList<Language> languagesList) {
 
-       boolean[] bools = new boolean[languagesList.size()];
-       for (int i=0; i < languagesList.size(); i++)
-       {
-           bools[i] = prefs.getBoolean(languagesList.get(i).getCode(), false);
-       }
-       return bools;
+        boolean[] bools = new boolean[languagesList.size()];
+        for (int i = 0; i < languagesList.size(); i++) {
+            bools[i] = languagesList.get(i).isAdded();
+        }
+        return bools;
     }
 
     /*private void setLanguagesStatuses(){
@@ -371,27 +399,27 @@ public class ProfileFragment extends Fragment {
         }
     }*/
 
-    private void storePreferenceValues(){
+    private void storePreferenceValues() {
 
         //Checkbox
-        if(checkboxNotifications.isChecked()){
+        if (checkboxNotifications.isChecked()) {
             prefs.edit().putBoolean(getResources().getString(R.string.notification), true).apply();
-        }else{
+        } else {
             prefs.edit().putBoolean(getResources().getString(R.string.notification), false).apply();
         }
 
-        if(radioWifi.isChecked()){
+        if (radioWifi.isChecked()) {
             prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), false).apply();
-        }else{
+        } else {
             prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), true).apply();
         }
 
         boolean[] listPrefs = adapterLanguages.getCheckBoxesStatus();
-        for (int i=0; i < listPrefs.length; i++)
-        {
-            if(listPrefs[i])
+        //TODO: MODIFY SAVE VALUES TO FIRESTORE
+        for (int i = 0; i < listPrefs.length; i++) {
+           if(listPrefs[i])
                 prefs.edit().putBoolean(languagesList.get(i).getCode(), true).apply();
-            //bools[i] = prefs.getBoolean(languagesList.get(i).getCode(), false);
+
         }
 
         /*if(checkboxFrench.isChecked()){
@@ -424,7 +452,7 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();
     }
 
-    private void logOut(){
+    private void logOut() {
 
         myDialog.dismiss();
 
@@ -486,11 +514,10 @@ public class ProfileFragment extends Fragment {
         mListener = null;
     }
 
-    public void setFacebookProfilePicture(String imageUrl){
+    public void setFacebookProfilePicture(String imageUrl) {
         InputStream in = null;
 
-        try
-        {
+        try {
             Log.i("URL", imageUrl);
             URL url = new URL(imageUrl);
             URLConnection urlConn = url.openConnection();
@@ -498,13 +525,9 @@ public class ProfileFragment extends Fragment {
             httpConn.connect();
 
             in = httpConn.getInputStream();
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         Bitmap bmpimg = BitmapFactory.decodeStream(in);
