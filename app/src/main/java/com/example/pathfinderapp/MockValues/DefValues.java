@@ -11,6 +11,7 @@ import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class DefValues {
     private static User DEF_USER;
     private static ArrayList<Place> PLACES;
     private static List<Review> REVIEWS;
-    private static User USER_IN_CONTEXT;
+    private static User userInContext;
+    private static DocumentReference userInContextDocument;
 
     public static ArrayList<Language> defLanguages(){
         if(LANGUAGES == null){
@@ -49,7 +51,7 @@ public class DefValues {
     }
 
     public static User getUserInContext() {
-        return USER_IN_CONTEXT;
+        return userInContext;
     }
     public static void setUserInContext(QueryDocumentSnapshot doc) {
         ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
@@ -62,10 +64,9 @@ public class DefValues {
         int image = doc.getLong("user.image").intValue();
         int tours = (int) doc.getLong("user.toursCound").intValue();
 
-        USER_IN_CONTEXT = new User(uid, name, posts, tours, company, score, languages, image, reviews);
+        userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
     }
 
-    public static User userInContext;
 
     public static User defUser(){
         if(DEF_USER == null){
@@ -301,4 +302,11 @@ public class DefValues {
 
     }
 
+    public static void setDocumentReference(DocumentReference reference) {
+        userInContextDocument = reference;
+    }
+
+    public static DocumentReference getUserInContextDocument() {
+        return userInContextDocument;
+    }
 }

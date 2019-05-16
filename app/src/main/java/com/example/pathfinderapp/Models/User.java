@@ -9,7 +9,7 @@ public class User implements Serializable {
 
     private String uid;
     private String name;
-    private ArrayList<Post> postList;
+    private List<Post> postList;
     private int toursCound;
     private String company;
     private float score;
@@ -18,7 +18,7 @@ public class User implements Serializable {
     private ArrayList<Review> reviews;
 
 
-    public User(String name, ArrayList<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
+    public User(String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
         this.name = name;
         this.postList = postList;
         this.toursCound = toursCound;
@@ -28,7 +28,7 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    public User(String uid, String name, ArrayList<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, ArrayList<Review> reviews) {
+    public User(String uid, String name, List<Post> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image, ArrayList<Review> reviews) {
         this.uid = uid;
         this.name = name;
         this.postList = postList;
@@ -90,7 +90,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public void setPostList(ArrayList<Post> postList) {
+    public void setPostList(List<Post> postList) {
         this.postList = postList;
     }
 

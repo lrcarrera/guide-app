@@ -46,6 +46,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -58,6 +59,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 
@@ -111,6 +113,9 @@ public class ProfileFragment extends Fragment {
     private AdapterLanguageHorizontal adapterLanguages;
 
 
+    private FirebaseFirestore db;
+
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -124,6 +129,8 @@ public class ProfileFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(User user) {
+
+
         ProfileFragment fragment = new ProfileFragment();
         fragment.user = user;
         return fragment;
@@ -137,6 +144,8 @@ public class ProfileFragment extends Fragment {
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -234,7 +243,7 @@ public class ProfileFragment extends Fragment {
     private void addLanguages(final Dialog dialog) {
 
         // ArrayList<Language> userLanguages = DefValues.getUserInContext().getLanguages();
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // String userUid = user.getUid();
 
@@ -265,16 +274,19 @@ public class ProfileFragment extends Fragment {
 
                             RecyclerView recycler = dialog.findViewById(R.id.languages);
                             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
-                            adapterLanguages = new AdapterLanguageHorizontal(languages, true, setLanguagesStatuses(languages));
+                            adapterLanguages = new AdapterLanguageHorizontal(languages, true, setLanguagesStatuses());
                             recycler.setAdapter(adapterLanguages);
                             recycler.setItemAnimator(new DefaultItemAnimator());
+
+
+                            handleActionButtons();
+                            setInitialValuesToTogglesItems();
+
                         } else {
                             Log.w("TEST08", "Error getting documents.", task.getException());
                         }
                     }
                 });
-
-
     }
 
     private void openSettings() {
@@ -296,8 +308,6 @@ public class ProfileFragment extends Fragment {
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
 
-        handleActionButtons();
-        setInitialValuesToTogglesItems();
     }
 
     private void handleActionButtons() {
@@ -352,14 +362,19 @@ public class ProfileFragment extends Fragment {
             radioWifiAndMore.setChecked(false);
         }
 
-        //setLanguagesStatuses();
+        setLanguagesStatuses();
     }
 
-    public boolean[] setLanguagesStatuses(ArrayList<Language> languagesList) {
+    public boolean[] setLanguagesStatuses() {
 
-        boolean[] bools = new boolean[languagesList.size()];
-        for (int i = 0; i < languagesList.size(); i++) {
-            bools[i] = languagesList.get(i).isAdded();
+        //ArrayList<HashMap<String, String>> languggs = DefValues.getUserInContext().getLanguages();
+        //HashMap<String, String> language = (HashMap<String, String>) languggs;
+
+        int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
+
+        boolean[] bools = new boolean[userLanguagesSize];
+        for (int i = 0; i < userLanguagesSize; i++) {
+            bools[i] = DefValues.getUserInContext().getLanguages().get(i).isAdded();
         }
         return bools;
     }
@@ -415,13 +430,13 @@ public class ProfileFragment extends Fragment {
         }
 
         boolean[] listPrefs = adapterLanguages.getCheckBoxesStatus();
-        //TODO: MODIFY SAVE VALUES TO FIRESTORE
         for (int i = 0; i < listPrefs.length; i++) {
-           if(listPrefs[i])
-                prefs.edit().putBoolean(languagesList.get(i).getCode(), true).apply();
+          // if(listPrefs[i]) DefValues.getUserInContext().getLanguages().get(i).setCode("true");
 
         }
 
+       // DefValues.getUserInContextDocument().update("user", DefValues.getUserInContext());
+        System.out.println("holas");
         /*if(checkboxFrench.isChecked()){
             prefs.edit().putBoolean(getResources().getString(R.string.french_key), true).apply();
         }else{
