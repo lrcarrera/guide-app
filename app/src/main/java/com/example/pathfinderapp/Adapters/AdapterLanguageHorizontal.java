@@ -38,6 +38,8 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
 
     public boolean[] getCheckBoxesStatus()
     {
+        boolean[]aux = previousCheckedState;
+
         return isChecked;
     }
 
@@ -58,12 +60,12 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
         if(!isSettings)
             viewHolder.checkBox.setVisibility(View.INVISIBLE);
         if(isSettings) {
-            isChecked = new boolean[languagesList.size()];
+            isChecked = previousCheckedState;
             addCheckBoxChangeStatusListener(viewHolder, i);
         }
     }
 
-    public void addCheckBoxChangeStatusListener(AdapterLanguageHorizontal.ViewHolderItem viewHolder, int postion){
+    private void addCheckBoxChangeStatusListener(AdapterLanguageHorizontal.ViewHolderItem viewHolder, int postion){
         final int mypos = postion;
         viewHolder.checkBox.setChecked(previousCheckedState[postion]);
         viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

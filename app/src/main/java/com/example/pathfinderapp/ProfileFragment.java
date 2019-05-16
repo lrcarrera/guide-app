@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
 
 
     private FirebaseFirestore db;
-
+    ArrayList<Language> languages;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -258,7 +258,6 @@ public class ProfileFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("TEST08", document.getId() + " => " + document.getData());
                             }
-                            ArrayList<Language> languages;
 
                             languages = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -294,11 +293,6 @@ public class ProfileFragment extends Fragment {
         myDialog.setContentView(R.layout.settings_popup);
         addLanguages(myDialog);
         checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
-        /*checkboxFrench = (CheckBox) myDialog.findViewById(R.id.checkbox_french);
-        checkboxEnglish = (CheckBox) myDialog.findViewById(R.id.checkbox_english);
-        checkboxGerman = (CheckBox) myDialog.findViewById(R.id.checkbox_german);
-        checkboxItalian = (CheckBox) myDialog.findViewById(R.id.checkbox_italian);
-        checkboxSpanish = (CheckBox) myDialog.findViewById(R.id.checkbox_spanish);*/
 
         RadioGroup radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
         radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
@@ -339,7 +333,7 @@ public class ProfileFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storePreferenceValues();
+                storePreferenceValues(languages);
             }
         });
     }
@@ -369,7 +363,6 @@ public class ProfileFragment extends Fragment {
 
     public boolean[] setLanguagesStatuses(ArrayList<Language> rootLanguages) {
 
-        ArrayList<Language> aux = DefValues.getUserInContext().getLanguages();
         int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
         boolean[] bools = new boolean[rootLanguages.size()];
 
@@ -383,42 +376,7 @@ public class ProfileFragment extends Fragment {
         return bools;
     }
 
-    /*private void setLanguagesStatuses(){
-
-        Boolean isFrenchChecked = prefs.getBoolean(getResources().getString(R.string.french_key), false);
-        Boolean isEnglishChecked = prefs.getBoolean(getResources().getString(R.string.english_key), false);
-        Boolean isGermanChecked = prefs.getBoolean(getResources().getString(R.string.german_key), false);
-        Boolean isItalianChecked = prefs.getBoolean(getResources().getString(R.string.italian_key), false);
-        Boolean isSpanishChecked = prefs.getBoolean(getResources().getString(R.string.spanish_key), false);
-
-        if(isFrenchChecked){
-            checkboxFrench.setChecked(true);
-        }else{
-            checkboxFrench.setChecked(false);
-        }
-        if(isEnglishChecked){
-            checkboxEnglish.setChecked(true);
-        }else{
-            checkboxEnglish.setChecked(false);
-        }
-        if(isGermanChecked){
-            checkboxGerman.setChecked(true);
-        }else{
-            checkboxGerman.setChecked(false);
-        }
-        if(isItalianChecked){
-            checkboxItalian.setChecked(true);
-        }else{
-            checkboxItalian.setChecked(false);
-        }
-        if(isSpanishChecked){
-            checkboxSpanish.setChecked(true);
-        }else{
-            checkboxSpanish.setChecked(false);
-        }
-    }*/
-
-    private void storePreferenceValues() {
+    private void storePreferenceValues(ArrayList<Language> languages) {
 
         //Checkbox
         if (checkboxNotifications.isChecked()) {
@@ -434,38 +392,19 @@ public class ProfileFragment extends Fragment {
         }
 
         boolean[] listPrefs = adapterLanguages.getCheckBoxesStatus();
-        for (int i = 0; i < listPrefs.length; i++) {
+        ArrayList<Language> languagesResult = new ArrayList<>();
+        DefValues.getUserInContext().getLanguages();
+        for (int i = 0; i < languages.size(); i++) {
+            if (listPrefs[i]){
+                languagesResult.add(languages.get(i));
+            }
           // if(listPrefs[i]) DefValues.getUserInContext().getLanguages().get(i).setCode("true");
 
         }
 
-       // DefValues.getUserInContextDocument().update("user", DefValues.getUserInContext());
+        DefValues.getUserInContextDocument().update("user.languages", languagesResult);
         System.out.println("holas");
-        /*if(checkboxFrench.isChecked()){
-            prefs.edit().putBoolean(getResources().getString(R.string.french_key), true).apply();
-        }else{
-            prefs.edit().putBoolean(getResources().getString(R.string.french_key), false).apply();
-        }
-        if(checkboxEnglish.isChecked()){
-            prefs.edit().putBoolean(getResources().getString(R.string.english_key), true).apply();
-        }else{
-            prefs.edit().putBoolean(getResources().getString(R.string.english_key), false).apply();
-        }
-        if(checkboxGerman.isChecked()){
-            prefs.edit().putBoolean(getResources().getString(R.string.german_key), true).apply();
-        }else{
-            prefs.edit().putBoolean(getResources().getString(R.string.german_key), false).apply();
-        }
-        if(checkboxItalian.isChecked()){
-            prefs.edit().putBoolean(getResources().getString(R.string.italian_key), true).apply();
-        }else{
-            prefs.edit().putBoolean(getResources().getString(R.string.italian_key), false).apply();
-        }
-        if(checkboxSpanish.isChecked()){
-            prefs.edit().putBoolean(getResources().getString(R.string.spanish_key), true).apply();
-        }else{
-            prefs.edit().putBoolean(getResources().getString(R.string.spanish_key), false).apply();
-        }*/
+
 
         myDialog.dismiss();
         Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();
