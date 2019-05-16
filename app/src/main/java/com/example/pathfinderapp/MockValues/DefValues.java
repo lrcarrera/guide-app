@@ -53,7 +53,7 @@ public class DefValues {
     public static User getUserInContext() {
         return userInContext;
     }
-    public static void setUserInContext(QueryDocumentSnapshot doc) {
+    /*public static void setUserInContext(QueryDocumentSnapshot doc) {
         ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
         ArrayList<Review> reviews = (ArrayList<Review>) doc.get("user.reviews");
         ArrayList<Post> posts = (ArrayList<Post>) doc.get("user.postList");
@@ -65,7 +65,7 @@ public class DefValues {
         int tours = (int) doc.getLong("user.toursCound").intValue();
 
         userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
-    }
+    }*/
 
 
     public static User defUser(){

@@ -135,6 +135,7 @@ public class PublishFragment extends Fragment implements Serializable{
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
         documentReference.set(newUser);
+        db.collection("posts").add(post);
         //ApiFuture<String, Object>
         /*db.collection("users").whereEqualTo("user.uid", user.getUid())
                 .get()
