@@ -24,6 +24,7 @@ public class Post implements Serializable {
     private ArrayList<Language> languages;
     private ArrayList<Marker> places;
     private Float price;
+    private String uuid;
 
 
     public Post(Date createdAt, Date dueTo,
@@ -43,6 +44,7 @@ public class Post implements Serializable {
         this.languages = languages;
         this.places = places;
         this.price = price;
+        this.uuid = this.guide.getUid() + this.guide.getScore() + 1;
     }
 
     public Post() {
@@ -50,6 +52,14 @@ public class Post implements Serializable {
         this.numTourists= 1;
         this.places = new ArrayList<>();
         this.languages = new ArrayList<>();
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid){
+        this.uuid = uuid;
     }
 
     public ArrayList<Marker> getPlaces() {

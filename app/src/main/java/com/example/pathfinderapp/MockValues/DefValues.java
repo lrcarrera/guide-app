@@ -53,26 +53,12 @@ public class DefValues {
     public static User getUserInContext() {
         return userInContext;
     }
+
     public static void setUserInContext(QueryDocumentSnapshot doc) {
 
-        ArrayList<HashMap<String, Object>> languagesHash  = (ArrayList<HashMap<String, Object>>) doc.get("user.languages");
+        userInContext = new User(doc);
 
-        ArrayList<Language> languages = new ArrayList<>();
-
-        for (HashMap<String, Object> languageHash : languagesHash) {
-            languages.add(new Language(languageHash));
-        }
-       // ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
-        ArrayList<Review> reviews = (ArrayList<Review>) doc.get("user.reviews");
-        ArrayList<Post> posts = (ArrayList<Post>) doc.get("user.postList");
-        String name = doc.getString("user.name");
-        String company = doc.getString("user.company");
-        String uid = doc.getString("user.uid");
-        float score = doc.getLong("user.score");
-        int image = doc.getLong("user.image").intValue();
-        int tours = (int) doc.getLong("user.toursCound").intValue();
-
-        userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
+        //userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
     }
 
 
@@ -296,7 +282,7 @@ public class DefValues {
 
     public static List<Review> getMockReviews(){
         if(REVIEWS == null){
-            User guide = getMockPostList().get(0).getGuide();
+            User guide = DefValues.getUserInContext();
             Review aux = new Review("Muy buen tour, guía majisimo oye!", guide, new Date());
             Review aux2 = new Review("Muy buen tour1, guía majisimo oye!", guide, new Date());
             Review aux3 = new Review("Muy buen tour2, guía majisimo oye!", guide, new Date());

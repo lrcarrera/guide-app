@@ -106,16 +106,6 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        fm.beginTransaction().add(R.id.main_container, fragment4, "4").hide(fragment4).commit();
-        fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
-        fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
-        fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
-
-        TextView mTextMessage = (TextView) findViewById(R.id.message);
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        changeIcons(navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -131,11 +121,24 @@ public class MainActivity extends AppCompatActivity implements
                                 DefValues.setDocumentReference(document.getReference());
                                 DefValues.setUserInContext(document);
                             }
+                            fm.beginTransaction().add(R.id.main_container, fragment4, "4").hide(fragment4).commit();
+                            fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
+                            fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
+                            fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
+
                         } else {
                             Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                         }
                     }
                 });
+
+
+
+        TextView mTextMessage = (TextView) findViewById(R.id.message);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        changeIcons(navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
     }
 

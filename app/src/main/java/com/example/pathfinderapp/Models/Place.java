@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Place {
 
@@ -27,6 +28,26 @@ public class Place {
         this.picture = picture;
         this.coord = coord;
     }
+
+    public Place(HashMap<String, Object> placesInHashMap) {
+        this.name = (String) placesInHashMap.get("name");
+        this.country = (String) placesInHashMap.get("country");
+        this.picture = (int) placesInHashMap.get("picture");
+        this.coord = (LatLng) placesInHashMap.get("coord");
+
+    }
+
+    /*public Place(HashMap<String, String> placeHashMap) {
+        this.name = placeHashMap.get("name");
+        this.country = placeHashMap.get("country");
+        this.picture = Integer.parseInt(placeHashMap.get("picture"));
+        String[] aux = placeHashMap.get("coord").split(",");
+        String[] lat = aux[0].split("\\[");
+        String[] lon = aux[1].split("]");
+        long latitude = Long.parseLong(lat[1]);
+        long longitude = Long.parseLong(lon[0]);
+        this.coord = new LatLng(latitude, longitude);
+    }*/
 
     public Map<String, Object> AddToHashMap(){
         Map<String, Object> data = new HashMap<>();

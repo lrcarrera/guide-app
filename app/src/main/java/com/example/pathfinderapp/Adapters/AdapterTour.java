@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ramotion.foldingcell.FoldingCell;
 
 import java.text.SimpleDateFormat;
@@ -119,6 +121,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     private void processPostData(Post current, ViewHolderItem viewHolder){
+        /**
+         * Missing the fucking guide
+         * */
         viewHolder.setPost(current);
         viewHolder.info.setText(String.valueOf(current.getGuide().getName()));
         viewHolder.title.setText(current.getPlace().getName());
@@ -393,7 +398,13 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                 TextView errorMessage = myDialog.findViewById(R.id.editText);
                                 errorMessage.setVisibility(View.VISIBLE);
                             } else {
+
+                                User user = DefValues.getUserInContext();
                                 Review review = new Review(text, DefValues.getUserInContext(), new Date());
+                                user.addReview(review);
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
+                                documentReference.set(review);
                                 //Toast toast = Toast.makeText(context, review, Toast.LENGTH_SHORT);
                                 /*Falta añadirlo al usuario que hizo el tour*/
                                 /*User user = DefValues.getPlayerInContext();

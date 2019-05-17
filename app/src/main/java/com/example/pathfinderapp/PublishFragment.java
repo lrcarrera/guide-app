@@ -79,7 +79,7 @@ public class PublishFragment extends Fragment implements Serializable{
 
         post = new Post();
         post.setTourists(new ArrayList<User>());
-        user = DefValues.defUser();
+        user = DefValues.getUserInContext();
         post.setGuide(user);
 
         seekBar.setOnTouchListener(new View.OnTouchListener() {
