@@ -47,6 +47,7 @@ public class User implements Serializable {
 
     public User (QueryDocumentSnapshot doc){
 
+        this.toursCound = doc.getLong("user.toursCound").intValue();
         ArrayList<HashMap<String, Object>> languagesHash  = (ArrayList<HashMap<String, Object>>) doc.get("user.languages");
         languages = new ArrayList<>();
         for (HashMap<String, Object> languageHash : languagesHash) {
@@ -60,7 +61,6 @@ public class User implements Serializable {
         uid = doc.getString("user.uid");
         score = doc.getLong("user.score");
         image = doc.getLong("user.image").intValue();
-        toursCound = (int) doc.getLong("user.toursCound").intValue();
         //userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
 
     }
@@ -78,12 +78,11 @@ public class User implements Serializable {
 
         this.uid = (String) userInHashMap.get("uid");
         this.name = (String) userInHashMap.get("name");
-        //List<Object> objects = (ArrayList<Object>) userInHashMap.get("postList");
-        //this.postList =(ArrayList<String>) userInHashMap.get("postList");
-        //this.name = (String) placesInHashMap.get("name");
-        //this.country = (String) placesInHashMap.get("country");
-        //this.picture = (int) placesInHashMap.get("picture");
-        //this.coord = (LatLng) placesInHashMap.get("coord");
+        this.postList = (ArrayList<String>) userInHashMap.get("postList");
+        this.toursCound = Integer.parseInt(userInHashMap.get("toursCound").toString());
+        this.company = (String) userInHashMap.get("company");
+        this.score = Float.parseFloat(userInHashMap.get("score").toString());
+
 
     }
 

@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements
                                 DefValues.setDocumentReference(document.getReference());
                                 DefValues.setUserInContext(document);
                             }
+
                             fm.beginTransaction().add(R.id.main_container, fragment4, "4").hide(fragment4).commit();
                             fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
                             fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();

@@ -109,6 +109,8 @@ public class PublishFragment extends Fragment implements Serializable{
     public void confirmButtonPressed(){
         makeSuccessToast();
         DefValues.AddPostToToursList(post);
+        user.setToursCound(user.getToursCound() + 1);
+        post.setUuid(user.getUid() + user.getScore());
         savePostInToDatabase();
         MainActivity mainActivity = (MainActivity)  getActivity();
         mainActivity.moveToToursPage();
@@ -134,8 +136,9 @@ public class PublishFragment extends Fragment implements Serializable{
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = DefValues.getUserInContextDocument();
-        documentReference.update(newUser);
+        //DocumentReference documentReference = DefValues.getUserInContextDocument();
+        //documentReference("user").
+        DefValues.getUserInContextDocument().update("user", newUser);
         db.collection("posts").add(post);
         //ApiFuture<String, Object>
         /*db.collection("users").whereEqualTo("user.uid", user.getUid())
@@ -225,7 +228,6 @@ public class PublishFragment extends Fragment implements Serializable{
         post = new Post();
         post.setTourists(new ArrayList<User>());
         post.setGuide(user);
-        post.setUuid(user.getUid() + (user.getScore() + 1));
         pager.setCurrentItem(0);
     }
 

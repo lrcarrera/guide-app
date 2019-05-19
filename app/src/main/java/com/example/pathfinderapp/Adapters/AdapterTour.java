@@ -161,6 +161,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private void processProfilePicture(Post current, ViewHolderItem viewHolder){
         Bitmap bitmap = null;
         bitmap = BitmapFactory.decodeResource(context.getResources(), current.getGuide().getImage());
+        if(bitmap == null){
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_user);
+        }
         bitmap = CroppedImage.getCroppedBitmap(bitmap);
         viewHolder.picture.setImageBitmap(bitmap);
         viewHolder.topPicture.setImageBitmap(bitmap);

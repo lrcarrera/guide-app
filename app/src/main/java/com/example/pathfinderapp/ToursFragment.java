@@ -3,12 +3,16 @@ package com.example.pathfinderapp;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,11 @@ import android.view.ViewGroup;
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -59,7 +68,29 @@ public class ToursFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
-        searchList = DefValues.getMockYourToursList();
+        //searchList = DefValues.getMockYourToursList();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if(DefValues.getUserInContext().getToursCound() > 0) {
+            for (String post : DefValues.getUserInContext().getPostList()) {
+                db.collection("posts").whereEqualTo("uuid", post)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        DefValues.addUserRelatedPost(document);
+                                    }
+
+
+                                } else {
+                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                }
+                            }
+                        });
+            }
+        }
+        searchList = DefValues.getUserRelatedPosts();
         adapterSearch = new AdapterTour(getFragmentManager(), searchList, true, this);
 
         recycler = view.findViewById(R.id.recyclerid);

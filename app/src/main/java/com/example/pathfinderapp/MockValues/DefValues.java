@@ -1,5 +1,7 @@
 package com.example.pathfinderapp.MockValues;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -11,8 +13,12 @@ import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +40,8 @@ public class DefValues {
     private static User DEF_USER;
     private static ArrayList<Place> PLACES;
     private static List<Review> REVIEWS;
+
+    private static ArrayList<Post> userRelatedPosts;
     private static User userInContext;
     private static DocumentReference userInContextDocument;
 
@@ -57,8 +65,19 @@ public class DefValues {
     public static void setUserInContext(QueryDocumentSnapshot doc) {
 
         userInContext = new User(doc);
+    }
 
-        //userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
+    public static void addUserRelatedPost(QueryDocumentSnapshot doc){
+        Post post = new Post(doc);
+        if(userRelatedPosts == null)
+            userRelatedPosts = new ArrayList<>();
+        userRelatedPosts.add(post);
+    }
+
+    public static ArrayList<Post> getUserRelatedPosts(){
+        if(userRelatedPosts == null)
+            userRelatedPosts = new ArrayList<>();
+        return userRelatedPosts;
     }
 
 

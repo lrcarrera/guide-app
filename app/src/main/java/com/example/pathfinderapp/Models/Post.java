@@ -3,12 +3,20 @@ package com.example.pathfinderapp.Models;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Post implements Serializable {
@@ -45,6 +53,44 @@ public class Post implements Serializable {
         this.places = places;
         this.price = price;
         this.uuid = this.guide.getUid() + this.guide.getScore() + 1;
+    }
+
+    public Post (QueryDocumentSnapshot doc){
+        this.createdAt = (Date) doc.get("createdAt");
+        dueTo = doc.getTimestamp("dueTo").toDate();
+        startHour = doc.getString("startHour");
+        endHour = doc.getString("endHour");
+        price = Float.parseFloat(doc.getLong("price").toString());
+        numTourists = Integer.parseInt(doc.getLong("numTourists").toString());
+        uuid = doc.getString("uuid");
+
+        ArrayList<HashMap<String, Object>> languagesHash  = (ArrayList<HashMap<String, Object>>) doc.get("languages");
+        languages = new ArrayList<>();
+        for (HashMap<String, Object> languageHash : languagesHash) {
+            languages.add(new Language(languageHash));
+        }
+
+
+
+        HashMap<String, Map<String, Long>> locations = (HashMap<String, Map<String, Long>>) doc.get("place.coord");
+        Collection collection = locations.values();
+        List<Double> list = new ArrayList<>(collection);
+        Double lat = list.get(0);
+        Double lon = list.get(1);
+        place = new Place(doc.getString("place.name"),
+                          doc.getString("place.country"),
+                          Integer.parseInt(doc.getLong("place.picture").toString()),
+                          new LatLng(lat, lon));
+
+
+        places = (ArrayList<Marker>) doc.get("places");
+        guide = new User((HashMap<String, Object>) doc.get("guide"));
+
+        /**Falta por implementar se tienen que catcher bien*/
+        this.tourists = new ArrayList<>();
+        this.tourists.add(guide);
+
+
     }
 
     public Post() {
