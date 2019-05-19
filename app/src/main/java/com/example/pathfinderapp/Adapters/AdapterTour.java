@@ -1,8 +1,10 @@
 package com.example.pathfinderapp.Adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,6 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -352,7 +355,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 inscriptionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       makeSuccessToast();
+                       //makeSuccessToast();
                        inscribe();
                     }
                 });
@@ -362,6 +365,29 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         private void inscribe(){
             post.addTourist(new User());
             DefValues.AddPostToToursList(post);
+            Dialog confirmDialog = new AlertDialog.Builder(context)
+                    .setTitle("Confirmación")
+                    .setMessage("Quieres entrar mamapingas?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            final Map<String, Object> newUser;
+                            User user = DefValues.getUserInContext();
+                            user.addPost(post.getUuid());
+                            newUser = DefValues.getUserInContext().AddToHashMap();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DefValues.getUserInContextDocument().update("user", newUser);
+
+                            /**Se tiene que sacar esta solo para guardar mierda posts de ejemplo */
+                            db.collection("posts").add(post);
+
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
             MainActivity mainActivity = (MainActivity) context;
             mainActivity.moveToToursPage();
             inscriptionButton.hide();

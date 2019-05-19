@@ -135,6 +135,7 @@ public class DefValues {
             post1.setLanguages(DefValues.defLanguages());
             post1.setTourists(new ArrayList<User>());
             post1.setPlace(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
+            post1.setUuid("1111111");
 
             User user2 = new User();
             user2.setScore(12.0f);
@@ -153,6 +154,7 @@ public class DefValues {
             post2.setLanguages(DefValues.defLanguages());
             post2.setTourists(users);
             post2.setPlace(new Place("Barcelona", "Spain", R.drawable.ic_action_place, new LatLng(41.3948975, 2.0785566)));
+            post2.setUuid("2222222222");
 
             User user3 = new User();
             user3.setScore(7.0f);
@@ -171,7 +173,7 @@ public class DefValues {
             post3.setPlaces(new ArrayList<Marker>());
             post3.setLanguages(DefValues.defLanguages());
             post3.setPlace(new Place("Paris", "France", R.drawable.ic_action_place, new LatLng(48.8589506, 2.2768488)));
-
+            post3.setUuid("333333333");
 
             User user4 = new User();
             user4.setScore(1.0f);
@@ -192,6 +194,7 @@ public class DefValues {
             post4.setPlaces(new ArrayList<Marker>());
             post4.setLanguages(DefValues.defLanguages());
             post4.setPlace(new Place("New York", "EEUU", R.drawable.ic_action_place, new LatLng(40.750580, -73.993584)));
+            post4.setUuid("44444444");
 
             POSTS.add(post1);
             POSTS.add(post2);

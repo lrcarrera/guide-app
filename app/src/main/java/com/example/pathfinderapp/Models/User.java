@@ -188,4 +188,10 @@ public class User implements Serializable {
         post.setUuid(this.uid + this.toursCound + 1);
         postList.add(post.getUuid());
     }
+
+    public void addPost(String postUuid){
+        if(postList == null)
+            postList = new ArrayList<String>();
+        postList.add(postUuid);
+    }
 }
