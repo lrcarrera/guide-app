@@ -143,6 +143,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.itemLanguages.setText(aux);
         viewHolder.mapPosition = current.getPlace().getCoord();
         viewHolder.places = current.getPlaces();
+        viewHolder.markers = current.getMarkerOptions();
         if(isAdded){
             viewHolder.messageAppearance();
         } else {
@@ -258,6 +259,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         FoldingCell foldingCell;
         LatLng mapPosition;
         List<Marker> places;
+        List<MarkerOptions> markers;
         boolean isNight = false;
         int currentTourists,  numTouristsAllowed;
 
@@ -569,9 +571,17 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             if(isNight)
                 setMapStyle();
 
-            for (Marker marker : places){
-                mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
+            if(places == null){
+               for(MarkerOptions marker: markers){
+                   mMap.addMarker(marker);
+               }
+            } else {
+                for (Marker marker : places){
+                    mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
+                }
             }
+
+
             //new NamedLocation("New York", new LatLng(40.750580, -73.993584)),
         }
 
