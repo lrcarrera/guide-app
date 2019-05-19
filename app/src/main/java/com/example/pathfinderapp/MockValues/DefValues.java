@@ -63,7 +63,6 @@ public class DefValues {
     }
 
     public static void setUserInContext(QueryDocumentSnapshot doc) {
-
         userInContext = new User(doc);
     }
 
@@ -86,7 +85,7 @@ public class DefValues {
             DEF_USER = new User();
             DEF_USER.setScore(1.0f);
             DEF_USER.setName("Llui Spaimoc Rosales");
-            DEF_USER.setImage(R.drawable.ic_user);
+            DEF_USER.setImage(1);
             DEF_USER.setLanguages(DefValues.defLanguages());
             //DEF_USER.setReviews(getMockReviews());
         }
@@ -119,7 +118,7 @@ public class DefValues {
             final User user1 = new User();
             user1.setScore(5.0f);
             user1.setName("Maria Carrera");
-            user1.setImage(R.drawable.stock_girl);
+            user1.setImage(3);
 
 
 
@@ -140,7 +139,7 @@ public class DefValues {
             User user2 = new User();
             user2.setScore(12.0f);
             user2.setName("Concha Mas");
-            user2.setImage(R.drawable.stock_girl1);
+            user2.setImage(5);
 
             Post post2 = new Post();
             post2.setGuide(user2);
@@ -159,7 +158,7 @@ public class DefValues {
             User user3 = new User();
             user3.setScore(7.0f);
             user3.setName("Ramon Polanksi");
-            user3.setImage(R.drawable.stock_man);
+            user3.setImage(2);
 
             Post post3 = new Post();
             post3.setGuide(user3);
@@ -178,7 +177,7 @@ public class DefValues {
             User user4 = new User();
             user4.setScore(1.0f);
             user4.setName("Andreu Ibañez");
-            user4.setImage(R.drawable.stock_man);
+            user4.setImage(4);
 
 
 

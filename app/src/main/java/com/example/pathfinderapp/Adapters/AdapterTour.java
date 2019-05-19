@@ -42,11 +42,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.protobuf.compiler.PluginProtos;
 import com.ramotion.foldingcell.FoldingCell;
 
+import java.io.Console;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -162,15 +171,41 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.inscriptionStatus(currentNumTourists, numTouristsAllowed);
     }
 
-    private void processProfilePicture(Post current, ViewHolderItem viewHolder){
-        Bitmap bitmap = null;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), current.getGuide().getImage());
+    private void processProfilePicture(Post current, final ViewHolderItem viewHolder){
+        //Bitmap bitmap = null;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
+        try {
+            final File localFile = File.createTempFile("images", "png");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                    viewHolder.picture.setImageBitmap(bitmap);
+                    viewHolder.topPicture.setImageBitmap(bitmap);
+                    //mImageView.setImageBitmap(bitmap);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {
+            System.out.println("Vergassso");
+        }
+        /*bitmap = BitmapFactory.decodeResource(context.getResources());
         if(bitmap == null){
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_user);
-        }
-        bitmap = CroppedImage.getCroppedBitmap(bitmap);
-        viewHolder.picture.setImageBitmap(bitmap);
-        viewHolder.topPicture.setImageBitmap(bitmap);
+        }*/
+
+    }
+
+    private void getUserProfilePicture(int image){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(image + ".png");
     }
 
     private void createLanguagesRecycler(ViewHolderItem viewHolder, Post current){

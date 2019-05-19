@@ -2,6 +2,8 @@ package com.example.pathfinderapp.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class User implements Serializable {
 
@@ -46,7 +49,6 @@ public class User implements Serializable {
     }
 
     public User (QueryDocumentSnapshot doc){
-
         this.toursCound = doc.getLong("user.toursCound").intValue();
         ArrayList<HashMap<String, Object>> languagesHash  = (ArrayList<HashMap<String, Object>>) doc.get("user.languages");
         languages = new ArrayList<>();
@@ -78,6 +80,7 @@ public class User implements Serializable {
 
         this.uid = (String) userInHashMap.get("uid");
         this.name = (String) userInHashMap.get("name");
+        this.image = Integer.parseInt(userInHashMap.get("image").toString());
         this.postList = (ArrayList<String>) userInHashMap.get("postList");
         this.toursCound = Integer.parseInt(userInHashMap.get("toursCound").toString());
         this.company = (String) userInHashMap.get("company");
