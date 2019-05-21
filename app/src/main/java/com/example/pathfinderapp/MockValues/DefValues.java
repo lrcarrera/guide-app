@@ -42,6 +42,7 @@ public class DefValues {
     private static List<Review> REVIEWS;
 
     private static ArrayList<Post> userRelatedPosts;
+    private static ArrayList<Post> allPublishedPosts;
     private static User userInContext;
     private static DocumentReference userInContextDocument;
 
@@ -73,11 +74,26 @@ public class DefValues {
         userRelatedPosts.add(post);
     }
 
+    public static  void addAllPublishedPosts(QueryDocumentSnapshot doc){
+        Post post = new Post(doc);
+        if(allPublishedPosts == null)
+            allPublishedPosts = new ArrayList<>();
+        allPublishedPosts.add(post);
+    }
+
     public static ArrayList<Post> getUserRelatedPosts(){
         if(userRelatedPosts == null)
             userRelatedPosts = new ArrayList<>();
         return userRelatedPosts;
     }
+
+    public static ArrayList<Post> getAllPublishedPosts(){
+        if(allPublishedPosts == null)
+            allPublishedPosts = new ArrayList<>();
+        return allPublishedPosts;
+    }
+
+
 
 
     public static User defUser(){
@@ -113,8 +129,8 @@ public class DefValues {
             users.add(new User());
             users.add(new User());
             users.add(new User());
-            users.add(new User());
-            users.add(new User());
+            //users.add(new User());
+            //users.add(new User());
             final User user1 = new User();
             user1.setScore(5.0f);
             user1.setName("Maria Carrera");

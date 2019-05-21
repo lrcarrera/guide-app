@@ -3,13 +3,16 @@ package com.example.pathfinderapp;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,14 @@ import android.widget.SearchView;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -54,7 +64,41 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return  inflater.inflate(R.layout.fragment_search, container, false);
+        //searchList = DefValues.getMockYourToursList();
+        final View view = inflater.inflate(R.layout.fragment_search, container, false);
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("posts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                DefValues.addAllPublishedPosts(document);
+                            }
+                            ArrayList<Post> searchList = DefValues.getAllPublishedPosts();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            adapterSearch = new AdapterTour(fragmentManager, searchList, false, null);
+
+                            RecyclerView recycler = view.findViewById(R.id.recyclerid);
+                            recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+
+                            recycler.setAdapter(adapterSearch);
+                            recycler.setItemAnimator(new DefaultItemAnimator());
+
+
+
+                        } else {
+                            Log.w("TEST08", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        SearchView searchView = view.findViewById(R.id.search_bar);
+        searchView.setFocusable(false);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(this);
+        return  view;
     }
 
     @Override
@@ -65,20 +109,23 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         if(view == null)
             return;
 
-        ArrayList<Post> searchList = DefValues.getMockPostList();
-        FragmentManager fragmentManager = getFragmentManager();
-        adapterSearch = new AdapterTour(fragmentManager, searchList, false, null);
 
-        RecyclerView recycler = view.findViewById(R.id.recyclerid);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        /*db.collection("posts").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                DefValues.addAllPublishedPosts(document);
+                            }
 
-        recycler.setAdapter(adapterSearch);
-        recycler.setItemAnimator(new DefaultItemAnimator());
 
-        SearchView searchView = view.findViewById(R.id.search_bar);
-        searchView.setFocusable(false);
-        searchView.clearFocus();
-        searchView.setOnQueryTextListener(this);
+                        } else {
+                            Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                        }
+                    }
+                });*/
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
