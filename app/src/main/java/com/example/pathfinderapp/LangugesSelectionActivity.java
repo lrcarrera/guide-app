@@ -50,11 +50,6 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TEST08", document.getId() + " => " + document.getData());
-                            }
-
                             languages = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //    public Language(long id, String flag, String name, String code, int picture) {
@@ -72,8 +67,7 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
                             fragmentTransaction.replace(R.id.dynamic_fragment_frame_layout, fragmentDemo);
                             fragmentTransaction.commit();
 
-                            prefs = getApplicationContext().getSharedPreferences(
-                                    PACKAGE_NAME, MODE_PRIVATE);
+                            prefs = getApplicationContext().getSharedPreferences(PACKAGE_NAME, MODE_PRIVATE);
                         } else {
                             Log.w("TEST08", "Error getting documents.", task.getException());
                         }
@@ -83,10 +77,6 @@ public class LangugesSelectionActivity extends AppCompatActivity implements Lang
                 getSupportFragmentManager().findFragmentById(R.id.frame_container);*/
         //above part is to determine which fragment is in your frame_container
         //setFragment(fragmentDemo);
-    }
-
-    public void changeFirstTimeStatus(){
-        prefs.edit().putBoolean(getResources().getString(R.string.is_first_time), false).apply();
     }
 
     public void startMainPage(){

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.pathfinderapp.LangugesSelectionActivity;
+import com.example.pathfinderapp.LoginActivity;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.User;
@@ -50,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,7 +93,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
         return fragment;
     }
 
-    public static LanguagesFragment newInstance(ArrayList<Language> languages, LangugesSelectionActivity act){
+    public static LanguagesFragment newInstance(ArrayList<Language> languages, LangugesSelectionActivity act) {
         LanguagesFragment fragment = new LanguagesFragment();
         fragment.languages = languages;
         fragment.act = act;
@@ -114,8 +116,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
 
         recycler = view.findViewById(R.id.languages);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        if(languages == null)
-        {
+        if (languages == null) {
             adapterLanguages = new AdapterLanguage(parent.user.getLanguages());
         } else {
             adapterLanguages = new AdapterLanguage(languages);
@@ -125,10 +126,9 @@ public class LanguagesFragment extends Fragment implements INexStep {
         adapterLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pos =  recycler.getChildAdapterPosition(v);
+                int pos = recycler.getChildAdapterPosition(v);
                 ArrayList<Language> aux;
-                if(languages == null)
-                {
+                if (languages == null) {
                     aux = parent.user.getLanguages();
                 } else {
                     aux = DefValues.defLanguages();
@@ -138,7 +138,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
                 /*if(languages != null)
                     languages.get(pos).setAdded(!language.isAdded());*/
                 aux.set(pos, language);
-                if(languages != null)
+                if (languages != null)
                     languages = aux;
             }
         });
@@ -156,10 +156,9 @@ public class LanguagesFragment extends Fragment implements INexStep {
     }
 
 
-    private void addContinueButton()
-    {
+    private void addContinueButton() {
         FloatingActionButton continueButton = new FloatingActionButton(getContext());
-        LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.END;
         params.bottomMargin = 20;
         params.rightMargin = 20;
@@ -172,19 +171,18 @@ public class LanguagesFragment extends Fragment implements INexStep {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(languages == null)
-                {
+                if (languages == null) {
                     int added = addLanguagesToPost();
-                    if (added > 0){
+                    if (added > 0) {
                         nextStep();
                     } else {
-                       showErrorMessage();
+                        showErrorMessage();
                     }
-                }else{
+                } else {
                     int added = addLanguagesToPost();
-                    if(added > 0){
+                    if (added > 0) {
                         act.startMainPage();
-                    }else{
+                    } else {
                         showErrorMessage();
                     }
                 }
@@ -194,7 +192,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
         containLayout.addView(continueButton);
     }
 
-    private void showErrorMessage(){
+    private void showErrorMessage() {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast,
                 (ViewGroup) getActivity().findViewById(R.id.toastRoot));
@@ -209,30 +207,27 @@ public class LanguagesFragment extends Fragment implements INexStep {
         aux.setBackgroundColor(Color.parseColor(DEFAULT_COLOR));
 
         Toast toast = new Toast(getContext());
-        toast.setGravity(Gravity.BOTTOM |Gravity.FILL_HORIZONTAL, 0, 0);
+        toast.setGravity(Gravity.BOTTOM | Gravity.FILL_HORIZONTAL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
     }
 
 
-    private int addLanguagesToPost()
-    {
+    private int addLanguagesToPost() {
         ArrayList<Language> userLanguages;
-        if(languages == null){
+        if (languages == null) {
             userLanguages = parent.user.getLanguages();
-        }else{
+        } else {
             userLanguages = languages;
         }
 
         ArrayList<Language> postLanguages = new ArrayList<>();
-        for(Language language : userLanguages)
-        {
-            if(language.isAdded())
+        for (Language language : userLanguages) {
+            if (language.isAdded())
                 postLanguages.add(language);
         }
-        if(languages == null)
-        {
+        if (languages == null) {
             parent.post.setLanguages(postLanguages);
         } else {
             saveLanguagesInDataBase(postLanguages);
@@ -240,7 +235,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
         return postLanguages.size();
     }
 
-    private void saveLanguagesInDataBase(ArrayList<Language> languages){
+    private void saveLanguagesInDataBase(ArrayList<Language> languages) {
 
         // Logica del luis
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -265,13 +260,20 @@ public class LanguagesFragment extends Fragment implements INexStep {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("TEST09", "Error adding document", e);
+                        Toast.makeText(getActivity(),
+                                "Server not found (Error: 400)",
+                                Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                        Objects.requireNonNull(getActivity()).finish();
                     }
                 });
 
-        act.changeFirstTimeStatus();
+        //act.changeFirstTimeStatus();
     }
 
-    public void nextStep(){
+    public void nextStep() {
         parent.setCurrentPage();
     }
 
