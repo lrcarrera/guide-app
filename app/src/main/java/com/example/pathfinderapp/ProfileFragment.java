@@ -397,9 +397,7 @@ public class ProfileFragment extends Fragment {
         for (int i = 0; i < languages.size(); i++) {
             if (listPrefs[i]){
                 languagesResult.add(languages.get(i));
-            }
-          // if(listPrefs[i]) DefValues.getUserInContext().getLanguages().get(i).setCode("true");
-
+            }// if(listPrefs[i]) DefValues.getUserInContext().getLanguages().get(i).setCode("true");
         }
 
         DefValues.getUserInContextDocument().update("user.languages", languagesResult);

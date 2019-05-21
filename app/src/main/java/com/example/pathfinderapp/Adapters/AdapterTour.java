@@ -200,7 +200,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         if(bitmap == null){
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_user);
         }*/
-
     }
 
     private void getUserProfilePicture(int image){
