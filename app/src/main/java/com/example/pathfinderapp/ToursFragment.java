@@ -70,7 +70,7 @@ public class ToursFragment extends Fragment {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
         //searchList = DefValues.getMockYourToursList();
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        if(DefValues.getUserInContext().getToursCound() > 0) {
+        if (DefValues.getUserInContext() != null && DefValues.getUserInContext().getToursCound() > 0) {
             for (String post : DefValues.getUserInContext().getPostList()) {
                 db.collection("posts").whereEqualTo("uuid", post)
                         .get()
