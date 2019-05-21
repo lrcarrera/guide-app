@@ -397,8 +397,11 @@ public class ProfileFragment extends Fragment {
         for (int i = 0; i < languages.size(); i++) {
             if (listPrefs[i]){
                 languagesResult.add(languages.get(i));
+
             }// if(listPrefs[i]) DefValues.getUserInContext().getLanguages().get(i).setCode("true");
         }
+
+        DefValues.getUserInContext().setLanguages(languagesResult);
 
         DefValues.getUserInContextDocument().update("user.languages", languagesResult);
         System.out.println("holas");
@@ -411,6 +414,8 @@ public class ProfileFragment extends Fragment {
     private void logOut() {
 
         myDialog.dismiss();
+
+        prefs.edit().putBoolean(getResources().getString(R.string.is_first_time), false).apply();
 
         FirebaseAuth.getInstance().signOut();
         getActivity().finish();

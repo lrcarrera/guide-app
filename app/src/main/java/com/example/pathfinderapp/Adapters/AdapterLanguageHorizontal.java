@@ -40,6 +40,7 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
     {
         boolean[]aux = previousCheckedState;
 
+
         return isChecked;
     }
 
