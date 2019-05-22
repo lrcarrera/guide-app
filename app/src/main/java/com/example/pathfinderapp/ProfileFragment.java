@@ -36,6 +36,8 @@ import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
 import com.example.pathfinderapp.Adapters.AdapterProfile;
+import com.example.pathfinderapp.Adapters.AdapterTour;
+import com.example.pathfinderapp.Adapters.CroppedImage;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
@@ -44,6 +46,8 @@ import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +56,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -183,8 +191,7 @@ public class ProfileFragment extends Fragment {
 
 
             profilePicture = rootView.findViewById(R.id.profilePicture);
-            //TextView textViewName = rootView.findViewById(R.id.tv_name);
-            //textViewEmail = rootView.findViewById(R.id.tv_email);
+            setProfilePicture();
 
             //From facebook login
             prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
@@ -211,6 +218,31 @@ public class ProfileFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    private void setProfilePicture(){
+        User current = DefValues.getUserInContext();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getImage() + ".png");
+        try {
+            final File localFile = File.createTempFile("images", "png");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                    profilePicture.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {
+            System.out.println("Error in bitmap-profile_fragment-picture " + e.getMessage());
+        }
+
+
     }
 
     /*private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){

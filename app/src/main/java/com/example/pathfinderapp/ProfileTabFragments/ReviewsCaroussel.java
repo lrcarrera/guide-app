@@ -96,7 +96,7 @@ public class ReviewsCaroussel extends Fragment {
 
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getAuthorInfo().getImage() + ".png");
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getAuthorInfo().getImage() + "x2.png");
                 try {
                     final File localFile = File.createTempFile("images", "png");
                     storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
