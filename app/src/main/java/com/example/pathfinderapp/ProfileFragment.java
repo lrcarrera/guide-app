@@ -222,6 +222,9 @@ public class ProfileFragment extends Fragment {
 
     private void setProfilePicture(){
         User current = DefValues.getUserInContext();
+        if (current == null)
+            return;
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getImage() + ".png");
         try {
@@ -279,9 +282,12 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public void setTabsSubPages(final ArrayList<Post> posts){
+    void setTabsSubPages(final ArrayList<Post> posts){
+        if (DefValues.getUserInContext() == null)
+            return;
+
         ArrayList<Review> reviews = DefValues.getUserInContext().getReviews();
-        final ArrayList<Post> profilePosts = posts;
+
         final ArrayList<Review> newReviews = new ArrayList<>();
         if(reviews != null){
             for(final Review review : reviews){
@@ -450,51 +456,37 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public boolean[] setLanguagesStatuses(ArrayList<Language> rootLanguages) {
-
-        int userLanguagesSize = DefValues.getUserInContext().getLanguages().size();
+    private boolean[] setLanguagesStatuses(ArrayList<Language> rootLanguages) {
         boolean[] bools = new boolean[rootLanguages.size()];
+        if (DefValues.getUserInContext() == null || DefValues.getUserInContext().getLanguages() == null)
+            return bools;
 
-        for (int i = 0; i < rootLanguages.size(); i++) {
-            for (int j = 0; j < userLanguagesSize; j++) {
-                if (DefValues.getUserInContext().getLanguages().get(j).getCode().equals(rootLanguages.get(i).getCode())) {
-                    bools[i] = true;
-                }
-            }
-        }
+        ArrayList<Language> list = DefValues.getUserInContext().getLanguages();
+
+        for (int i = 0; i < rootLanguages.size(); i++)
+            for (int j = 0; j < list.size(); j++)
+                    bools[i] = list.get(j).getCode().equals(rootLanguages.get(i).getCode());
+
         return bools;
     }
 
     private void storePreferenceValues(ArrayList<Language> languages) {
 
         //Checkbox
-        if (checkboxNotifications.isChecked()) {
-            prefs.edit().putBoolean(getResources().getString(R.string.notification), true).apply();
-        } else {
-            prefs.edit().putBoolean(getResources().getString(R.string.notification), false).apply();
-        }
-
-        if (radioWifi.isChecked()) {
-            prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), false).apply();
-        } else {
-            prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), true).apply();
-        }
+        prefs.edit().putBoolean(getResources().getString(R.string.notification), checkboxNotifications.isChecked()).apply();
+        prefs.edit().putBoolean(getResources().getString(R.string.full_connectivity), radioWifi.isChecked()).apply();
 
         boolean[] listPrefs = adapterLanguages.getCheckBoxesStatus();
         ArrayList<Language> languagesResult = new ArrayList<>();
-        DefValues.getUserInContext().getLanguages();
-        for (int i = 0; i < languages.size(); i++) {
-            if (listPrefs[i]){
+        for (int i = 0; i < languages.size(); i++)
+            if (listPrefs[i])
                 languagesResult.add(languages.get(i));
 
-            }// if(listPrefs[i]) DefValues.getUserInContext().getLanguages().get(i).setCode("true");
-        }
+        if (DefValues.getUserInContext() == null)
+            return;
 
         DefValues.getUserInContext().setLanguages(languagesResult);
-
         DefValues.getUserInContextDocument().update("user.languages", languagesResult);
-        System.out.println("holas");
-
 
         myDialog.dismiss();
         Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();

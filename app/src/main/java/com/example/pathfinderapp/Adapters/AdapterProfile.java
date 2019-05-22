@@ -45,6 +45,9 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
 
     private void getOnlyPostsCreatedByTheCurrentUser(List<Post> posts){
         String userUid = DefValues.getUserInContext().getUid();
+        if (userUid == null)
+            return;
+
         for (int i=0; i< posts.size(); i++){
             Post current = posts.get(i);
             if(userUid.equals(current.getGuide().getUid())){

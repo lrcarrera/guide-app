@@ -135,9 +135,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     private void processPostData(Post current, ViewHolderItem viewHolder){
-        /**
-         * Missing the fucking guide
-         * */
         viewHolder.setPost(current);
         viewHolder.info.setText(String.valueOf(current.getGuide().getName()));
         viewHolder.title.setText(current.getPlace().getName());
@@ -160,7 +157,11 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.markers = current.getMarkerOptions();
 
         String postUid = current.getGuide().getUid();
+        if(DefValues.getUserInContext() == null)
+            return;
+
         String currentUserId = DefValues.getUserInContext().getUid();
+
         if(postUid != null && currentUserId != null){
             if(!postUid.equals(currentUserId) ){
                 if(isAdded){
@@ -172,8 +173,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 viewHolder.setInscriptionButtonVisibility();
             }
         }
-
-
     }
 
     private void touristsAllowed(Post current, ViewHolderItem viewHolder){
@@ -420,7 +419,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             DefValues.AddPostToToursList(post);
             Dialog confirmDialog = new AlertDialog.Builder(context)
                     .setTitle("Confirmación")
-                    .setMessage("Quieres entrar mamapingas?")
+                    .setMessage("Quieres entrar?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             final Map<String, Object> newUser;
@@ -430,7 +429,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DefValues.getUserInContextDocument().update("user", newUser);
 
-                            /**Se tiene que sacar esta solo para guardar mierda posts de ejemplo */
+                            /*Se tiene que sacar esta solo para guardar mierda posts de ejemplo */
                             db.collection("posts").add(post);
 
                         }
@@ -537,6 +536,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         }
 
         private void profilePopupSettings(){
+            if (DefValues.getUserInContext() == null)
+                return;
+
             if(post.getGuide().getUid().equals(DefValues.getUserInContext().getUid())){
                 this.adapterTour.activity.moveToProfilePage();
             } else {

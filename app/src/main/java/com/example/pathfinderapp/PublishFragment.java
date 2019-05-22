@@ -122,6 +122,9 @@ public class PublishFragment extends Fragment implements Serializable{
     private void savePostInToDatabase(){
 
         User user = DefValues.getUserInContext();
+        if (user == null)
+            return;
+        
         user.addPost(post);
         /*ArrayList<Post> postList = user.getPostList();
         if(postList == null)

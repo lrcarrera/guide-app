@@ -355,7 +355,6 @@ public class DefValues {
 
     public static List<Review> getMockReviews(){
         if(REVIEWS == null){
-            User guide = DefValues.getUserInContext();
             Review aux = new Review("Muy buen tour, guía majisimo oye!", "", new Date());
             Review aux2 = new Review("Muy buen tour1, guía majisimo oye!", "", new Date());
             Review aux3 = new Review("Muy buen tour2, guía majisimo oye!", "", new Date());
