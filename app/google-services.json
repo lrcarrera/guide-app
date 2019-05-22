@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1079832940981-amf3429rnsjh1mt4qobu44dv81hv15nl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pathfinderapp",
+            "certificate_hash": "b13acabc955b10759fdb0983ee3d4a594101050c"
+          }
+        },
+        {
           "client_id": "1079832940981-c89qlstoeph9se2inlbuqebtbbrhvarm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
