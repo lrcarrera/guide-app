@@ -80,7 +80,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                             }
                             searchList = DefValues.getAllPublishedPosts();
                             FragmentManager fragmentManager = getFragmentManager();
-                            adapterSearch = new AdapterTour(fragmentManager, searchList, false, null);
+                            adapterSearch = new AdapterTour((MainActivity) getActivity(),fragmentManager, searchList, false, null);
 
                             recycler = view.findViewById(R.id.recyclerid);
                             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));

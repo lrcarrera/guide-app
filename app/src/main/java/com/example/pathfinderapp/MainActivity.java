@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements
     private final Fragment fragment1 = new SearchFragment();
     private final Fragment fragment2 = new ToursFragment();
     private final Fragment fragment3 = new PublishFragment();
-    private final Fragment fragment4 = new ProfileFragment();
+    private final Fragment fragment4 = new ProfileFragment().newInstance(true);
     private BottomNavigationView navigation;
 
     private final FragmentManager fm = getSupportFragmentManager();
@@ -76,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements
         fm.beginTransaction().hide(active).show(fragment2).commit();
         navigation.getMenu().getItem(1).setChecked(true);
         active = fragment2;
+    }
+    
+    public void moveToProfilePage(){
+        fm.beginTransaction().hide(active).show(fragment4).commit();
+        navigation.getMenu().getItem(3).setChecked(true);
+        active = fragment4;
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

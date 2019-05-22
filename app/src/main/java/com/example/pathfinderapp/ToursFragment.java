@@ -92,7 +92,7 @@ public class ToursFragment extends Fragment {
             }
         }
         searchList = DefValues.getUserRelatedPosts();
-        adapterSearch = new AdapterTour(getFragmentManager(), searchList, true, this);
+        adapterSearch = new AdapterTour((MainActivity) getActivity(), getFragmentManager(), searchList, true, this);
 
         recycler = view.findViewById(R.id.recyclerid);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));

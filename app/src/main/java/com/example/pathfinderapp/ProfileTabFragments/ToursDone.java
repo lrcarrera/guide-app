@@ -40,8 +40,17 @@ public class ToursDone extends Fragment {
     private List<Post> posts;
     CarouselView postsCarousselView;
 
+    public  ToursDone(){}
+
     public ToursDone(List<Post> posts){
+
         this.posts = posts;
+    }
+
+    public  static  ToursDone newInstance(List<Post> posts){
+        ToursDone toursDone = new ToursDone();
+        toursDone.posts = posts;
+        return toursDone;
     }
 
     @Override

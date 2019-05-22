@@ -41,8 +41,16 @@ public class ReviewsCaroussel extends Fragment {
 
     //int[] sampleImages = {R.drawable.review_example1, R.drawable.review_example2, R.drawable.review_example3, R.drawable.review_example4};
 
+    public ReviewsCaroussel(){}
+
     public ReviewsCaroussel(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public static ReviewsCaroussel newInstance(List<Review> reviews){
+        ReviewsCaroussel reviewsCaroussel = new ReviewsCaroussel();
+        reviewsCaroussel.reviews = reviews;
+        return reviewsCaroussel;
     }
 
     @Override

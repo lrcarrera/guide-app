@@ -86,15 +86,17 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private FragmentManager fragmentManager;
     private final boolean isAdded;
     private final ToursFragment searchFragment;
+    private MainActivity activity;
     //private FragmentManager fragmentManager;
 
-    public AdapterTour(FragmentManager fragmentManager, ArrayList<Post> searchList, boolean isAdded, ToursFragment searchFragment) {
+    public AdapterTour(MainActivity mainActivity, FragmentManager fragmentManager, ArrayList<Post> searchList, boolean isAdded, ToursFragment searchFragment) {
         this.searchList = searchList;
         this.fragmentManager = fragmentManager;
         this.originalSearchList = new ArrayList<>();
         this.isAdded = isAdded;
         this.searchFragment = searchFragment;
         originalSearchList.addAll(searchList);
+        this.activity = mainActivity;
     }
 
     public void setToursList(ArrayList<Post> searchList){
@@ -280,6 +282,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
         //LinearLayout background;
+        //MainActivity activity;
         Post post;
         final TextView dateContent;
         final TextView fromHourNumber;
@@ -534,88 +537,13 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         }
 
         private void profilePopupSettings(){
-            dialog = new ProfileDialog(post.getGuide(), fragmentManager, view, this, post.getPlace());
-            //Fragment fragment = ProfileFragment.newInstance(post.getGuide());
-            FragmentTransaction ft2 = fragmentManager.beginTransaction();
-            //ft2.add(R.id.profile_popup_linear, new ProfileFragment(), "profile_fragment");
-            //ft2.commit();
-            //dialog.show(fragmentManager, "profile_fragment");
-            dialog.show(ft2, "profile_fragment_popup");
-
-            //dialog.sh
-            //final Dialog auxDialog = new Dialog(context);
-
-            //auxDialog.setContentView(R.layout.profile_popup);
-            //View view = auxDialog.findViewById(R.id.profile_popup_fragment);
-
-           /* Fragment fragment = ProfileFragment.newInstance(post.getGuide());
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.profile_popup_fragment, fragment, "profile_fragment")
-                    .commit();
-            //View btnClose = auxDialog.findViewById(R.id.profile_popup_fragment);
-            /*
-            FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-            SectionDescriptionFragment bdf = new SectionDescriptionFragment();
-            ft.replace(R.id.book_description_fragment, bdf);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            ft.addToBackStack(null);
-            ft.commit();
-                        */
-            /*ProfileDialog dialog = new ProfileDialog();
-            //FragmentManager fragmentManager =
-            Fragment fragment = ProfileFragment.newInstance(post.getGuide());
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.profile_popup_linear, fragment);
-            dialog.show(fragmentTransaction, "profile_fragment");
-            //dialog.show();
-            //Intent intent = new Intent(context, GuideProfileActivity.class);
-            //intent.putExtra("guide", g);
-            //context.startActivity(intent);
-            //ProfileDialog dialog = ProfileDialog.newInstance(post.getGuide(), fragmentManager, context);
-            //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            //dialog.setContentView(R.layout.profile_popup);
-
-            //Fragment fragment = ProfileFragment.newInstance(post.getGuide());
-            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //fragmentTransaction.add(R.id.profile_layout, fragment);
-
-            //dialog.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            //dialog.show(fragment, "profile_fragment");
-            //dialog.aux();
-            //dialog.show();
-            //fragmentTransaction.commit();
-            //dialogFragment.show(fragmentManager, "profile_fragment");
-            //Dialog auxDialog = new ProfileDialog(context, fragmentManager);
-
-            //final Dialog auxDialog = new Dialog(context);
-            //auxDialog.setContentView(R.layout.profile_popup);
-            //View auxFragment = auxDialog.findViewById(R.id.profile_popup);
-
-            //ProfileFragment fragment = new ProfileFragment();
-            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //fragmentTransaction.add(R.id.profile_popup, fragment);
-            //fragmentTransaction.commit();
-
-            /*FloatingActionButton btnClose = auxDialog.findViewById(R.id.btnClose);
-            MapView map = auxDialog.findViewById(R.id.map);
-            if (map != null) {
-                // Initialise the MapView
-                map.onCreate(null);
-                // Set the map ready callback to receive the GoogleMap object
-                map.getMapAsync(this);
-            }*/
-            //ViewGroup.LayoutParams l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            //dialog.addContentView(fragment);
-            //auxDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            //auxDialog.show();
-            /*btnClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    auxDialog.dismiss();
-                }
-            });*/
-
+            if(post.getGuide().getUid().equals(DefValues.getUserInContext().getUid())){
+                this.adapterTour.activity.moveToProfilePage();
+            } else {
+                dialog = new ProfileDialog(post.getGuide(), fragmentManager, view, this, post.getPlace());
+                FragmentTransaction ft2 = fragmentManager.beginTransaction();
+                dialog.show(ft2, "profile_fragment_popup");
+            }
         }
 
         private void mapPopupSettings(){

@@ -21,9 +21,9 @@ public class GuideProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide_profile);
         guide.setName("Ramon Espigon");
-        Fragment fragment = ProfileFragment.newInstance(guide);
+        /*Fragment fragment = ProfileFragment.newInstance(guide);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.profile_layout, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
     }
 }

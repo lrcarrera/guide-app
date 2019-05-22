@@ -120,24 +120,19 @@ public class ProfileFragment extends Fragment {
     ArrayList<Language> languages;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private boolean isInProfilePage;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param user Parameter 1.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(User user) {
+
+    public static ProfileFragment newInstance(boolean isInProfilePage) {
 
 
         ProfileFragment fragment = new ProfileFragment();
-        fragment.user = user;
+        fragment.isInProfilePage = isInProfilePage;
+        //fragment.user = user;
         return fragment;
     }
 
@@ -161,7 +156,7 @@ public class ProfileFragment extends Fragment {
         TextView textViewName = rootView.findViewById(R.id.tv_name);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
+        if (isInProfilePage) {
             // Name, email address, and profile photo Url
             String name = user.getDisplayName();
             String email = user.getEmail();
@@ -218,7 +213,7 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
-    private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){
+    /*private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){
         final ArrayList<Review> newReviews = new ArrayList<>();
         if(reviews != null){
             for(final Review review : reviews){
@@ -246,6 +241,10 @@ public class ProfileFragment extends Fragment {
         }
 
         return newReviews;
+    }*/
+
+    public void setTabsSubPages(User user){
+
     }
 
     public void setTabsSubPages(final ArrayList<Post> posts){
@@ -268,7 +267,7 @@ public class ProfileFragment extends Fragment {
                                     }
                                     review.setAuthorInfo(user);
                                     newReviews.add(review);
-                                    AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), newReviews, posts);
+                                    AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), newReviews, posts, true);
                                     viewPager.setAdapter(tabsAdapter);
                                     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
                                     tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
