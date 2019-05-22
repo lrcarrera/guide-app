@@ -74,8 +74,20 @@ public class DefValues {
         userRelatedPosts.add(post);
     }
 
+    public static void addUserRelatedPost(Post post){
+        if(userRelatedPosts == null)
+            userRelatedPosts = new ArrayList<>();
+        userRelatedPosts.add(post);
+    }
+
     public static  void addAllPublishedPosts(QueryDocumentSnapshot doc){
         Post post = new Post(doc);
+        if(allPublishedPosts == null)
+            allPublishedPosts = new ArrayList<>();
+        allPublishedPosts.add(post);
+    }
+
+    public static  void addAllPublishedPosts(Post post){
         if(allPublishedPosts == null)
             allPublishedPosts = new ArrayList<>();
         allPublishedPosts.add(post);
@@ -320,9 +332,9 @@ public class DefValues {
     public static List<Review> getMockReviews(){
         if(REVIEWS == null){
             User guide = DefValues.getUserInContext();
-            Review aux = new Review("Muy buen tour, guía majisimo oye!", guide, new Date());
-            Review aux2 = new Review("Muy buen tour1, guía majisimo oye!", guide, new Date());
-            Review aux3 = new Review("Muy buen tour2, guía majisimo oye!", guide, new Date());
+            Review aux = new Review("Muy buen tour, guía majisimo oye!", "", new Date());
+            Review aux2 = new Review("Muy buen tour1, guía majisimo oye!", "", new Date());
+            Review aux3 = new Review("Muy buen tour2, guía majisimo oye!", "", new Date());
             REVIEWS = new ArrayList<Review>();
             REVIEWS.add(aux);
             REVIEWS.add(aux2);

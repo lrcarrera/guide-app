@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -67,8 +68,11 @@ public class MainActivity extends AppCompatActivity implements
     private Fragment active = fragment1;
 
     public void moveToToursPage(){
+        SearchFragment searchFragment = (SearchFragment) fragment1;
+        searchFragment.recyclerListChanged();
         ToursFragment aux = (ToursFragment) fragment2;
         aux.recyclerListChanged();
+        setProfileTours(DefValues.getUserRelatedPosts());
         fm.beginTransaction().hide(active).show(fragment2).commit();
         navigation.getMenu().getItem(1).setChecked(true);
         active = fragment2;
@@ -101,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements
             return false;
         }
     };
+
+    public void setProfileTours(ArrayList< Post > posts){
+        ProfileFragment aux = (ProfileFragment) fragment4;
+        aux.setTabsSubPages(posts);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

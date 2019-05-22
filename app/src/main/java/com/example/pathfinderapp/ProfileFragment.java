@@ -39,6 +39,8 @@ import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
+import com.example.pathfinderapp.Models.Post;
+import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,6 +62,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -115,6 +118,8 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseFirestore db;
     ArrayList<Language> languages;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -190,54 +195,107 @@ public class ProfileFragment extends Fragment {
             prefs = Objects.requireNonNull(getActivity()).getSharedPreferences(
                     PACKAGE_NAME, Context.MODE_PRIVATE);
 
-            //String facebookImageLink =  prefs.getString(getResources().getString(R.string.facebook_picture_link), NO_PHOTO);
-            //String name = prefs.getString(getResources().getString(R.string.facebook_name), NO_NAME);
-            //String email = prefs.getString(getResources().getString(R.string.facebook_email), NO_EMAIL);
-
-            /*if(!Objects.equals(facebookImageLink, NO_PHOTO))
-                new AsyncTaskLoadImage(profilePicture).execute(facebookImageLink);
-
-            if(!Objects.equals(name, NO_NAME)) textViewName.setText(name);
-            */
-            // if(!Objects.equals(email, NO_EMAIL)) textViewEmail.setText(email);
-
-            //TODO: From normal login
 
 
-            //Log.d(TAG, "onCreate: Starting.");
-
-            TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
+            tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
             tabLayout.addTab(tabLayout.newTab().setText(R.string.reviewsTitle));
             tabLayout.addTab(tabLayout.newTab().setText(R.string.toursTitle));
             tabLayout.addTab(tabLayout.newTab().setText(R.string.scoresTitle));
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-            final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
-            AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews(), DefValues.getMockPostList());
-            viewPager.setAdapter(tabsAdapter);
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
+            viewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
+            setTabsSubPages(DefValues.getUserRelatedPosts());
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
 
-                }
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
 
-                }
-            });
+
         }/* else {
             textViewName.setText(user.getName());
         }*/
 
 
         return rootView;
+    }
+
+    private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){
+        final ArrayList<Review> newReviews = new ArrayList<>();
+        if(reviews != null){
+            for(final Review review : reviews){
+                db.collection("users").whereEqualTo("user.uid", review.getAutor() )
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    User user = null;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        user = new User(document);
+                                        //DefValues.setDocumentReference(document.getReference());
+                                        //DefValues.setUserInContext(document);
+                                    }
+                                    review.setAuthorInfo(user);
+                                    newReviews.add(review);
+
+                                } else {
+                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                }
+                            }
+                        });
+            }
+        }
+
+        return newReviews;
+    }
+
+    public void setTabsSubPages(final ArrayList<Post> posts){
+        ArrayList<Review> reviews = DefValues.getUserInContext().getReviews();
+        final ArrayList<Post> profilePosts = posts;
+        final ArrayList<Review> newReviews = new ArrayList<>();
+        if(reviews != null){
+            for(final Review review : reviews){
+                db.collection("users").whereEqualTo("user.uid", review.getAutor() )
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    User user = null;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        user = new User(document);
+                                        //DefValues.setDocumentReference(document.getReference());
+                                        //DefValues.setUserInContext(document);
+                                    }
+                                    review.setAuthorInfo(user);
+                                    newReviews.add(review);
+                                    AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), newReviews, posts);
+                                    viewPager.setAdapter(tabsAdapter);
+                                    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                                    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                                        @Override
+                                        public void onTabSelected(TabLayout.Tab tab) {
+                                            viewPager.setCurrentItem(tab.getPosition());
+                                        }
+
+                                        @Override
+                                        public void onTabUnselected(TabLayout.Tab tab) {
+
+                                        }
+
+                                        @Override
+                                        public void onTabReselected(TabLayout.Tab tab) {
+
+                                        }
+                                    });
+
+                                } else {
+                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                }
+                            }
+                        });
+            }
+        }
+
     }
 
     private void addLanguages(final Dialog dialog) {

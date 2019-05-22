@@ -104,7 +104,7 @@ public class ToursFragment extends Fragment {
     }
 
     public void recyclerListChanged(){
-        searchList = DefValues.getMockYourToursList();
+        searchList = DefValues.getUserRelatedPosts();
         adapterSearch.setToursList(searchList);
         adapterSearch.notifyDataSetChanged();
     }

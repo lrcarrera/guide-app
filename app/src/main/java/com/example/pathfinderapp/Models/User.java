@@ -52,17 +52,31 @@ public class User implements Serializable {
         this.toursCound = doc.getLong("user.toursCound").intValue();
         ArrayList<HashMap<String, Object>> languagesHash  = (ArrayList<HashMap<String, Object>>) doc.get("user.languages");
         languages = new ArrayList<>();
-        for (HashMap<String, Object> languageHash : languagesHash) {
-            languages.add(new Language(languageHash));
+        if(languagesHash != null){
+            for (HashMap<String, Object> languageHash : languagesHash) {
+                languages.add(new Language(languageHash));
+            }
         }
+
         // ArrayList<Language> languages = (ArrayList<Language>) doc.get("user.languages");
-        reviews = (ArrayList<Review>) doc.get("user.reviews");
+        //reviews = (ArrayList<Review>) doc.get("user.reviews");
         postList = (ArrayList<String>) doc.get("user.postList");
         name = doc.getString("user.name");
         company = doc.getString("user.company");
         uid = doc.getString("user.uid");
         score = doc.getLong("user.score");
         image = doc.getLong("user.image").intValue();
+        ArrayList<HashMap<String, Object>> reviews = (ArrayList<HashMap<String, Object>>) doc.get("user.reviews");
+        if(this.reviews == null)
+            this.reviews = new ArrayList<>();
+
+        if(reviews != null){
+
+            for (HashMap<String, Object> review : reviews){
+                this.reviews.add(new Review(review));
+            }
+            System.out.println(reviews);
+        }
         //userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
 
     }

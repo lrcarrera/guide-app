@@ -71,47 +71,51 @@ public class ReviewsCaroussel extends Fragment {
         public View setViewForPosition(int position) {
 
             View customView = getLayoutInflater().inflate(R.layout.reviews_caroussel, null);
+            if(reviews.get(position).getAuthorInfo() != null){
+                TextView messageTextView = (TextView) customView.findViewById(R.id.ReviewMessage);
+                TextView authorTextView = (TextView) customView.findViewById(R.id.ReviewAuthor);
+                final ImageView profileImageView = (ImageView) customView.findViewById(R.id.ReviewAuthorImage);
+                Review current = reviews.get(position);
+                String aux = "\"" + current.getMessage() + "\"";
+                messageTextView.setText(aux);
 
-            TextView messageTextView = (TextView) customView.findViewById(R.id.ReviewMessage);
-            TextView authorTextView = (TextView) customView.findViewById(R.id.ReviewAuthor);
-            final ImageView profileImageView = (ImageView) customView.findViewById(R.id.ReviewAuthorImage);
-            Review current = reviews.get(position);
-            String aux = "\"" + current.getMessage() + "\"";
-            messageTextView.setText(aux);
+                //Date date = current.getCreatedAt();
+                //String day = (String) DateFormat.format("dd", date); // 20
+                //String monthString = (String) DateFormat.format("MMM", date); // Jun
+                //String year = (String) DateFormat.format("yyyy", date); // 2013
 
-            Date date = current.getCreatedAt();
-            String day = (String) DateFormat.format("dd", date); // 20
-            String monthString = (String) DateFormat.format("MMM", date); // Jun
-            String year = (String) DateFormat.format("yyyy", date); // 2013
-            aux = current.getAutor().getName() + " - " + day + "/" + monthString + "/" + year;
-            authorTextView.setText(aux);
-
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(DefValues.getUserInContext().getImage() + ".png");
-            try {
-                final File localFile = File.createTempFile("images", "png");
-                storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        bitmap = CroppedImage.getCroppedBitmap(bitmap);
-                        profileImageView.setImageBitmap(bitmap);
-                        reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+                //aux = current.getAutor().getName() + " - " + day + "/" + monthString + "/" + year;
+                //authorTextView.setText(aux);
 
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(DefValues.getUserInContext().getImage() + ".png");
+                try {
+                    final File localFile = File.createTempFile("images", "png");
+                    storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                            profileImageView.setImageBitmap(bitmap);
+                            reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
 
-                    }
-                });
-            } catch (IOException e) {
-                System.out.println("Vergassso");
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+
+                        }
+                    });
+                } catch (IOException e) {
+                    System.out.println("Vergassso");
+                }
+
+
             }
-
             return customView;
+
 
             // bitmap = BitmapFactory.decodeResource(getResources(), current.getAutor().getImage());
             //bitmap = CroppedImage.getCroppedBitmap(bitmap);

@@ -1,11 +1,13 @@
 package com.example.pathfinderapp.Adapters;
 
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.ProfileTabFragments.ReviewsCaroussel;
 import com.example.pathfinderapp.ProfileTabFragments.ToursDone;
 import com.example.pathfinderapp.ProfileTabFragments.ProfileTab3Fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
@@ -20,13 +22,25 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
 
     private final int mNumOfTabs;
     List<Review> reviews;
-    List<Post> posts;
+    private ArrayList<Post> posts;
 
     public AdapterProfile(FragmentManager fm, int NoofTabs, List<Review> reviews, List<Post> posts){
         super(fm);
         this.mNumOfTabs = NoofTabs;
         this.reviews = reviews;
-        this.posts = posts;
+        this.posts = new ArrayList<>();
+        getOnlyPostsCreatedByTheCurrentUser(posts);
+        //this.posts = posts;
+    }
+
+    private void getOnlyPostsCreatedByTheCurrentUser(List<Post> posts){
+        String userUid = DefValues.getUserInContext().getUid();
+        for (int i=0; i< posts.size(); i++){
+            Post current = posts.get(i);
+            if(userUid.equals(current.getGuide().getUid())){
+                this.posts.add(current);
+            }
+        }
     }
     @Override
     public int getCount() {

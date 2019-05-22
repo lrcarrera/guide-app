@@ -108,10 +108,12 @@ public class PublishFragment extends Fragment implements Serializable{
 
     public void confirmButtonPressed(){
         makeSuccessToast();
-        DefValues.AddPostToToursList(post);
+        //DefValues.AddPostToToursList(post);
         user.setToursCound(user.getToursCound() + 1);
         post.setUuid(user.getUid() + user.getScore());
         savePostInToDatabase();
+        DefValues.addUserRelatedPost(post);
+        DefValues.addAllPublishedPosts(post);
         MainActivity mainActivity = (MainActivity)  getActivity();
         mainActivity.moveToToursPage();
         cancelButtonPressed();

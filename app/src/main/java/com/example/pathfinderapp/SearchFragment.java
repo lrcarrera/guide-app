@@ -42,7 +42,8 @@ import java.util.ArrayList;
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private AdapterTour adapterSearch;
-
+    private ArrayList<Post> searchList;
+    private RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
 
     public SearchFragment() {
@@ -77,16 +78,18 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 DefValues.addAllPublishedPosts(document);
                             }
-                            ArrayList<Post> searchList = DefValues.getAllPublishedPosts();
+                            searchList = DefValues.getAllPublishedPosts();
                             FragmentManager fragmentManager = getFragmentManager();
                             adapterSearch = new AdapterTour(fragmentManager, searchList, false, null);
 
-                            RecyclerView recycler = view.findViewById(R.id.recyclerid);
+                            recycler = view.findViewById(R.id.recyclerid);
                             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
                             recycler.setAdapter(adapterSearch);
                             recycler.setItemAnimator(new DefaultItemAnimator());
 
+                            MainActivity activity = (MainActivity) getActivity();
+                            activity.setProfileTours(searchList);
 
 
                         } else {
@@ -99,6 +102,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         searchView.clearFocus();
         searchView.setOnQueryTextListener(this);
         return  view;
+    }
+
+    public void recyclerListChanged(){
+        searchList = DefValues.getAllPublishedPosts();
+        adapterSearch.setToursList(searchList);
+        adapterSearch.notifyDataSetChanged();
     }
 
     @Override

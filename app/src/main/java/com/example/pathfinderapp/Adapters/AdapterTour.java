@@ -159,15 +159,18 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
         String postUid = current.getGuide().getUid();
         String currentUserId = DefValues.getUserInContext().getUid();
-        if(!postUid.equals(currentUserId) ){
-            if(isAdded){
-                viewHolder.messageAppearance();
+        if(postUid != null && currentUserId != null){
+            if(!postUid.equals(currentUserId) ){
+                if(isAdded){
+                    viewHolder.messageAppearance();
+                } else {
+                    viewHolder.inscriptionAppearance();
+                }
             } else {
-                viewHolder.inscriptionAppearance();
+                viewHolder.setInscriptionButtonVisibility();
             }
-        } else {
-            viewHolder.setInscriptionButtonVisibility();
         }
+
 
     }
 
@@ -478,7 +481,8 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                             } else {
 
                                 User user = DefValues.getUserInContext();
-                                Review review = new Review(text, DefValues.getUserInContext(), new Date());
+                                //Review review = new Review(text, DefValues.getUserInContext(), new Date());
+                                Review review = null;
                                 user.addReview(review);
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
