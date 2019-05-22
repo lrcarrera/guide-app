@@ -35,12 +35,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.MockValues.DefValues;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import org.json.JSONException;
@@ -86,6 +90,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     //Firebase authentication
     private FirebaseAuth mAuth;
     private String mCustomToken;
+
+    private FirebaseFirestore db;
    /* Button mEmailSignInButton;
     Button emailCreateAccountButton;
     TextView verifyEmailButton;*/
@@ -100,6 +106,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        db = FirebaseFirestore.getInstance();
+
+
         prefs = this.getSharedPreferences(
                 PACKAGE_NAME, MODE_PRIVATE);
         rotateLoading = findViewById(R.id.rotate_loading);
@@ -121,115 +131,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //Add login
 
         if (currentUser != null) {
-            boolean aux = prefs.getBoolean(getResources().getString(R.string.is_first_time), true);
+
+           // if(aux){
+                //intent = new Intent(this, LangugesSelectionActivity.class);
+            //} else {
             Intent intent;
-            if(aux){
-                intent = new Intent(this, LangugesSelectionActivity.class);
-            } else {
-                intent = new Intent(this, MainActivity.class);
-            }
+            intent = new Intent(this, MainActivity.class);
+            //}
             startActivity(intent);
             finish();
         }
 
-        /*showProgress(true);
-        if (hasbeenLoggedInBefore()){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        showProgress(false);
-
-        populateAutoComplete();
-
-
-
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        //Facebook integration
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-        if ( isLoggedIn ) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-
-            callbackManager = CallbackManager.Factory.create();
-
-            LoginButton loginButton = (LoginButton) findViewById(R.id.fbButton);
-            loginButton.setReadPermissions(EMAIL);
-
-
-            // Callback registration
-            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-                            new GraphRequest.GraphJSONObjectCallback() {
-                                @Override
-                                public void onCompleted(JSONObject object, GraphResponse response) {
-                                    try {
-                                        String facebookId = object.getString(ID);
-                                        String facebookName = object.getString(NAME);
-                                        String facebookMail = object.getString(EMAIL);
-                                        String facebookPictureLink = URL + facebookId + PICTURE_REFERENCE;
-
-                                        prefs.edit().putString(getResources().getString(R.string.facebook_id), facebookId).apply();
-                                        prefs.edit().putString(getResources().getString(R.string.facebook_name), facebookName).apply();
-                                        prefs.edit().putString(getResources().getString(R.string.facebook_email), facebookMail).apply();
-                                        prefs.edit().putString(getResources().getString(R.string.facebook_picture_link), facebookPictureLink).apply();
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    Intent intent = new Intent(getApplication(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                    });
-
-                    Bundle parameters = new Bundle();
-                    parameters.putString("fields", "id,name,email,picture");
-                    request.setParameters(parameters);
-                    request.executeAsync();
-                }
-
-
-                @Override
-                public void onCancel() {
-                    // App code
-                }
-
-                @Override
-                public void onError(FacebookException exception) {
-                    // App code
-                }
-            });
-        }*/
     }
 
     @Override
@@ -302,15 +214,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.makeText(LoginActivity.this,
                                     "Authentication success",
                                     Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            String userUid = mAuth.getCurrentUser().getUid();
+
+                            //const usersRef = db.collection('users').whereEqualTo("user.uid", userUid )
+                            //create iff
+
+                            db.collection("users").whereEqualTo("user.uid", userUid )
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+
+                                                if(task.getResult().size() > 0){
+                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                }else{
+                                                    Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            } else {
+                                                Toast.makeText(LoginActivity.this,
+                                                        "Server not found (Error: 400)",
+                                                        Toast.LENGTH_SHORT).show();
+                                                Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                            }
+                                            finish();
+                                        }
+                                    });
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Server not found (Error: 400)",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }

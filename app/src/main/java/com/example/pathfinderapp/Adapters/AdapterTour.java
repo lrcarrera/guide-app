@@ -156,11 +156,19 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         viewHolder.mapPosition = current.getPlace().getCoord();
         viewHolder.places = current.getPlaces();
         viewHolder.markers = current.getMarkerOptions();
-        if(isAdded){
-            viewHolder.messageAppearance();
+
+        String postUid = current.getGuide().getUid();
+        String currentUserId = DefValues.getUserInContext().getUid();
+        if(!postUid.equals(currentUserId) ){
+            if(isAdded){
+                viewHolder.messageAppearance();
+            } else {
+                viewHolder.inscriptionAppearance();
+            }
         } else {
-            viewHolder.inscriptionAppearance();
+            viewHolder.setInscriptionButtonVisibility();
         }
+
     }
 
     private void touristsAllowed(Post current, ViewHolderItem viewHolder){
@@ -194,7 +202,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 }
             });
         } catch (IOException e ) {
-            System.out.println("Vergassso");
+            //System.out.println("Vergassso");
         }
         /*bitmap = BitmapFactory.decodeResource(context.getResources());
         if(bitmap == null){
@@ -370,6 +378,11 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             });
 
 
+        }
+
+        private void setInscriptionButtonVisibility(){
+            inscriptionButton.hide();
+            //inscriptionButton.setVisibility(View.INVISIBLE);
         }
 
         private void inscriptionStatus(int currentTourists, int numTouristsAllowed){

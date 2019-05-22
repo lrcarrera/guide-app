@@ -91,7 +91,6 @@
 
     <!--TOAST -->
     <string name="configuration_stored_message">Your configuration was stored!</string>
-    <string name="is_first_time" tools:ignore="ExtraTranslation">isFirstTime</string>
     <string name="speaking_languages">Which languages do you speak?</string>
     <string name="review">Review</string>
     <string name="accept">Accept</string>

@@ -415,7 +415,6 @@ public class ProfileFragment extends Fragment {
 
         myDialog.dismiss();
 
-        prefs.edit().putBoolean(getResources().getString(R.string.is_first_time), false).apply();
 
         FirebaseAuth.getInstance().signOut();
         getActivity().finish();
