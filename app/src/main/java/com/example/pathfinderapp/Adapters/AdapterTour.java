@@ -213,10 +213,10 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         }*/
     }
 
-    private void getUserProfilePicture(int image){
+    /*private void getUserProfilePicture(int image){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(image + ".png");
-    }
+    }*/
 
     private void createLanguagesRecycler(ViewHolderItem viewHolder, Post current){
         viewHolder.languages.setLayoutManager(new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false));
@@ -482,11 +482,11 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
                                 User user = DefValues.getUserInContext();
                                 //Review review = new Review(text, DefValues.getUserInContext(), new Date());
-                                Review review = null;
+                                /*Review review = null;
                                 user.addReview(review);
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
-                                documentReference.set(review);
+                                documentReference.set(review);*/
                                 //Toast toast = Toast.makeText(context, review, Toast.LENGTH_SHORT);
                                 /*Falta añadirlo al usuario que hizo el tour*/
                                 /*User user = DefValues.getPlayerInContext();

@@ -18,7 +18,13 @@ import android.widget.TextView;
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.Adapters.CroppedImage;
 import com.example.pathfinderapp.Models.Place;
+import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +32,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ProfileDialog extends DialogFragment{
 
@@ -51,6 +60,9 @@ public class ProfileDialog extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_popup, container);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(this.guide.getImage() + ".png");
+
         if(guide != null){
             TextView textViewName = view.findViewById(R.id.tv_name);
             TextView textViewAddress = view.findViewById(R.id.tv_address);
@@ -67,10 +79,29 @@ public class ProfileDialog extends DialogFragment{
                     adapterTour.dismiss(view);
                 }
             });
-            ImageView profilePicture = (ImageView) view.findViewById(R.id.profilePicture);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), guide.getImage());
-            bitmap = CroppedImage.getCroppedBitmap(bitmap);
-            profilePicture.setImageBitmap(bitmap);
+            final ImageView profilePicture = (ImageView) view.findViewById(R.id.profilePicture);
+            try {
+                final File localFile = File.createTempFile("images", "png");
+                storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                        profilePicture.setImageBitmap(bitmap);
+                        //mImageView.setImageBitmap(bitmap);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            } catch (IOException e ) {
+                //System.out.println("Vergassso");
+            }
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), guide.getImage());
+            //bitmap = CroppedImage.getCroppedBitmap(bitmap);
+
         }
 
         //Fragment fragment = ProfileFragment.newInstance(guide);
@@ -94,6 +125,33 @@ public class ProfileDialog extends DialogFragment{
 
         return view;
     }
+
+    /*private void processProfilePicture(Post current, final AdapterTour.ViewHolderItem viewHolder){
+        //Bitmap bitmap = null;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
+        try {
+            final File localFile = File.createTempFile("images", "png");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                    viewHolder.picture.setImageBitmap(bitmap);
+                    viewHolder.topPicture.setImageBitmap(bitmap);
+                    //mImageView.setImageBitmap(bitmap);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {
+            //System.out.println("Vergassso");
+        }
+    }*/
 
     @Override
     public void onResume() {
