@@ -272,7 +272,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /////////////////////////////
     private void sendEmailVerification() {
         // Disable button
-        findViewById(R.id.email_password_validation).setEnabled(false);
+       // findViewById(R.id.email_password_validation).setEnabled(false);
 
         // Send verification email
         // [START send_email_verification]
@@ -354,13 +354,47 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
         } else if (i == R.id.email_sign_in_button) {
             signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
-        } /*else if (i == R.id.signOutButton) {
-            signOut();
-        } */
-        /*else if (i == R.id.email_password_validation) {
-            sendEmailVerification();
-        }*/
+
+        }
+        else if (i == R.id.email_password_validation) {
+            //sendEmailVerification();
+            restorePassword();
+        }
     }
+
+    public void restorePassword() {
+
+        findViewById(R.id.email_password_validation).setEnabled(false);
+        if (!validateForm()) {
+            return;
+        }
+
+        showProgress(true);
+
+        FirebaseAuth.getInstance().sendPasswordResetEmail(mEmailView.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                           // Log.d(TAG, "Email sent.");
+
+
+                            Toast.makeText(LoginActivity.this,
+                                    "An email was sent",
+                                    Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(LoginActivity.this,
+                                    "E-mail inserted not found",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        showProgress(false);
+                        findViewById(R.id.email_password_validation).setEnabled(true);
+
+                    }
+        });
+    }
+
+
     ////////////////////////////////////////
     private boolean hasbeenLoggedInBefore(){
         String userEmail =  prefs.getString(getResources().getString(R.string.email), NO_EMAIL);

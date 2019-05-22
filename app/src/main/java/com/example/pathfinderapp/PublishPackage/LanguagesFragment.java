@@ -131,7 +131,8 @@ public class LanguagesFragment extends Fragment implements INexStep {
                 if (languages == null) {
                     aux = parent.user.getLanguages();
                 } else {
-                    aux = DefValues.defLanguages();
+                    aux = languages;
+                    //aux = DefValues.defLanguages();
                 }
                 Language language = aux.get(pos);
                 language.setAdded(!language.isAdded());

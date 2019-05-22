@@ -27,8 +27,8 @@ public class AdapterLanguage
     private final ArrayList<Language> languagesList;
     private View.OnClickListener listener;
 
-    public AdapterLanguage(java.util.ArrayList<Language> placesList) {
-        this.languagesList = placesList;
+    public AdapterLanguage(java.util.ArrayList<Language> languages) {
+        this.languagesList = languages;
     }
 
     public ArrayList<Language>  getLanguagesList()
