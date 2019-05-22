@@ -68,6 +68,11 @@ public class ToursDone extends Fragment {
             FrameLayout layout = customView.findViewById(R.id.map);
             layout.setVisibility(View.INVISIBLE);
 
+            LinearLayout zeroLayout = customView.findViewById(R.id.zeroLayout);
+            TextView cityName = customView.findViewById(R.id.cityName);
+            cityName.setText(post.getPlace().getName());
+            zeroLayout.setVisibility(View.VISIBLE);
+
             RecyclerView recycler = customView.findViewById(R.id.languages);
             recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
             AdapterLanguageHorizontal adapterLanguages = new AdapterLanguageHorizontal(post.getLanguages());

@@ -79,17 +79,16 @@ public class ReviewsCaroussel extends Fragment {
                 String aux = "\"" + current.getMessage() + "\"";
                 messageTextView.setText(aux);
 
-                //Date date = current.getCreatedAt();
-                //String day = (String) DateFormat.format("dd", date); // 20
-                //String monthString = (String) DateFormat.format("MMM", date); // Jun
-                //String year = (String) DateFormat.format("yyyy", date); // 2013
-
-                //aux = current.getAutor().getName() + " - " + day + "/" + monthString + "/" + year;
-                //authorTextView.setText(aux);
+                Date date = current.getCreatedAt();
+                String day = (String) DateFormat.format("dd", date); // 20
+                String monthString = (String) DateFormat.format("MMM", date); // Jun
+                String year = (String) DateFormat.format("yyyy", date); // 2013
+                aux = current.getAuthorInfo().getName() + " - " + day + "/" + monthString + "/" + year;
+                authorTextView.setText(aux);
 
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(DefValues.getUserInContext().getImage() + ".png");
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getAuthorInfo().getImage() + ".png");
                 try {
                     final File localFile = File.createTempFile("images", "png");
                     storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {

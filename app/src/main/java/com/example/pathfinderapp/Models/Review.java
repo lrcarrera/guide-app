@@ -8,9 +8,11 @@ import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.Date;
 import java.util.HashMap;
@@ -32,6 +34,9 @@ public class Review {
     public Review(HashMap<String, Object> review){
         this.message =  (String) review.get("message");
         this.author = (String) review.get("author");
+        Timestamp timestamp = (Timestamp) review.get("createdAt");
+        this.createdAt = timestamp.toDate();
+        //this.createdAt = (Date)review.get("createdAt");
         //this.message = (String) review.get("message");
     }
 
@@ -43,7 +48,7 @@ public class Review {
         return data;
     }
 
-    public void getAuthorInfoFromDatabase(){
+    /*public void getAuthorInfoFromDatabase(){
         final FirebaseFirestore db = com.google.firebase.firestore.FirebaseFirestore.getInstance();
         db.collection("users").whereEqualTo("user.uid", this.author )
                 .get()
@@ -59,17 +64,14 @@ public class Review {
                             }
                             setAuthorInfo(user);
 
-                            /*fm.beginTransaction().add(R.id.main_container, fragment4, "4").hide(fragment4).commit();
-                            fm.beginTransaction().add(R.id.main_container, fragment3, "3").hide(fragment3).commit();
-                            fm.beginTransaction().add(R.id.main_container, fragment2, "2").hide(fragment2).commit();
-                            fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();*/
+
 
                         } else {
                             Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                         }
                     }
                 });
-    }
+    }*/
 
     public void setAuthorInfo(User user){
         this.authorInfo = user;
