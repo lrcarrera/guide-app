@@ -57,7 +57,25 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
     public void onBindViewHolder(AdapterLanguageHorizontal.ViewHolderItem viewHolder, int i) {
         String aux = languagesList.get(i).getCode(); // + "," + languagesList.get(i).getCode();
         viewHolder.title.setText(aux);
-        viewHolder.picture.setImageResource(languagesList.get(i).getPicture());
+        switch (languagesList.get(i).getCode()){
+            case "FR":
+                viewHolder.picture.setImageResource(R.drawable.french_flag);
+                break;
+            case "DE":
+                viewHolder.picture.setImageResource(R.drawable.german_flag);
+                break;
+            case "EN":
+                viewHolder.picture.setImageResource(R.drawable.britain_flag);
+                break;
+            case "IT":
+                viewHolder.picture.setImageResource(R.drawable.italy_flag);
+                break;
+            case "ES":
+                viewHolder.picture.setImageResource(R.drawable.spain_flag);
+
+                break;
+
+        }
         if(!isSettings)
             viewHolder.checkBox.setVisibility(View.INVISIBLE);
         if(isSettings) {

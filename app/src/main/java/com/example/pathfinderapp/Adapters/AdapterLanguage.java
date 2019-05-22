@@ -49,7 +49,25 @@ public class AdapterLanguage
         String aux = languagesList.get(i).getName(); //+ "," + languagesList.get(i).getCountry();
         viewHolder.info.setText(languagesList.get(i).getCode());
         viewHolder.title.setText(languagesList.get(i).getName());
-        viewHolder.picture.setImageResource(languagesList.get(i).getPicture());//LUISS SETEO
+        switch (languagesList.get(i).getCode()){
+            case "FR":
+                viewHolder.picture.setImageResource(R.drawable.french_flag);
+                break;
+            case "DE":
+                viewHolder.picture.setImageResource(R.drawable.german_flag);
+                break;
+            case "EN":
+                viewHolder.picture.setImageResource(R.drawable.britain_flag);
+                break;
+            case "IT":
+                viewHolder.picture.setImageResource(R.drawable.italy_flag);
+                break;
+            case "ES":
+                viewHolder.picture.setImageResource(R.drawable.spain_flag);
+                break;
+        }
+
+
         if(languagesList.get(i).isAdded())
             view.setBackgroundColor(Color.parseColor(SELECTED_COLOR));
 

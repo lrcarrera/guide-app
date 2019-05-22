@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imageId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher"
         android:layout_marginTop="10dp"

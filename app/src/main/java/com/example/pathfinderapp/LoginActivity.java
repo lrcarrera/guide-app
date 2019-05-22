@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String NO_PSSWRD = "no_password";
     private static final String NO_EMAIL = "no_email";
     private static final int QUANTITY_FLAGS_FIREBASE_STORAGE = 5;
+    int indexOfImage;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -242,10 +243,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                 } else {
-                                                    //storeFlagImageFromFirebaseStorage();
-
+                                                   // storeFlagImageFromFirebaseStorage();
                                                     Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
                                                     startActivity(intent);
+
+                                                    //Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
+                                                    //startActivity(intent);
                                                 }
                                             } else {
                                                 Toast.makeText(LoginActivity.this,
@@ -275,12 +278,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // [END sign_in_with_email]
     }
 
-    private void storeFlagImageFromFirebaseStorage() {
+   /* private void storeFlagImageFromFirebaseStorage() {
 
-        for (int i = 0; i < QUANTITY_FLAGS_FIREBASE_STORAGE; i++) {
+        for (indexOfImage = 0; indexOfImage < QUANTITY_FLAGS_FIREBASE_STORAGE; indexOfImage++) {
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child("100" + i + ".png");
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child("100" + indexOfImage + ".png");
 
             try {
                 final File localFile = File.createTempFile("images_flag", "png");
@@ -289,6 +292,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                         DefValues.addFlagFromFirebaseStorage(bitmap);
+
+                        if (indexOfImage == QUANTITY_FLAGS_FIREBASE_STORAGE - 1){
+
+                        }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -303,7 +311,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
-    }
+    }*/
 
     private void sendEmailVerification() {
         // Disable button
