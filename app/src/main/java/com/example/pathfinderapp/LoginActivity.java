@@ -11,10 +11,13 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
@@ -37,6 +40,8 @@ import android.widget.Toast;
 
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
@@ -45,17 +50,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -67,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String DUMMY_PASSWORD = "ThEpASs";
     private static final String NO_PSSWRD = "no_password";
     private static final String NO_EMAIL = "no_email";
+    private static final int QUANTITY_FLAGS_FIREBASE_STORAGE = 5;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -74,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String EMAIL = "email";
     private static final String ID = "id";
     private static final String NAME = "name";
-   // private static final String URL ="https://graph.facebook.com/";
+    // private static final String URL ="https://graph.facebook.com/";
     private static final String PICTURE_REFERENCE = "/picture?type=large";
 
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
@@ -118,9 +129,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
-        /*mEmailSignInButton = (Button)*/ findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        /*emailCreateAccountButton = (Button)*/ findViewById(R.id.email_create_account_button).setOnClickListener(this);
-        /*verifyEmailButton = (TextView) */findViewById(R.id.email_password_validation).setOnClickListener(this);
+        /*mEmailSignInButton = (Button)*/
+        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
+        /*emailCreateAccountButton = (Button)*/
+        findViewById(R.id.email_create_account_button).setOnClickListener(this);
+        /*verifyEmailButton = (TextView) */
+        findViewById(R.id.email_password_validation).setOnClickListener(this);
 
 
         //Firebase
@@ -132,8 +146,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if (currentUser != null) {
 
-           // if(aux){
-                //intent = new Intent(this, LangugesSelectionActivity.class);
+            // if(aux){
+            //intent = new Intent(this, LangugesSelectionActivity.class);
             //} else {
             Intent intent;
             intent = new Intent(this, MainActivity.class);
@@ -148,7 +162,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
     }
 
     private void createAccount(String email, String password) {
@@ -183,7 +196,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.w("CREATEACCOUNT", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                           // updateUI(null);
                         }
 
                         // [START_EXCLUDE]
@@ -219,17 +231,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             //const usersRef = db.collection('users').whereEqualTo("user.uid", userUid )
                             //create iff
 
-                            db.collection("users").whereEqualTo("user.uid", userUid )
+                            db.collection("users").whereEqualTo("user.uid", userUid)
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
 
-                                                if(task.getResult().size() > 0){
+                                                if (task.getResult().size() > 0) {
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                     startActivity(intent);
-                                                }else{
+                                                } else {
+                                                    //storeFlagImageFromFirebaseStorage();
+
                                                     Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
                                                     startActivity(intent);
                                                 }
@@ -243,13 +257,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         }
                                     });
 
-                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Server not found (Error: 400)",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
 
                         // [START_EXCLUDE]
@@ -263,16 +275,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // [END sign_in_with_email]
     }
 
-    //////////////////////////////
+    private void storeFlagImageFromFirebaseStorage() {
 
-    private void signOut() {
-        mAuth.signOut();
-        updateUI(null);
+        for (int i = 0; i < QUANTITY_FLAGS_FIREBASE_STORAGE; i++) {
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child("100" + i + ".png");
+
+            try {
+                final File localFile = File.createTempFile("images_flag", "png");
+                storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        DefValues.addFlagFromFirebaseStorage(bitmap);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.w("TEST10", "Error getting flag image ."+ exception.getMessage());
+
+                    }
+                });
+            } catch (IOException e) {
+                //System.out.println("Vergassso");
+            }
+        }
+
+
     }
-    /////////////////////////////
+
     private void sendEmailVerification() {
         // Disable button
-       // findViewById(R.id.email_password_validation).setEnabled(false);
+        // findViewById(R.id.email_password_validation).setEnabled(false);
 
         // Send verification email
         // [START send_email_verification]
@@ -325,27 +360,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }*/
 
     ///////////////////////////////////
-    private void updateUI(FirebaseUser user) {
-        showProgress(false);
-        if (user != null) {
-           /* mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
-            findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
-
-            findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());*/
-        } else {
-            /*mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
-
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.GONE);*/
-        }
-    }
     ////////////////////////////////////
     @Override
     public void onClick(View v) {
@@ -355,8 +370,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else if (i == R.id.email_sign_in_button) {
             signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
 
-        }
-        else if (i == R.id.email_password_validation) {
+        } else if (i == R.id.email_password_validation) {
             //sendEmailVerification();
             restorePassword();
         }
@@ -376,13 +390,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                           // Log.d(TAG, "Email sent.");
+                            // Log.d(TAG, "Email sent.");
 
 
                             Toast.makeText(LoginActivity.this,
                                     "An email was sent",
                                     Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             Toast.makeText(LoginActivity.this,
                                     "E-mail inserted not found",
                                     Toast.LENGTH_SHORT).show();
@@ -391,16 +405,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         findViewById(R.id.email_password_validation).setEnabled(true);
 
                     }
-        });
+                });
     }
 
 
     ////////////////////////////////////////
-    private boolean hasbeenLoggedInBefore(){
-        String userEmail =  prefs.getString(getResources().getString(R.string.email), NO_EMAIL);
-        String password =  prefs.getString(getResources().getString(R.string.password), NO_PSSWRD);
+    private boolean hasbeenLoggedInBefore() {
+        String userEmail = prefs.getString(getResources().getString(R.string.email), NO_EMAIL);
+        String password = prefs.getString(getResources().getString(R.string.password), NO_PSSWRD);
 
-        if(userEmail.equals(NO_EMAIL) || password.equals(NO_PSSWRD))
+        if (userEmail.equals(NO_EMAIL) || password.equals(NO_PSSWRD))
             return false;
         return true;
     }
@@ -480,7 +494,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // the progress spinner.
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
@@ -499,9 +513,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-        if(show){
+        if (show) {
             rotateLoading.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             rotateLoading.setVisibility(View.GONE);
         }
     }

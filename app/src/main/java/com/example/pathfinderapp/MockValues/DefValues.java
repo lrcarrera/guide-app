@@ -1,5 +1,6 @@
 package com.example.pathfinderapp.MockValues;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,29 @@ public class DefValues {
     private static ArrayList<Post> allPublishedPosts;
     private static User userInContext;
     private static DocumentReference userInContextDocument;
+
+    public static ArrayList<Bitmap> getFlagsFromFirebaseStorage() {
+        return flagsFromFirebaseStorage;
+    }
+
+    public static void addFlagFromFirebaseStorage(Bitmap flag) {
+        if(flagsFromFirebaseStorage == null)
+            flagsFromFirebaseStorage = new ArrayList<>();
+        flagsFromFirebaseStorage.add(flag);
+    }
+
+    public static void setFlagsFromFirebaseStorage(ArrayList<Bitmap> flagsFromFirebaseStorage) {
+        if(flagsFromFirebaseStorage == null){
+            flagsFromFirebaseStorage = new ArrayList<>();
+        }else{
+            flagsFromFirebaseStorage.clear();
+        }
+        DefValues.flagsFromFirebaseStorage = flagsFromFirebaseStorage;
+    }
+
+    private static ArrayList<Bitmap> flagsFromFirebaseStorage;
+
+
 
     public static ArrayList<Language> defLanguages(){
         if(LANGUAGES == null){
