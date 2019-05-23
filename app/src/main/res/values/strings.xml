@@ -73,12 +73,14 @@
     <string name="location">Be sure that geolocation is active.</string>
 
     <!-- KEYS -->
-    <string name="delete" translatable="false">DELETE</string>
+    <string name="delete" translatable="false">BORRAR</string>
     <string name="facebook_picture_link">facebook_picture_link</string>
     <string name="facebook_name">facebook_name</string>
     <string name="facebook_email">facebook_email</string>
     <string name="notification">notifications</string>
     <string name="full_connectivity">full_connectivity</string>
+    <string name="send_token" translatable="false">send_token</string>
+    <string name="message_token" translatable="false">message_token</string>
     <string name="french_key">french_key</string>
     <string name="english_key">english_key</string>
     <string name="german_key">german_key</string>
@@ -97,6 +99,8 @@
     <string name="cancel">Cancel</string>
     <string name="review_error">You must add a review.</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="default_notification_channel_id" translatable="false">PathfinderID</string>
+    <string name="default_notification_channel_name" translatable="false">Pathfinder</string>
 
     <!--Empty -->
     <string name="empty_reviews">Any review yet!</string>

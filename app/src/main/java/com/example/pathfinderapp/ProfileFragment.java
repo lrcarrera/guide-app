@@ -443,6 +443,7 @@ public class ProfileFragment extends Fragment {
         } else {
             checkboxNotifications.setChecked(false);
         }
+
         if (isFullConnectivityOn) {
             //radioGroupConnectivity.check(R.id.wifiandmore);
             radioWifi.setChecked(false);

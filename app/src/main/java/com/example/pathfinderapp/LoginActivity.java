@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +48,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -61,6 +64,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
@@ -227,7 +231,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.makeText(LoginActivity.this,
                                     "Authentication success",
                                     Toast.LENGTH_SHORT).show();
+
                             String userUid = mAuth.getCurrentUser().getUid();
+
+                            String token = prefs.getString(getResources().getString(R.string.message_token), null);
+                            if (token != null) {
+                                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                mDatabase.child("users").child(userUid).push().setValue(token);
+                                User user = DefValues.getUserInContext();
+                                user.setMessageToken(token);
+                                DefValues.getUserInContextDocument().update("user", user.AddToHashMap());
+                            }
 
                             //const usersRef = db.collection('users').whereEqualTo("user.uid", userUid )
                             //create iff
@@ -422,9 +436,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String userEmail = prefs.getString(getResources().getString(R.string.email), NO_EMAIL);
         String password = prefs.getString(getResources().getString(R.string.password), NO_PSSWRD);
 
-        if (userEmail.equals(NO_EMAIL) || password.equals(NO_PSSWRD))
+        if (userEmail == null || password == null)
             return false;
-        return true;
+
+        return !userEmail.equals(NO_EMAIL) && !password.equals(NO_PSSWRD);
     }
 
     private void populateAutoComplete() {

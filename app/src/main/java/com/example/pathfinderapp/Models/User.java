@@ -24,6 +24,7 @@ public class User implements Serializable {
     private ArrayList<Language> languages;
     private int image;
     private ArrayList<Review> reviews;
+    private String messageToken;
 
 
     public User(String name, ArrayList<String> postList, int toursCound, String company, float score, ArrayList<Language> languages, int image) {
@@ -114,6 +115,7 @@ public class User implements Serializable {
         data.put("languages", this.languages);
         data.put("image", this.image);
         data.put("reviews", this.reviews);
+        data.put("messageToken", this.messageToken);
         return data;
     }
 
@@ -211,4 +213,7 @@ public class User implements Serializable {
             postList = new ArrayList<String>();
         postList.add(postUuid);
     }
+
+    public void setMessageToken(String messageToken) { this.messageToken = messageToken; }
+    public String getMessageToken() { return this.messageToken; }
 }
