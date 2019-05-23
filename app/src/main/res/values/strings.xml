@@ -98,4 +98,7 @@
     <string name="review_error">You must add a review.</string>
     <string name="forgot_password">Forgot password?</string>
 
+    <!--Empty -->
+    <string name="empty_reviews">Any review yet!</string>
+
 </resources>

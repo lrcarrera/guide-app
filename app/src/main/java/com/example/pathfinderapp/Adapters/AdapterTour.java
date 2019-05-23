@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,11 +43,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -483,7 +488,30 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                             } else {
 
                                 User user = DefValues.getUserInContext();
-                                //Review review = new Review(text, DefValues.getUserInContext(), new Date());
+                                Review review = new Review(text, DefValues.getUserInContext().getUid(), new Date());
+                                final User guide = post.getGuide();
+                                guide.addReview(review);
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users").whereEqualTo("user.uid", guide.getUid() )
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        document.getReference().update("user",guide);
+                                                        myDialog.dismiss();
+                                                        //DefValues.setDocumentReference(document.getReference());
+                                                        //DefValues.setUserInContext(document);
+                                                    }
+                                                } else {
+                                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                                }
+                                            }
+                                        });
+                                /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
+                                documentReference.set(review);*/
                                 /*Review review = null;
                                 user.addReview(review);
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();

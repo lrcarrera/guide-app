@@ -101,4 +101,6 @@
     <string name="review_error">Tienes que añadir un comentario.</string>
     <string name="forgot_password">Restablecer contraseña</string>
 
+    <string name="empty_reviews">Todavía no tienes ningún comentario!</string>
+
 </resources>

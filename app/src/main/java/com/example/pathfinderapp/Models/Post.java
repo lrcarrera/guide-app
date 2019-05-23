@@ -137,9 +137,22 @@ public class Post implements Serializable {
         if(markerOptions == null)
             markerOptions = new ArrayList<>();
 
+        guide = new User((HashMap<String, Object>) doc.get("guide"));
+
+        /**Falta por implementar se tienen que catcher bien*/
+        this.tourists = new ArrayList<>();
+        this.tourists.add(guide);
+
         ArrayList<Map<String, Object>> collection1 = ((ArrayList<Map<String, Object>>)doc.get("places"));
+
+        if(collection1 == null)
+            return;
+
+
         for(Object obj : collection1){
             HashMap <String, Object> aux = (HashMap<String, Object>)obj;
+            if(aux == null)
+                continue;
             HashMap<String, Map<String, Double>> position = (HashMap<String, Map<String, Double>>) aux.get("position");
             List<Double> collection2 = new ArrayList(position.values());
 
@@ -156,11 +169,7 @@ public class Post implements Serializable {
             //places.add(marker);
         }
 
-        guide = new User((HashMap<String, Object>) doc.get("guide"));
 
-        /**Falta por implementar se tienen que catcher bien*/
-        this.tourists = new ArrayList<>();
-        this.tourists.add(guide);
 
 
     }

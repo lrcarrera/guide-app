@@ -65,6 +65,14 @@ public class ReviewsCaroussel extends Fragment {
             reviewsCarousselView.setViewListener(viewListener);
             //reviewsCarousselView.setImageListener(imageListener);
 
+        } else {
+            reviewsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
+            reviewsCarousselView.setVisibility(View.INVISIBLE);
+            TextView textView = (TextView) rootView.findViewById(R.id.emptyTextViewMessage);
+            textView.setVisibility(View.VISIBLE);
+            /*reviewsCarousselView.setPageCount(reviews.size());
+            reviewsCarousselView.setSlideInterval(4000);
+            reviewsCarousselView.setViewListener(viewEmptyListener);*/
         }
 
         // To set custom views
@@ -73,6 +81,22 @@ public class ReviewsCaroussel extends Fragment {
         return rootView;
 
     }
+
+    /*ViewListener viewEmptyListener = new ViewListener() {
+        @Override
+        public View setViewForPosition(int position) {
+
+            View customView = getLayoutInflater().inflate(R.layout.reviews_caroussel, null);
+            if(reviews.get(position).getAuthorInfo() != null){
+                TextView messageTextView = (TextView) customView.findViewById(R.id.ReviewMessage);
+                messageTextView.setText(R.string.empty_reviews);
+
+            }
+            return customView;
+
+        }
+    };*/
+
 
     ViewListener viewListener = new ViewListener() {
         @Override
