@@ -1,6 +1,9 @@
 package com.example.pathfinderapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -8,6 +11,8 @@ import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.User;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -148,14 +153,25 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
 
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager mgr = getSystemService(NotificationManager.class);
+            mgr.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
+        }
 
         TextView mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        googleAPI.makeGooglePlayServicesAvailable(this);
     }
 
     private void changeIcons(BottomNavigationView navigationView)

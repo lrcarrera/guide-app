@@ -139,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Languages"
+            android:text="@string/speaking_languages"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             />
@@ -153,10 +153,20 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <ProgressBar
+            android:id="@+id/rotate_loading_popup"
+            style="?android:attr/progressBarStyle"
+            android:layout_marginStart="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:visibility="gone" />
+
+      <androidx.recyclerview.widget.RecyclerView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/languages"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:orientation="horizontal"
@@ -203,57 +213,6 @@
         android:orientation="horizontal">
 
 
-
-        <!--CheckBox
-            android:id="@+id/checkbox_french"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
-            android:buttonTint="@color/colorBlack" />
-        <CheckBox
-            android:id="@+id/checkbox_english"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:buttonTint="@color/colorBlack" />
-        <CheckBox
-            android:id="@+id/checkbox_german"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="36dp"
-            android:buttonTint="@color/colorBlack" />
-        <CheckBox
-            android:id="@+id/checkbox_italian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="37dp"
-            android:buttonTint="@color/colorBlack" />
-        <CheckBox
-            android:id="@+id/checkbox_spanish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="38dp"
-            android:buttonTint="@color/colorBlack" /-->
-
-
-
-        <!--<Button
-            android:id="@+id/sadasdfasdff"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/buttonstylepopup"
-            android:text="@string/save"
-            android:layout_marginLeft="60dp"
-            android:textColor="@color/white"/>
-
-        <Button
-            android:id="@+id/sadf"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/buttonstylepopup"
-            android:text="@string/logout"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/white"/>-->
 
     </LinearLayout>
 

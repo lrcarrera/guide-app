@@ -49,6 +49,8 @@
             android:textSize="12sp" />
 
 
+
+
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"

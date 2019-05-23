@@ -247,6 +247,20 @@ public class DefValues {
             post4.setPlace(new Place("New York", "EEUU", R.drawable.ic_action_place, new LatLng(40.750580, -73.993584)));
             post4.setUuid("44444444");
 
+            Post post5 = new Post();
+            post1.setGuide(user1);
+            post1.setPrice(30.0f);
+            post1.setDueTo(new Date());
+            post1.setStartHour("19:00");
+            post1.setEndHour("21:00");
+            post1.setNumTourists(6);
+            post1.setPrice(14.5f);
+            post1.setPlaces(new ArrayList<Marker>());
+            post1.setLanguages(DefValues.defLanguages());
+            post1.setTourists(new ArrayList<User>());
+            post1.setPlace(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
+            post1.setUuid("1111111");
+
             POSTS.add(post1);
             POSTS.add(post2);
             POSTS.add(post3);
