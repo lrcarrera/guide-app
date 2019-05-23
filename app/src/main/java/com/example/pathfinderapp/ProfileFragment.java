@@ -467,7 +467,7 @@ public class ProfileFragment extends Fragment {
             for (int j = 0; j < list.size(); j++) {
                 boolean isSelectedByUser = list.get(j).getCode().equals(rootLanguages.get(i).getCode());
                 if (isSelectedByUser) {
-                    bools[i] = isSelectedByUser;
+                    bools[i] = true;
                 }
             }
         }
