@@ -73,7 +73,7 @@
     <string name="location">Be sure that geolocation is active.</string>
 
     <!-- KEYS -->
-    <string name="delete" translatable="false">BORRAR</string>
+    <string name="delete" translatable="false">DELETE</string>
     <string name="facebook_picture_link">facebook_picture_link</string>
     <string name="facebook_name">facebook_name</string>
     <string name="facebook_email">facebook_email</string>
@@ -90,11 +90,12 @@
 
 
     <!--TOAST -->
-    <string name="configuration_stored_message">Your configuration was stored!</string>
+    <string name="configuration_stored_message">Your configuration has been stored!</string>
     <string name="speaking_languages">Which languages do you speak?</string>
     <string name="review">Review</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
     <string name="review_error">You must add a review.</string>
+    <string name="forgot_password">Forgot password?</string>
 
 </resources>

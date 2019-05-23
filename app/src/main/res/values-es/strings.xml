@@ -99,6 +99,6 @@
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="review_error">Tienes que añadir un comentario.</string>
-
+    <string name="forgot_password">Restablecer contraseña</string>
 
 </resources>

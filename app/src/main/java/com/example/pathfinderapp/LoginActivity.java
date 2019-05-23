@@ -402,7 +402,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
                             Toast.makeText(LoginActivity.this,
-                                    "An email was sent",
+                                    "Please check the instructions sent in your email to restore the password.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(LoginActivity.this,

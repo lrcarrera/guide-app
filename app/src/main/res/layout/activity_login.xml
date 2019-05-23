@@ -228,7 +228,7 @@
 
                 android:id="@+id/email_password_validation"
                 android:layout_marginTop="5dp"
-                android:text="Restablecer contraseña"
+                android:text="@string/forgot_password"
                 android:clickable="true"
                 android:onClick="onClick"
                 android:layout_width="wrap_content"
