@@ -205,7 +205,7 @@ public class Post implements Serializable {
         this.price = price;
     }*/
 
-    public Map<String, Object> AddToHashMap(){
+    public Map<String, Object> addToHashMap(){
         Map<String, Object> data = new HashMap<>();
         data.put("createdAt", this.createdAt);
         data.put("dueTo", this.dueTo);

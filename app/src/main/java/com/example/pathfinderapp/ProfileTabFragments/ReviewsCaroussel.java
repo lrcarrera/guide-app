@@ -58,7 +58,7 @@ public class ReviewsCaroussel extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile_firsttab, viewGroup, false);
         CirclePageIndicator indicator = rootView.findViewById(R.id.indicator);
         indicator.setFillColor(R.color.address);
-        if (reviews != null) {
+        if (reviews != null && reviews.size() > 0) {
             reviewsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
             reviewsCarousselView.setPageCount(reviews.size());
             reviewsCarousselView.setSlideInterval(4000);

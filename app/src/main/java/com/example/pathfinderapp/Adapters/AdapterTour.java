@@ -509,6 +509,24 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                                 }
                                             }
                                         });
+                                db.collection("posts").whereEqualTo("uuid", post.getUuid() )
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        document.getReference().update(post.addToHashMap());
+                                                        /*document.getReference().update("user",guide);
+                                                        myDialog.dismiss();*/
+                                                        //DefValues.setDocumentReference(document.getReference());
+                                                        //DefValues.setUserInContext(document);
+                                                    }
+                                                } else {
+                                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                                }
+                                            }
+                                        });
                                 /*FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
                                 documentReference.set(review);*/

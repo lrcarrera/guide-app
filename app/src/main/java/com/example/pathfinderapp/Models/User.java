@@ -99,7 +99,16 @@ public class User implements Serializable {
         this.toursCound = Integer.parseInt(userInHashMap.get("toursCound").toString());
         this.company = (String) userInHashMap.get("company");
         this.score = Float.parseFloat(userInHashMap.get("score").toString());
+        ArrayList<HashMap<String, Object>> reviews = (ArrayList<HashMap<String, Object>>) userInHashMap.get("reviews");
+        if(this.reviews == null)
+            this.reviews = new ArrayList<>();
+        if(reviews != null){
 
+            for (HashMap<String, Object> review : reviews){
+                this.reviews.add(new Review(review));
+            }
+            System.out.println(reviews);
+        }
 
     }
 
@@ -113,6 +122,11 @@ public class User implements Serializable {
         data.put("score", this.score);
         data.put("languages", this.languages);
         data.put("image", this.image);
+
+        /*for (int i=0; i<reviews.size(); i++)
+        {
+
+        }*/
         data.put("reviews", this.reviews);
         return data;
     }
