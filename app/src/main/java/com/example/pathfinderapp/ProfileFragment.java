@@ -463,9 +463,14 @@ public class ProfileFragment extends Fragment {
 
         ArrayList<Language> list = DefValues.getUserInContext().getLanguages();
 
-        for (int i = 0; i < rootLanguages.size(); i++)
-            for (int j = 0; j < list.size(); j++)
-                    bools[i] = list.get(j).getCode().equals(rootLanguages.get(i).getCode());
+        for (int i = 0; i < rootLanguages.size(); i++) {
+            for (int j = 0; j < list.size(); j++) {
+                boolean isSelectedByUser = list.get(j).getCode().equals(rootLanguages.get(i).getCode());
+                if (isSelectedByUser) {
+                    bools[i] = isSelectedByUser;
+                }
+            }
+        }
 
         return bools;
     }
