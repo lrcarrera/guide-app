@@ -73,6 +73,10 @@
     <string name="location">Be sure that geolocation is active.</string>
 
     <!-- KEYS -->
+    <string name="wifi_ok" translatable="false">wifi_ok</string>
+    <string name="mobile_ok" translatable="false">mobile_ok</string>
+    <string name="internet_ko" translatable="false">internet_ko</string>
+
     <string name="delete" translatable="false">BORRAR</string>
     <string name="facebook_picture_link">facebook_picture_link</string>
     <string name="facebook_name">facebook_name</string>

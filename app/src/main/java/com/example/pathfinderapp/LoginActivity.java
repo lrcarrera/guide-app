@@ -2,8 +2,10 @@ package com.example.pathfinderapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,19 +24,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.example.pathfinderapp.MockValues.DefValues;
-import com.example.pathfinderapp.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
@@ -41,7 +40,8 @@ import java.util.List;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener,
+        ConnectivityReceiver.ConnectivityReceiverListener {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -80,6 +80,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private String mCustomToken;
 
     private FirebaseFirestore db;
+
+    private ImageView notConnectionDetectedImage;
+
+
+    private BroadcastReceiver connectivityReceiver = null;
+
+
+    //CheckInternetConnection checkInternet;
    /* Button mEmailSignInButton;
     Button emailCreateAccountButton;
     TextView verifyEmailButton;*/
@@ -103,6 +111,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         rotateLoading = findViewById(R.id.rotate_loading);
         mLoginFormView = findViewById(R.id.login_form);
         mPasswordView = findViewById(R.id.password);
+        notConnectionDetectedImage = findViewById(R.id.dinosaur_connectivity);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
@@ -113,7 +122,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         /*verifyEmailButton = (TextView) */
         findViewById(R.id.email_password_validation).setOnClickListener(this);
 
-
+        connectivityReceiver = new ConnectivityReceiver();
+        //checkInternet = new CheckInternetConnection(this);
+       // checkConnection();
         //Firebase
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
@@ -132,6 +143,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             startActivity(intent);
             finish();
         }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(connectivityReceiver);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+       // PathfinderInstance.getInstance().setConnectivityListener(this);
+        ConnectivityReceiver.connectivityReceiverListener = this;
+        registerReceiver(connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
 
@@ -529,6 +556,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView.setAdapter(adapter);
     }
+
+    @Override
+    public void onNetworkConnectionChanged(String status) {
+
+            if(status.equals(getResources().getString(R.string.wifi_ok))){
+                mLoginFormView.setVisibility(View.VISIBLE);
+                notConnectionDetectedImage.setVisibility(View.GONE);
+               /* Toast.makeText(LoginActivity.this,
+                        "WIFI OK",
+                        Toast.LENGTH_SHORT).show();*/
+            }else if (status.equals(getResources().getString(R.string.mobile_ok))){
+                Toast.makeText(LoginActivity.this,
+                        "MOBILE OK",
+                        Toast.LENGTH_SHORT).show();
+            }else{
+                mLoginFormView.setVisibility(View.INVISIBLE);
+                notConnectionDetectedImage.setVisibility(View.VISIBLE);
+
+              /*  Toast.makeText(LoginActivity.this,
+                        "NOT CONNECTED",
+                        Toast.LENGTH_SHORT).show();*/
+            }
+    }
+
+   /* @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            Toast.makeText(LoginActivity.this,
+                    "CONNECTED",
+                    Toast.LENGTH_SHORT).show();
+        }else{
+
+            Toast.makeText(LoginActivity.this,
+                    "NOT CONNECTED",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }*/
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
