@@ -259,7 +259,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
         if (toSearch.length() == 0)
         {
-            searchList = DefValues.getMockPostList();
             notifyDataSetChanged();
             return;
         }
