@@ -433,9 +433,9 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                             newUser = DefValues.getUserInContext().addToHashMap();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DefValues.getUserInContextDocument().update("user", newUser);
-
+                            DefValues.addUserRelatedPost(post);
                             /*Se tiene que sacar esta solo para guardar mierda posts de ejemplo */
-                            db.collection("posts").add(post);
+                            //db.collection("posts").add(post);
 
                         }
                     })
