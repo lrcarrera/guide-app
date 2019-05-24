@@ -27,6 +27,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.pathfinderapp.AsyncStuff.ConnectivityReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -82,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseFirestore db;
 
     private ImageView notConnectionDetectedImage;
-
+    Boolean isFullConnectivityOn;
 
     private BroadcastReceiver connectivityReceiver = null;
 
@@ -123,6 +125,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         findViewById(R.id.email_password_validation).setOnClickListener(this);
 
         connectivityReceiver = new ConnectivityReceiver();
+
         //checkInternet = new CheckInternetConnection(this);
        // checkConnection();
         //Firebase
@@ -560,39 +563,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onNetworkConnectionChanged(String status) {
 
-            if(status.equals(getResources().getString(R.string.wifi_ok))){
+        isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
+
+        if(status.equals(getResources().getString(R.string.wifi_ok))){
                 mLoginFormView.setVisibility(View.VISIBLE);
                 notConnectionDetectedImage.setVisibility(View.GONE);
-               /* Toast.makeText(LoginActivity.this,
-                        "WIFI OK",
-                        Toast.LENGTH_SHORT).show();*/
-            }else if (status.equals(getResources().getString(R.string.mobile_ok))){
-                Toast.makeText(LoginActivity.this,
-                        "MOBILE OK",
-                        Toast.LENGTH_SHORT).show();
+            }else if (status.equals(getResources().getString(R.string.mobile_ok)) && isFullConnectivityOn){
+                mLoginFormView.setVisibility(View.VISIBLE);
+                notConnectionDetectedImage.setVisibility(View.GONE);
             }else{
                 mLoginFormView.setVisibility(View.INVISIBLE);
                 notConnectionDetectedImage.setVisibility(View.VISIBLE);
-
-              /*  Toast.makeText(LoginActivity.this,
-                        "NOT CONNECTED",
-                        Toast.LENGTH_SHORT).show();*/
             }
     }
-
-   /* @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            Toast.makeText(LoginActivity.this,
-                    "CONNECTED",
-                    Toast.LENGTH_SHORT).show();
-        }else{
-
-            Toast.makeText(LoginActivity.this,
-                    "NOT CONNECTED",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     /**
      * Represents an asynchronous login/registration task used to authenticate

@@ -2,11 +2,15 @@ package com.example.pathfinderapp;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import com.example.pathfinderapp.AsyncStuff.ConnectivityReceiver;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
@@ -25,7 +29,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.example.pathfinderapp.PublishPackage.PriceFragment;
@@ -60,16 +67,22 @@ public class MainActivity extends AppCompatActivity implements
         WhenFragment.OnFragmentInteractionListener, WhereFragment.OnFragmentInteractionListener,
         WhichTimeFragment.OnFragmentInteractionListener, PriceFragment.OnFragmentInteractionListener,
         RouteSelectionFragment.OnFragmentInteractionListener, TouristsAllowedFragment.OnFragmentInteractionListener,
-        LanguagesFragment.OnFragmentInteractionListener, SummaryFragment.OnFragmentInteractionListener
-{
+        LanguagesFragment.OnFragmentInteractionListener, SummaryFragment.OnFragmentInteractionListener,
+        ConnectivityReceiver.ConnectivityReceiverListener {
+
     SharedPreferences prefs;
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
+    private ImageView notConnectionDetectedImage;
+
+    Boolean isFullConnectivityOn;
 
     private final Fragment fragment1 = new SearchFragment();
     private final Fragment fragment2 = new ToursFragment();
     private final Fragment fragment3 = new PublishFragment();
     private final Fragment fragment4 = new ProfileFragment().newInstance(true);
     private BottomNavigationView navigation;
+
+    private BroadcastReceiver connectivityReceiver = null;
 
     private final FragmentManager fm = getSupportFragmentManager();
     private Fragment active = fragment1;
@@ -129,8 +142,13 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        notConnectionDetectedImage = findViewById(R.id.dinosaur_connectivity);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        connectivityReceiver = new ConnectivityReceiver();
+
+
         String userUid = user.getUid();
 
         db.collection("users").whereEqualTo("user.uid", userUid )
@@ -182,11 +200,21 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(connectivityReceiver);
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         googleAPI.makeGooglePlayServicesAvailable(this);
+
+        ConnectivityReceiver.connectivityReceiverListener = this;
+        registerReceiver(connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void changeIcons(BottomNavigationView navigationView)
@@ -201,4 +229,20 @@ public class MainActivity extends AppCompatActivity implements
     public void onFragmentInteraction() {
 
     }
+
+    @Override
+    public void onNetworkConnectionChanged(String status) {
+        isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
+
+        if (status.equals(getResources().getString(R.string.wifi_ok))) {
+            notConnectionDetectedImage.setVisibility(View.GONE);
+        }else if (status.equals(getResources().getString(R.string.mobile_ok)) && isFullConnectivityOn){
+            notConnectionDetectedImage.setVisibility(View.VISIBLE);
+            notConnectionDetectedImage.bringToFront();
+        } else {
+            notConnectionDetectedImage.setVisibility(View.VISIBLE);
+            notConnectionDetectedImage.bringToFront();
+        }
+    }
+
 }

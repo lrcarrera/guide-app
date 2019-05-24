@@ -24,6 +24,6 @@ public class NetworkUtil {
             status = context.getResources().getString(R.string.internet_ko);
             return status;
         }
-        return status;
+        return null;
     }
 }
