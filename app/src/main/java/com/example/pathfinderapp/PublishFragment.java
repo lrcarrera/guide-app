@@ -361,7 +361,7 @@ public class PublishFragment extends Fragment implements Serializable{
                 return WhenFragment.newInstance("Page1", "Page # 1");
             case 1: // Fragment # 0 - This will show FirstFragment different title
                 return WhereFragment.newInstance("Page 2", "Page # 2");
-            default:
+            default_picture:
                 return null;
         }
     }

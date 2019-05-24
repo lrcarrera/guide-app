@@ -141,7 +141,12 @@ public class Post implements Serializable {
 
         /**Falta por implementar se tienen que catcher bien*/
         this.tourists = new ArrayList<>();
-        this.tourists.add(guide);
+        ArrayList<HashMap<String, Object>> auxTouristList =  (ArrayList<HashMap<String, Object>>) doc.get("tourists");
+        if(auxTouristList != null){
+            for(int i=0; i<auxTouristList.size(); i++){
+                this.tourists.add(new User(auxTouristList.get(i)));
+            }
+        }
 
         ArrayList<Map<String, Object>> collection1 = ((ArrayList<Map<String, Object>>)doc.get("places"));
 

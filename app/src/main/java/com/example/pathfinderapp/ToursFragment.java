@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
@@ -92,13 +93,21 @@ public class ToursFragment extends Fragment {
             }
         }
         searchList = DefValues.getUserRelatedPosts();
+        recycler = view.findViewById(R.id.recyclerid);
+        /*if(searchList == null || searchList.size() == 0) {
+            recycler.setVisibility(View.INVISIBLE);
+            TextView textView = view.findViewById(R.id.emptyTextViewMessage);
+            textView.setVisibility(View.VISIBLE);
+        }*/
         adapterSearch = new AdapterTour((MainActivity) getActivity(), getFragmentManager(), searchList, true, this);
 
-        recycler = view.findViewById(R.id.recyclerid);
+
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
 
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
+
+
 
         return view;
     }

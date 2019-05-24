@@ -225,6 +225,11 @@ public class ProfileFragment extends Fragment {
         if (current == null)
             return;
 
+        if(current.getImage() == 0){
+            profilePicture.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.default_picture));
+            return;
+        }
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getImage() + ".png");
         try {
@@ -248,40 +253,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    /*private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){
-        final ArrayList<Review> newReviews = new ArrayList<>();
-        if(reviews != null){
-            for(final Review review : reviews){
-                db.collection("users").whereEqualTo("user.uid", review.getAutor() )
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    User user = null;
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        user = new User(document);
-                                        //DefValues.setDocumentReference(document.getReference());
-                                        //DefValues.setUserInContext(document);
-                                    }
-                                    review.setAuthorInfo(user);
-                                    newReviews.add(review);
-
-                                } else {
-                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
-                                }
-                            }
-                        });
-            }
-        }
-
-        return newReviews;
-    }*/
-
-    public void setTabsSubPages(User user){
-
-    }
-
     void setTabsSubPages(final ArrayList<Post> posts){
         if (DefValues.getUserInContext() == null)
             return;
@@ -300,8 +271,6 @@ public class ProfileFragment extends Fragment {
                                     User user = null;
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         user = new User(document);
-                                        //DefValues.setDocumentReference(document.getReference());
-                                        //DefValues.setUserInContext(document);
                                     }
                                     review.setAuthorInfo(user);
                                     newReviews.add(review);
@@ -336,11 +305,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addLanguages(final Dialog dialog) {
-
-        // ArrayList<Language> userLanguages = DefValues.getUserInContext().getLanguages();
-
-        //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        // String userUid = user.getUid();
 
 
         db.collection("languages")
@@ -507,28 +471,6 @@ public class ProfileFragment extends Fragment {
         getActivity().finish();
         Intent toLogin = new Intent(getActivity(), LoginActivity.class);
         startActivity(toLogin);
-
-       /* if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
-            prefs.edit().putString(getResources().getString(R.string.email), NO_EMAIL).apply();
-            prefs.edit().putString(getResources().getString(R.string.password), NO_PSSWRD).apply();
-
-            getActivity().finish();//TODO: implement logout for credentials from Firebase
-            Intent toLogin = new Intent(getActivity(), LoginActivity.class);
-            startActivity(toLogin);
-        }else{
-            new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                    .Callback() {
-                @Override
-                public void onCompleted(GraphResponse graphResponse) {
-
-                    LoginManager.getInstance().logOut();
-                    getActivity().finish();
-                    Intent toLogin = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(toLogin);
-
-                }
-            }).executeAsync();
-        }*/
     }
 
     @Override

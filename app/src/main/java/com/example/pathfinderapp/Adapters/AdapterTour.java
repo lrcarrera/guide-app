@@ -189,8 +189,14 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     private void processProfilePicture(Post current, final ViewHolderItem viewHolder){
-        //Bitmap bitmap = null;
+        if(current.getGuide() == null)
+            return;
 
+        if(current.getGuide().getImage() == 0){
+            viewHolder.picture.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_picture));
+            viewHolder.topPicture.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_picture));
+            return;
+        }
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
         try {
@@ -202,8 +208,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                     bitmap = CroppedImage.getCroppedBitmap(bitmap);
                     viewHolder.picture.setImageBitmap(bitmap);
                     viewHolder.topPicture.setImageBitmap(bitmap);
-                    //mImageView.setImageBitmap(bitmap);
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -453,7 +457,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         }
 
         private void inscribe(){
-            post.addTourist(new User());
             DefValues.AddPostToToursList(post);
             Dialog confirmDialog = new AlertDialog.Builder(context)
                     .setTitle(R.string.confirmation)
@@ -463,12 +466,28 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                             final Map<String, Object> newUser;
                             User user = DefValues.getUserInContext();
                             user.addPost(post.getUuid());
+                            post.addTourist(user);
                             newUser = DefValues.getUserInContext().addToHashMap();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            DefValues.getUserInContextDocument().update("user", newUser);
-                            DefValues.addUserRelatedPost(post);
-                            /*Se tiene que sacar esta solo para guardar mierda posts de ejemplo */
-                            //db.collection("posts").add(post);
+                            db.collection("posts").whereEqualTo("uuid", post.getUuid() )
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    document.getReference().update(post.addToHashMap());
+                                                    DefValues.getUserInContextDocument().update("user", newUser);
+                                                    DefValues.addUserRelatedPost(post);
+                                                    MainActivity mainActivity = (MainActivity) context;
+                                                    mainActivity.moveToToursPage();
+                                                }
+                                            } else {
+                                                Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                            }
+                                        }
+                                    });
+
 
                         }
                     })
@@ -477,9 +496,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                     .setNegativeButton(android.R.string.no, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-
-            MainActivity mainActivity = (MainActivity) context;
-            mainActivity.moveToToursPage();
             inscriptionButton.hide();
         }
 
