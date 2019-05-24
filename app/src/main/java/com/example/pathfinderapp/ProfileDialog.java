@@ -66,6 +66,7 @@ public class ProfileDialog extends DialogFragment{
         this.fragmentManager = fragmentManager;
         this.adapterTour = adapterTour;
         this.place = place;
+        //this.view = view;
     }
 
     @Override
@@ -73,6 +74,7 @@ public class ProfileDialog extends DialogFragment{
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.profile_popup, container);
+        //ProfileFragment profileFragment = (ProfileFragment)  view.findViewById(R.id.profile_fragment_in_popup);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(this.guide.getImage() + "x2.png");
 
@@ -88,35 +90,55 @@ public class ProfileDialog extends DialogFragment{
             settings.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //dismiss();
                     adapterTour.dismiss(view);
                 }
             });
             final ImageView profilePicture = (ImageView) view.findViewById(R.id.profilePicture);
+            try {
+                final File localFile = File.createTempFile("images", "png");
+                storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                        profilePicture.setImageBitmap(bitmap);
+                        setProfileContent();
+                        //mImageView.setImageBitmap(bitmap);
 
-            if(guide.getImage() == 0){
-                profilePicture.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.default_picture));
-            } else {
-                try {
-                    final File localFile = File.createTempFile("images", "png");
-                    storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                            bitmap = CroppedImage.getCroppedBitmap(bitmap);
-                            profilePicture.setImageBitmap(bitmap);
-                            setProfileContent();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                        }
-                    });
-                } catch (IOException e ) {
-                    System.out.println("Error in profile dialog");
-                }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            } catch (IOException e ) {
+                //System.out.println("Vergassso");
             }
+            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), guide.getImage());
+            //bitmap = CroppedImage.getCroppedBitmap(bitmap);
+
         }
+
+        //Fragment fragment = ProfileFragment.newInstance(guide);
+        //LinearLayout rowLayout =view.findViewById(R.id.profile_popup_linear);
+        //rowLayout.setId(whateveryouwantasid);
+// add rowLayout to the root layout somewhere here
+
+        //FragmentManager fragMan = getFragmentManager();
+        //FragmentTransaction fragTransaction = fragMan.beginTransaction();
+
+        //ragment myFrag = new ImageFragment();
+        //fragTransaction.add(rowLayout.getId(), myFrag , "fragment" + fragCount);
+        //fragTransaction.commit();
+        /*fragmentManager
+                .beginTransaction()
+                .add(rowLayout.getId(), fragment)
+                .commit();*/
+        //Fragment fragmentToRemplace = view.findViewById(R.id.profile_popup_fragment);
+        //mEditText = (EditText) view.findViewById(R.id.txt_your_name);
+        //getDialog().setTitle("Hello");
+
         return view;
     }
 
@@ -135,7 +157,7 @@ public class ProfileDialog extends DialogFragment{
         final FirebaseFirestore  db = FirebaseFirestore.getInstance();
         final ArrayList<Review> reviews = this.guide.getReviews();
 
-        if(this.guide.getPostList() != null) {
+        if(this.guide.getToursCound() > 0 && this.guide.getPostList() != null) {
 
             for (String post : this.guide.getPostList()) {
                 db.collection("posts").whereEqualTo("uuid", post)
@@ -220,38 +242,71 @@ public class ProfileDialog extends DialogFragment{
                             }
                         });
             }
-        } else {
-            AdapterProfilePopUp tabsAdapter = new AdapterProfilePopUp(getChildFragmentManager(), tabLayout.getTabCount(), newReviews, profilePosts);
-            viewPager.setAdapter(tabsAdapter);
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
+        }
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
+        if(reviews != null){
 
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
         }
 
 
+
+
+
+        /*AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews(), DefValues.getMockPostList());
+        viewPager.setAdapter(tabsAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });*/
     }
+
+    /*private void processProfilePicture(Post current, final AdapterTour.ViewHolderItem viewHolder){
+        //Bitmap bitmap = null;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
+        try {
+            final File localFile = File.createTempFile("images", "png");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                    viewHolder.picture.setImageBitmap(bitmap);
+                    viewHolder.topPicture.setImageBitmap(bitmap);
+                    //mImageView.setImageBitmap(bitmap);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {
+            //System.out.println("Vergassso");
+        }
+    }*/
 
     @Override
     public void onResume() {
         super.onResume();
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        //params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
-
 
 }

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
@@ -46,8 +47,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
 
+    private ProgressBar rotateLoading;
+
     public SearchFragment() {
         // Required empty public constructor
+    }
+
+    private void showProgress(final boolean show) {
+
+        if (show) {
+            rotateLoading.setVisibility(View.VISIBLE);
+        } else {
+            rotateLoading.setVisibility(View.GONE);
+        }
     }
 
 
@@ -67,7 +79,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         // Inflate the layout for this fragment
         //searchList = DefValues.getMockYourToursList();
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        rotateLoading = view.findViewById(R.id.rotate_loading_post_list);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        showProgress(true);
         db.collection("posts")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -90,9 +105,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                             MainActivity activity = (MainActivity) getActivity();
                             activity.setProfileTours(searchList);
+                            showProgress(false);
+
 
 
                         } else {
+                            showProgress(false);
+
                             Log.w("TEST08", "Error getting documents.", task.getException());
                         }
                     }

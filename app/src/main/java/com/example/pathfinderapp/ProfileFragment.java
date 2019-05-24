@@ -1,5 +1,8 @@
 package com.example.pathfinderapp;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,11 +28,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -100,6 +106,8 @@ public class ProfileFragment extends Fragment {
     private ImageView profilePicture;
     //TextView textViewEmail;
 
+    private OnFragmentInteractionListener mListener;
+
     private CheckBox checkboxNotifications;
     private CheckBox checkboxFrench;
     private CheckBox checkboxEnglish;
@@ -117,7 +125,7 @@ public class ProfileFragment extends Fragment {
 
     private User user;
 
-    private OnFragmentInteractionListener mListener;
+    private ProgressBar rotateLoading;
 
     private FirebaseAuth mAuth;
 
@@ -225,11 +233,6 @@ public class ProfileFragment extends Fragment {
         if (current == null)
             return;
 
-        if(current.getImage() == 0){
-            profilePicture.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.default_picture));
-            return;
-        }
-
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getImage() + ".png");
         try {
@@ -253,6 +256,40 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    /*private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){
+        final ArrayList<Review> newReviews = new ArrayList<>();
+        if(reviews != null){
+            for(final Review review : reviews){
+                db.collection("users").whereEqualTo("user.uid", review.getAutor() )
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    User user = null;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        user = new User(document);
+                                        //DefValues.setDocumentReference(document.getReference());
+                                        //DefValues.setUserInContext(document);
+                                    }
+                                    review.setAuthorInfo(user);
+                                    newReviews.add(review);
+
+                                } else {
+                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                }
+                            }
+                        });
+            }
+        }
+
+        return newReviews;
+    }*/
+
+    public void setTabsSubPages(User user){
+
+    }
+
     void setTabsSubPages(final ArrayList<Post> posts){
         if (DefValues.getUserInContext() == null)
             return;
@@ -271,6 +308,8 @@ public class ProfileFragment extends Fragment {
                                     User user = null;
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         user = new User(document);
+                                        //DefValues.setDocumentReference(document.getReference());
+                                        //DefValues.setUserInContext(document);
                                     }
                                     review.setAuthorInfo(user);
                                     newReviews.add(review);
@@ -306,7 +345,12 @@ public class ProfileFragment extends Fragment {
 
     private void addLanguages(final Dialog dialog) {
 
+        // ArrayList<Language> userLanguages = DefValues.getUserInContext().getLanguages();
 
+        //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // String userUid = user.getUid();
+
+        showProgress(true);
         db.collection("languages")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -340,7 +384,10 @@ public class ProfileFragment extends Fragment {
                             setInitialValuesToTogglesItems();
 
 
+
+                            showProgress(false);
                         } else {
+                            showProgress(false);
                             Log.w("TEST08", "Error getting documents.", task.getException());
                         }
                     }
@@ -350,19 +397,15 @@ public class ProfileFragment extends Fragment {
     private void openSettings() {
 
         myDialog.setContentView(R.layout.settings_popup);
-        addLanguages(myDialog);
         checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
-
-        RadioGroup radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
         radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
+        rotateLoading = myDialog.findViewById(R.id.rotate_loading_popup);
         radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);
+        addLanguages(myDialog);
 
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
-
-
-
     }
 
     private void handleActionButtons() {
@@ -409,11 +452,9 @@ public class ProfileFragment extends Fragment {
         }
 
         if (isFullConnectivityOn) {
-            //radioGroupConnectivity.check(R.id.wifiandmore);
             radioWifi.setChecked(false);
             radioWifiAndMore.setChecked(true);
         } else {
-            // radioGroupConnectivity.check(R.id.wifi);
             radioWifi.setChecked(true);
             radioWifiAndMore.setChecked(false);
         }
@@ -462,15 +503,45 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getContext(), getResources().getString(R.string.configuration_stored_message), Toast.LENGTH_SHORT).show();
     }
 
+    private void showProgress(final boolean show) {
+
+        if (show) {
+            rotateLoading.setVisibility(View.VISIBLE);
+        } else {
+            rotateLoading.setVisibility(View.GONE);
+        }
+    }
+
     private void logOut() {
 
         myDialog.dismiss();
-
 
         FirebaseAuth.getInstance().signOut();
         getActivity().finish();
         Intent toLogin = new Intent(getActivity(), LoginActivity.class);
         startActivity(toLogin);
+
+       /* if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
+            prefs.edit().putString(getResources().getString(R.string.email), NO_EMAIL).apply();
+            prefs.edit().putString(getResources().getString(R.string.password), NO_PSSWRD).apply();
+
+            getActivity().finish();//TODO: implement logout for credentials from Firebase
+            Intent toLogin = new Intent(getActivity(), LoginActivity.class);
+            startActivity(toLogin);
+        }else{
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                    .Callback() {
+                @Override
+                public void onCompleted(GraphResponse graphResponse) {
+
+                    LoginManager.getInstance().logOut();
+                    getActivity().finish();
+                    Intent toLogin = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(toLogin);
+
+                }
+            }).executeAsync();
+        }*/
     }
 
     @Override

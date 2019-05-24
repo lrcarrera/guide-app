@@ -72,7 +72,9 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
                 break;
             case "ES":
                 viewHolder.picture.setImageResource(R.drawable.spain_flag);
-
+                break;
+            case "JP":
+                viewHolder.picture.setImageResource(R.drawable.japanese_flag);
                 break;
 
         }

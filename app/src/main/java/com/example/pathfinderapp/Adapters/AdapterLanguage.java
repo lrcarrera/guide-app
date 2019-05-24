@@ -65,6 +65,9 @@ public class AdapterLanguage
             case "ES":
                 viewHolder.picture.setImageResource(R.drawable.spain_flag);
                 break;
+            case "JP":
+                viewHolder.picture.setImageResource(R.drawable.japanese_flag);
+                break;
         }
 
 
