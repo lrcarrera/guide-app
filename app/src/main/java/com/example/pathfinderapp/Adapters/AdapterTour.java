@@ -278,9 +278,42 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         searchFragment.resetController();
     }
 
-    public void removeItem(int pos) {
-        searchList.remove(pos);
-        notifyItemRemoved(pos);
+    public void removeItem(final int pos) {
+        Dialog confirmDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.confirmation)
+                .setMessage(R.string.out_tour)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final Post post = searchList.get(pos);
+                        User user = DefValues.getUserInContext();
+                        user.getPostList().remove(post.getUuid());
+                        DefValues.getUserInContextDocument().update("user", user.addToHashMap());
+
+                        if(user.getUid().equals(post.getGuide().getUid())){
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("posts").whereEqualTo("uuid", post.getUuid() )
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    document.getReference().delete();
+                                                }
+                                            } else {
+                                                Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                            }
+                                        }
+                                    });
+                        }
+                        //DefValues.addUserRelatedPost(post);
+                        searchList.remove(pos);
+                        notifyItemRemoved(pos);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
@@ -423,8 +456,8 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             post.addTourist(new User());
             DefValues.AddPostToToursList(post);
             Dialog confirmDialog = new AlertDialog.Builder(context)
-                    .setTitle("Confirmación")
-                    .setMessage("Quieres entrar?")
+                    .setTitle(R.string.confirmation)
+                    .setMessage(R.string.in_tour)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             final Map<String, Object> newUser;

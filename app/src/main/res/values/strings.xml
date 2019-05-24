@@ -89,8 +89,9 @@
     <string name="email">email</string>
     <string name="password">password</string>
     <string name="facebook_id">facebook_id</string>
-
-
+    <string name="confirmation">Confirmation</string>
+    <string name="in_tour">Do you want to enter in this tour?</string>
+    <string name="out_tour">Do you want to cancel this tour?</string>
     <!--TOAST -->
     <string name="configuration_stored_message">Your configuration has been stored!</string>
     <string name="speaking_languages">Which languages do you speak?</string>

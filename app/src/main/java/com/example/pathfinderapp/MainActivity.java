@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements
                                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                                     mDatabase.child("users").child(userUid).push().setValue(token);
                                     user.setMessageToken(token);
-                                    DefValues.getUserInContextDocument().update("user", user.AddToHashMap());
+                                    DefValues.getUserInContextDocument().update("user", user.addToHashMap());
                                 }
                             }
 

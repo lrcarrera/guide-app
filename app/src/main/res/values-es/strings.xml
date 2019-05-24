@@ -87,7 +87,9 @@
     <string name="email">email</string>
     <string name="password">password</string>
     <string name="facebook_id">facebook_id</string>
-
+    <string name="confirmation">Confirmación</string>
+    <string name="in_tour">Estás seguro que quieres apuntarte en este tour?</string>
+    <string name="out_tour">Estás seguro que quieres cancelar este tour?</string>
 
 
 
