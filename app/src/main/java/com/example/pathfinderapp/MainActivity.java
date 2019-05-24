@@ -47,6 +47,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firestore.v1.FirestoreGrpc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements
         LanguagesFragment.OnFragmentInteractionListener, SummaryFragment.OnFragmentInteractionListener
 {
     SharedPreferences prefs;
+    private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
     private final Fragment fragment1 = new SearchFragment();
     private final Fragment fragment2 = new ToursFragment();
@@ -140,6 +142,19 @@ public class MainActivity extends AppCompatActivity implements
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 DefValues.setDocumentReference(document.getReference());
                                 DefValues.setUserInContext(document);
+
+                                prefs = getSharedPreferences(PACKAGE_NAME, MODE_PRIVATE);
+                                FirebaseAuth auth = FirebaseAuth.getInstance();
+                                String userUid = auth.getCurrentUser().getUid();
+                                String token = prefs.getString(getResources().getString(R.string.message_token), null);
+                                User user = DefValues.getUserInContext();
+
+                                if (token != null && user != null) {
+                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                    mDatabase.child("users").child(userUid).push().setValue(token);
+                                    user.setMessageToken(token);
+                                    DefValues.getUserInContextDocument().update("user", user.AddToHashMap());
+                                }
                             }
 
                             fm.beginTransaction().add(R.id.main_container, fragment4, "4").hide(fragment4).commit();
