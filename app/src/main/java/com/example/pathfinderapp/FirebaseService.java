@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.pathfinderapp.MockValues.DefValues;
+import com.example.pathfinderapp.Models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -59,5 +61,16 @@ public class FirebaseService extends FirebaseMessagingService {
 
         prefs.edit().putString(getResources().getString(R.string.message_token), token).apply();
         prefs.edit().putBoolean(getResources().getString(R.string.send_token), true).apply();
+
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userUid = auth.getCurrentUser().getUid();
+        User user = DefValues.getUserInContext();
+        if (token != null && user != null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("users").child(userUid).push().setValue(token);
+            user.setMessageToken(token);
+            DefValues.getUserInContextDocument().update("user", user.addToHashMap());
+        }
     }
 }

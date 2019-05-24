@@ -13,23 +13,16 @@ exports.onPostCreat = functions.firestore
     return null;
   }
 
+  if (!change.before.exists) {
+    console.log("Tour just created!");
+    return null;
+  }
+
   const data = change.after.data();
   if (data) {
       if (data.guide.uid !== null) {
         console.log('Uid: ', JSON.parse(JSON.stringify(data)));
 
-        // const user = await admin.auth().getUser(data.guide.uid);
-        // admin.database().ref(`/users/${data.guide.uid}`).once('value').then(response => {
-        //
-        //   response.forEach(function(childs) {
-        //     const child = childs.val();
-        //     console.log('Query completed');
-        //     console.log('Data:', child);
-        //     console.log(JSON.parse(JSON.stringify(child)));
-        //     console.log('REEEEEEEEEEEEEEEEE');
-        //   });
-        // })
-        // .catch(err => console.log(err));;
 
         admin.firestore().collection('users').get().then(response => {
           response.forEach(function(value) {
