@@ -92,26 +92,30 @@ public class ProfileDialog extends DialogFragment{
                 }
             });
             final ImageView profilePicture = (ImageView) view.findViewById(R.id.profilePicture);
-            try {
-                final File localFile = File.createTempFile("images", "png");
-                storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        bitmap = CroppedImage.getCroppedBitmap(bitmap);
-                        profilePicture.setImageBitmap(bitmap);
-                        setProfileContent();
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                    }
-                });
-            } catch (IOException e ) {
-                System.out.println("Error in profile dialog");
+            if(guide.getImage() == 0){
+                profilePicture.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.default_picture));
+            } else {
+                try {
+                    final File localFile = File.createTempFile("images", "png");
+                    storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            bitmap = CroppedImage.getCroppedBitmap(bitmap);
+                            profilePicture.setImageBitmap(bitmap);
+                            setProfileContent();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                        }
+                    });
+                } catch (IOException e ) {
+                    System.out.println("Error in profile dialog");
+                }
             }
-
         }
         return view;
     }

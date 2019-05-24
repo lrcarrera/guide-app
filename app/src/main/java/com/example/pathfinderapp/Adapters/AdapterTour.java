@@ -189,8 +189,14 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     private void processProfilePicture(Post current, final ViewHolderItem viewHolder){
-        //Bitmap bitmap = null;
+        if(current.getGuide() == null)
+            return;
 
+        if(current.getGuide().getImage() == 0){
+            viewHolder.picture.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_picture));
+            viewHolder.topPicture.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_picture));
+            return;
+        }
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
         try {
@@ -202,8 +208,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                     bitmap = CroppedImage.getCroppedBitmap(bitmap);
                     viewHolder.picture.setImageBitmap(bitmap);
                     viewHolder.topPicture.setImageBitmap(bitmap);
-                    //mImageView.setImageBitmap(bitmap);
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
