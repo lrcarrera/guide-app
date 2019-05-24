@@ -64,6 +64,9 @@ public class FirebaseService extends FirebaseMessagingService {
 
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null)
+            return;
+
         String userUid = auth.getCurrentUser().getUid();
         User user = DefValues.getUserInContext();
         if (token != null && user != null) {
