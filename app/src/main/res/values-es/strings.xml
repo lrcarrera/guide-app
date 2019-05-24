@@ -104,5 +104,6 @@
     <string name="forgot_password">Restablecer contraseña</string>
 
     <string name="empty_reviews">Todavía no tienes ningún comentario!</string>
+    <string name="empty_posts">Todavía no tienes ningún tour!</string>
 
 </resources>

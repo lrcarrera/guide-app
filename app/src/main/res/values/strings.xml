@@ -105,5 +105,6 @@
 
     <!--Empty -->
     <string name="empty_reviews">Any review yet!</string>
+    <string name="empty_posts">Any tour yet!</string>
 
 </resources>

@@ -27,13 +27,6 @@ public class AdapterProfilePopUp extends FragmentStatePagerAdapter {
         this.reviews = reviews;
         this.posts = new ArrayList<>();
         this.posts.addAll(posts);
-        /*if(due){
-            getOnlyPostsCreatedByTheCurrentUser(posts);
-        } else {
-            this.posts.addAll(posts);
-            //Collections.addAll(this.posts, posts);
-        }*/
-        //this.posts = posts;
     }
 
     private void addPosts(List<Post> posts){

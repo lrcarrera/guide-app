@@ -34,9 +34,7 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
             getOnlyPostsCreatedByTheCurrentUser(posts);
         } else {
             this.posts.addAll(posts);
-            //Collections.addAll(this.posts, posts);
         }
-        //this.posts = posts;
     }
 
     private void addPosts(List<Post> posts){

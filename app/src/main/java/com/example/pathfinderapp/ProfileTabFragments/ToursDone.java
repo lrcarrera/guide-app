@@ -58,11 +58,16 @@ public class ToursDone extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile_secondtab, viewGroup, false);
         CirclePageIndicator indicator = rootView.findViewById(R.id.indicator);
         indicator.setFillColor(R.color.address);
-        if(posts != null){
+        if(posts != null && posts.size() > 0){
             postsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
             postsCarousselView.setPageCount(posts.size());
             postsCarousselView.setSlideInterval(4000);
             postsCarousselView.setViewListener(viewListener);
+        } else {
+            postsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
+            postsCarousselView.setVisibility(View.INVISIBLE);
+            TextView textView = (TextView) rootView.findViewById(R.id.emptyTextViewMessage);
+            textView.setVisibility(View.VISIBLE);
         }
         return rootView;
     }
