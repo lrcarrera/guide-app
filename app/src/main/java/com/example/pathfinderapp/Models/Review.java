@@ -40,7 +40,7 @@ public class Review {
         //this.message = (String) review.get("message");
     }
 
-    public Map<String, Object> AddToHashMap(){
+    public Map<String, Object> addToHashMap(){
         Map<String, Object> data = new HashMap<>();
         data.put("message", message);
         data.put("author", author);

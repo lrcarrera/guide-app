@@ -134,7 +134,7 @@ public class PublishFragment extends Fragment implements Serializable{
         final Map<String, Object> newUser;
         /*final User realNigga = new User(user.getUid(), user.getName(), user.getPostList(), user.getToursCound(), user.getCompany(),
                 user.getScore(), user.getLanguages(), user.getImage(), user.getReviews());*/
-        newUser = user.AddToHashMap();
+        newUser = user.addToHashMap();
 
         /*newUser.put("user", new User(user.getUid(), user.getName(), postList, user.getToursCound(), user.getCompany(),
                 user.getScore(), user.getLanguages(), user.getImage(), user.getReviews()));*/

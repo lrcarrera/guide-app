@@ -113,7 +113,7 @@ public class User implements Serializable {
 
     }
 
-    public Map<String, Object> AddToHashMap(){
+    public Map<String, Object> addToHashMap(){
         Map<String, Object> data = new HashMap<>();
         data.put("uid", this.uid);
         data.put("name", this.name);
@@ -123,14 +123,17 @@ public class User implements Serializable {
         data.put("score", this.score);
         data.put("languages", this.languages);
         data.put("image", this.image);
-
-        /*for (int i=0; i<reviews.size(); i++)
-        {
-
-        }*/
-        data.put("reviews", this.reviews);
+        data.put("reviews", addReviewsToHashMap());
         data.put("messageToken", this.messageToken);
         return data;
+    }
+
+    private ArrayList<Map<String, Object>> addReviewsToHashMap(){
+        ArrayList<Map<String, Object>> hashMaps = new ArrayList<>();
+        for (int i=0; i < reviews.size(); i++){
+            hashMaps.add(reviews.get(i).addToHashMap());
+        }
+        return  hashMaps;
     }
 
     public ArrayList<Review> getReviews() {

@@ -240,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 mDatabase.child("users").child(userUid).push().setValue(token);
                                 User user = DefValues.getUserInContext();
                                 user.setMessageToken(token);
-                                DefValues.getUserInContextDocument().update("user", user.AddToHashMap());
+                                DefValues.getUserInContextDocument().update("user", user.addToHashMap());
                             }
 
                             //const usersRef = db.collection('users').whereEqualTo("user.uid", userUid )

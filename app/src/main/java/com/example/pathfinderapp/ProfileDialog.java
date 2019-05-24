@@ -157,7 +157,7 @@ public class ProfileDialog extends DialogFragment{
         final FirebaseFirestore  db = FirebaseFirestore.getInstance();
         final ArrayList<Review> reviews = this.guide.getReviews();
 
-        if(this.guide.getToursCound() > 0 && this.guide.getPostList() != null) {
+        if(this.guide.getPostList() != null) {
 
             for (String post : this.guide.getPostList()) {
                 db.collection("posts").whereEqualTo("uuid", post)

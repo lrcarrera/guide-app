@@ -430,7 +430,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                             final Map<String, Object> newUser;
                             User user = DefValues.getUserInContext();
                             user.addPost(post.getUuid());
-                            newUser = DefValues.getUserInContext().AddToHashMap();
+                            newUser = DefValues.getUserInContext().addToHashMap();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DefValues.getUserInContextDocument().update("user", newUser);
 
@@ -499,7 +499,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        document.getReference().update("user",guide);
+                                                        document.getReference().update("user",guide.addToHashMap());
                                                         myDialog.dismiss();
                                                         //DefValues.setDocumentReference(document.getReference());
                                                         //DefValues.setUserInContext(document);
