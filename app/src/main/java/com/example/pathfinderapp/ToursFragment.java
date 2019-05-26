@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
@@ -102,8 +104,7 @@ public class ToursFragment extends Fragment {
 
 
                                 } else {
-                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
-                                }
+                                    notConnectionToast();                                }
                                 showProgress(false);
 
                             }
@@ -130,6 +131,12 @@ public class ToursFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void notConnectionToast(){
+        Toast toast = Toast.makeText(getContext(), R.string.not_connection, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 
     public void recyclerListChanged(){

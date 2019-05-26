@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.Adapters.AdapterProfilePopUp;
@@ -49,7 +51,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ProfileDialog extends DialogFragment{
+public class ProfileDialog extends DialogFragment {
 
 
     private User guide;
@@ -58,10 +60,10 @@ public class ProfileDialog extends DialogFragment{
     private static View view;
     private Place place;
 
-    public ProfileDialog(){}
+    public ProfileDialog() {
+    }
 
-    public ProfileDialog(User user, FragmentManager fragmentManager, View view, AdapterTour.ViewHolderItem adapterTour, Place place)
-    {
+    public ProfileDialog(User user, FragmentManager fragmentManager, View view, AdapterTour.ViewHolderItem adapterTour, Place place) {
         this.guide = user;
         this.fragmentManager = fragmentManager;
         this.adapterTour = adapterTour;
@@ -78,7 +80,7 @@ public class ProfileDialog extends DialogFragment{
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(this.guide.getImage() + "x2.png");
 
-        if(guide != null){
+        if (guide != null) {
             TextView textViewName = view.findViewById(R.id.tv_name);
             TextView textViewAddress = view.findViewById(R.id.tv_address);
             textViewName.setText(guide.getName());
@@ -112,7 +114,7 @@ public class ProfileDialog extends DialogFragment{
                     public void onFailure(@NonNull Exception exception) {
                     }
                 });
-            } catch (IOException e ) {
+            } catch (IOException e) {
                 //System.out.println("Vergassso");
             }
             //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), guide.getImage());
@@ -142,7 +144,7 @@ public class ProfileDialog extends DialogFragment{
         return view;
     }
 
-    private void setProfileContent(){
+    private void setProfileContent() {
 
         final ArrayList<Post> profilePosts = new ArrayList<>();
         final ArrayList<Review> newReviews = new ArrayList<>();
@@ -154,10 +156,10 @@ public class ProfileDialog extends DialogFragment{
         tabLayout.addTab(tabLayout.newTab().setText(R.string.scoresTitle));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final FirebaseFirestore  db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final ArrayList<Review> reviews = this.guide.getReviews();
 
-        if(this.guide.getToursCound() > 0 && this.guide.getPostList() != null) {
+        if (this.guide.getToursCound() > 0 && this.guide.getPostList() != null) {
 
             for (String post : this.guide.getPostList()) {
                 db.collection("posts").whereEqualTo("uuid", post)
@@ -170,9 +172,9 @@ public class ProfileDialog extends DialogFragment{
                                         profilePosts.add(new Post(document));
                                     }
 
-                                    if(reviews != null && reviews.size() > 0){
-                                        for(final Review review : reviews){
-                                            db.collection("users").whereEqualTo("user.uid", review.getAutor() )
+                                    if (reviews != null && reviews.size() > 0) {
+                                        for (final Review review : reviews) {
+                                            db.collection("users").whereEqualTo("user.uid", review.getAutor())
                                                     .get()
                                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                         @Override
@@ -208,7 +210,8 @@ public class ProfileDialog extends DialogFragment{
                                                                 tabsAdapter.notifiyDataChanged();
 
                                                             } else {
-                                                                Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+
+                                                                notConnectionToast();
                                                             }
                                                         }
                                                     });
@@ -237,14 +240,14 @@ public class ProfileDialog extends DialogFragment{
 
 
                                 } else {
-                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
+                                    notConnectionToast();
                                 }
                             }
                         });
             }
         }
 
-        if(reviews != null){
+        if (reviews != null) {
 
         }
 
@@ -299,6 +302,12 @@ public class ProfileDialog extends DialogFragment{
             //System.out.println("Vergassso");
         }
     }*/
+
+    private void notConnectionToast() {
+        Toast toast = Toast.makeText(getContext(), R.string.not_connection, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+    }
 
     @Override
     public void onResume() {
