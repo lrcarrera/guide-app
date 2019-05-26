@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.Adapters.AdapterTour;
@@ -45,10 +46,21 @@ public class ToursFragment extends Fragment {
     private RecyclerView recycler;
     private AdapterTour adapterSearch;
     public SwipeController swipeController;
+    private ProgressBar rotateLoading;
 
     public ToursFragment() {
         // Required empty public constructor
     }
+
+    private void showProgress(final boolean show) {
+
+        if (show) {
+            rotateLoading.setVisibility(View.VISIBLE);
+        } else {
+            rotateLoading.setVisibility(View.GONE);
+        }
+    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -70,7 +82,11 @@ public class ToursFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
         //searchList = DefValues.getMockYourToursList();
+        rotateLoading = view.findViewById(R.id.rotate_loading_post_list_tours);
+
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        showProgress(true);
+
         if(DefValues.getUserInContext() != null && DefValues.getUserInContext().getToursCound() > 0) {
 
             for (String post : DefValues.getUserInContext().getPostList()) {
@@ -88,10 +104,14 @@ public class ToursFragment extends Fragment {
                                 } else {
                                     Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                 }
+                                showProgress(false);
+
                             }
                         });
             }
         }
+        showProgress(false);
+
         searchList = DefValues.getUserRelatedPosts();
         recycler = view.findViewById(R.id.recyclerid);
         /*if(searchList == null || searchList.size() == 0) {

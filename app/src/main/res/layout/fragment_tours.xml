@@ -30,6 +30,17 @@
         android:text="@string/empty_posts"
         android:visibility="invisible"/>
 
+    <ProgressBar
+        android:id="@+id/rotate_loading_post_list_tours"
+        style="?android:attr/progressBarStyle"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recyclerid"

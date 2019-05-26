@@ -142,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        prefs = getSharedPreferences(PACKAGE_NAME, MODE_PRIVATE);
+
         notConnectionDetectedImage = findViewById(R.id.dinosaur_connectivity);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -161,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements
                                 DefValues.setDocumentReference(document.getReference());
                                 DefValues.setUserInContext(document);
 
-                                prefs = getSharedPreferences(PACKAGE_NAME, MODE_PRIVATE);
                                 FirebaseAuth auth = FirebaseAuth.getInstance();
                                 String userUid = auth.getCurrentUser().getUid();
                                 String token = prefs.getString(getResources().getString(R.string.message_token), null);
