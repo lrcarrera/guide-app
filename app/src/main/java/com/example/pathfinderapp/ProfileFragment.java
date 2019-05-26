@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -228,6 +229,12 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
+    private void notConnectionToast(){
+        Toast toast = Toast.makeText(getContext(), R.string.not_connection, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+    }
+
     private void setProfilePicture(){
         User current = DefValues.getUserInContext();
         if (current == null)
@@ -334,6 +341,7 @@ public class ProfileFragment extends Fragment {
                                     });
 
                                 } else {
+                                    notConnectionToast();
                                     Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                 }
                             }
@@ -387,6 +395,7 @@ public class ProfileFragment extends Fragment {
 
                             showProgress(false);
                         } else {
+                            notConnectionToast();
                             showProgress(false);
                             Log.w("TEST08", "Error getting documents.", task.getException());
                         }

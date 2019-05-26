@@ -107,6 +107,14 @@
     <string name="default_notification_channel_id" translatable="false">PathfinderID</string>
     <string name="default_notification_channel_name" translatable="false">Pathfinder</string>
 
+    <string name="not_connection">No Internet connection</string>
+    <string name="account_created">The account has been created!</string>
+    <string name="authentication_success">Authentication success!</string>
+    <string name="verification_email">Verification email will be sent to the email address.</string>
+    <string name="restore_account">Please check the instructions sent in your email to restore the password.</string>
+    <string name="email_not_found">E-mail inserted not found.</string>
+
+
     <!--Empty -->
     <string name="empty_reviews">Any review yet!</string>
     <string name="empty_posts">Any tour yet!</string>

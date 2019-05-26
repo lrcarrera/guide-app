@@ -1,4 +1,5 @@
 package com.example.pathfinderapp;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -7,9 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
 import android.database.Cursor;
@@ -19,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -37,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.List;
 
 /**
@@ -127,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         connectivityReceiver = new ConnectivityReceiver();
 
         //checkInternet = new CheckInternetConnection(this);
-       // checkConnection();
+        // checkConnection();
         //Firebase
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
@@ -149,6 +154,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    private void showToast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -159,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onResume() {
         super.onResume();
-       // PathfinderInstance.getInstance().setConnectivityListener(this);
+        // PathfinderInstance.getInstance().setConnectivityListener(this);
         ConnectivityReceiver.connectivityReceiverListener = this;
         registerReceiver(connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -185,10 +196,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(LoginActivity.this,
-                                    "Account creation success",
-                                    Toast.LENGTH_SHORT).show();
+
+                            showToast(getResources().getString(R.string.account_created));
+
 
                             sendEmailVerification();
 
@@ -201,8 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("CREATEACCOUNT", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            showToast(getResources().getString(R.string.not_connection));
                         }
 
                         // [START_EXCLUDE]
@@ -230,9 +239,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("SIGNIN", "signInWithEmail:success");
-                            Toast.makeText(LoginActivity.this,
-                                    "Authentication success",
-                                    Toast.LENGTH_SHORT).show();
+                            showToast(getResources().getString(R.string.authentication_success));
+
 
                             String userUid = mAuth.getCurrentUser().getUid();
 
@@ -250,7 +258,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                 } else {
-                                                   // storeFlagImageFromFirebaseStorage();
+                                                    // storeFlagImageFromFirebaseStorage();
                                                     Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
                                                     startActivity(intent);
 
@@ -258,9 +266,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                     //startActivity(intent);
                                                 }
                                             } else {
-                                                Toast.makeText(LoginActivity.this,
-                                                        "Server not found (Error: 400)",
-                                                        Toast.LENGTH_SHORT).show();
+                                                showToast(getResources().getString(R.string.not_connection));
+
                                                 Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                             }
                                             finish();
@@ -270,8 +277,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Server not found (Error: 400)",
-                                    Toast.LENGTH_SHORT).show();
+                            showToast(getResources().getString(R.string.not_connection));
                         }
 
                         // [START_EXCLUDE]
@@ -336,14 +342,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         findViewById(R.id.email_password_validation).setEnabled(true);
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
+                            showToast(getResources().getString(R.string.verification_email));
+
                         } else {
                             Log.e("VERIFICATIONEMAIL", "sendEmailVerification", task.getException());
-                            Toast.makeText(LoginActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                            showToast(getResources().getString(R.string.not_connection));
+
                         }
                         // [END_EXCLUDE]
                     }
@@ -394,7 +398,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void restorePassword() {
 
         findViewById(R.id.email_password_validation).setEnabled(false);
-        if (!validateForm()) {
+        if (!validateFormRestorePassword()) {
             return;
         }
 
@@ -407,14 +411,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         if (task.isSuccessful()) {
                             // Log.d(TAG, "Email sent.");
 
+                            showToast(getResources().getString(R.string.restore_account));
 
-                            Toast.makeText(LoginActivity.this,
-                                    "Please check the instructions sent in your email to restore the password.",
-                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(LoginActivity.this,
-                                    "E-mail inserted not found",
-                                    Toast.LENGTH_SHORT).show();
+                            showToast(getResources().getString(R.string.email_not_found));
+
+
                         }
                         showProgress(false);
                         findViewById(R.id.email_password_validation).setEnabled(true);
@@ -444,6 +446,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+
+    private boolean validateFormRestorePassword() {
+
+        mEmailView.setError(null);
+        String email = mEmailView.getText().toString();
+        boolean cancel = false;
+        View focusView = null;
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+            return false;
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            return true;
+        }
+    }
+
     private boolean validateForm() {
         /*if (mAuthTask != null) {
             return;
@@ -565,16 +595,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
 
-        if(status.equals(getResources().getString(R.string.wifi_ok))){
-                mLoginFormView.setVisibility(View.VISIBLE);
-                notConnectionDetectedImage.setVisibility(View.GONE);
-            }else if (status.equals(getResources().getString(R.string.mobile_ok)) && isFullConnectivityOn){
-                mLoginFormView.setVisibility(View.VISIBLE);
-                notConnectionDetectedImage.setVisibility(View.GONE);
-            }else{
-                mLoginFormView.setVisibility(View.INVISIBLE);
-                notConnectionDetectedImage.setVisibility(View.VISIBLE);
-            }
+        if (status.equals(getResources().getString(R.string.wifi_ok))) {
+            mLoginFormView.setVisibility(View.VISIBLE);
+            notConnectionDetectedImage.setVisibility(View.GONE);
+        } else if (status.equals(getResources().getString(R.string.mobile_ok)) && isFullConnectivityOn) {
+            mLoginFormView.setVisibility(View.VISIBLE);
+            notConnectionDetectedImage.setVisibility(View.GONE);
+        } else {
+            mLoginFormView.setVisibility(View.INVISIBLE);
+            notConnectionDetectedImage.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

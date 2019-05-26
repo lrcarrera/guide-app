@@ -97,6 +97,13 @@
     <string name="configuration_stored_message">¡Tú configuración se ha guardado correctamente!</string>
     <string name="speaking_languages">¿Qué idiomas hablas?</string>
 
+    <string name="not_connection">No hay conexión a Internet</string>
+    <string name="account_created">La cuenta ha sido creada!</string>
+    <string name="authentication_success">Se ha autenticado correctamente!</string>
+    <string name="verification_email">Se ha enviado un correo de verificación</string>
+    <string name="restore_account">Siga las instrucciones de su correo electrónico para recuperar la cuenta.</string>
+    <string name="email_not_found">E-mail no encontrado.</string>
+
     <string name="review">Añade un comentario</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>

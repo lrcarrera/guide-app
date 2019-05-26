@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements
                             fm.beginTransaction().add(R.id.main_container,fragment1, "1").commit();
 
                         } else {
+                            notConnectionToast();
                             Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                         }
                     }
@@ -205,6 +207,12 @@ public class MainActivity extends AppCompatActivity implements
         super.onPause();
         unregisterReceiver(connectivityReceiver);
 
+    }
+
+    private void notConnectionToast(){
+        Toast toast = Toast.makeText(this, R.string.not_connection, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 
     @Override
