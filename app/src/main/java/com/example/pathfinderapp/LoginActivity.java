@@ -338,7 +338,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (cancel)
             focusView.requestFocus();
 
-        return cancel;
+        return !cancel;
     }
 
     private boolean isEmailValid(String email) {
