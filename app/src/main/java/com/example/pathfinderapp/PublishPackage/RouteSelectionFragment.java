@@ -7,14 +7,11 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,7 +21,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
 
 /**
@@ -41,10 +37,6 @@ public class RouteSelectionFragment extends Fragment implements INexStep {
     private ArrayList<Marker> mMarkerArrayList;
     private PublishFragment parent;
     private GoogleMap mMap;
-    private static final LatLng LLEIDA = new LatLng(41.6082387, 0.6212267);
-    private static final LatLng LONDON = new LatLng(51.528308, -0.3817765);
-    private static final LatLng BARCELONA = new LatLng(41.3948975, 2.0785566);
-    private static final LatLng PARIS = new LatLng(48.8589506, 2.2768488);
     private OnFragmentInteractionListener mListener;
 
 
@@ -69,17 +61,12 @@ public class RouteSelectionFragment extends Fragment implements INexStep {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //mMap = new GoogleMap();
         View view = inflater.inflate(R.layout.fragment_route_selection, container, false);
         FloatingActionButton continueButton = (FloatingActionButton) view.findViewById(R.id.continueButton);
         setMap();
@@ -147,7 +134,7 @@ public class RouteSelectionFragment extends Fragment implements INexStep {
                             }
 
                         }
-                        //mMarkerArrayList = mMap.getMarkers();
+
                         if(toRemove != null)
                             mMarkerArrayList.remove(toRemove);
                         marker.remove();

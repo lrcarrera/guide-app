@@ -50,55 +50,34 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener,
         ConnectivityReceiver.ConnectivityReceiverListener {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
+
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    private static final String DUMMY_PASSWORD = "ThEpASs";
+
     private static final String NO_PSSWRD = "no_password";
     private static final String NO_EMAIL = "no_email";
-    private static final int QUANTITY_FLAGS_FIREBASE_STORAGE = 5;
-    int indexOfImage;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
-    private static final String EMAIL = "email";
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    // private static final String URL ="https://graph.facebook.com/";
-    private static final String PICTURE_REFERENCE = "/picture?type=large";
-
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    //private View mProgressView;
     private View mLoginFormView;
     private SharedPreferences prefs;
     private ProgressBar rotateLoading;
 
     //Firebase authentication
     private FirebaseAuth mAuth;
-    private String mCustomToken;
-
     private FirebaseFirestore db;
 
     private ImageView notConnectionDetectedImage;
     Boolean isFullConnectivityOn;
 
     private BroadcastReceiver connectivityReceiver = null;
-
-
-    //CheckInternetConnection checkInternet;
-   /* Button mEmailSignInButton;
-    Button emailCreateAccountButton;
-    TextView verifyEmailButton;*/
-    //private TokenBroadcastReceiver mTokenReceiver;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -112,7 +91,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         db = FirebaseFirestore.getInstance();
 
-
         prefs = this.getSharedPreferences(
                 PACKAGE_NAME, MODE_PRIVATE);
         rotateLoading = findViewById(R.id.rotate_loading);
@@ -122,36 +100,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
-        /*mEmailSignInButton = (Button)*/
         findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        /*emailCreateAccountButton = (Button)*/
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
-        /*verifyEmailButton = (TextView) */
         findViewById(R.id.email_password_validation).setOnClickListener(this);
 
         connectivityReceiver = new ConnectivityReceiver();
 
-        //checkInternet = new CheckInternetConnection(this);
-        // checkConnection();
         //Firebase
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
         //Add login
 
         if (currentUser != null) {
-
-            // if(aux){
-            //intent = new Intent(this, LangugesSelectionActivity.class);
-            //} else {
-            Intent intent;
-            intent = new Intent(this, MainActivity.class);
-            //}
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
-
     }
 
     private void showToast(String message) {
@@ -164,74 +130,51 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onPause() {
         super.onPause();
         unregisterReceiver(connectivityReceiver);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // PathfinderInstance.getInstance().setConnectivityListener(this);
         ConnectivityReceiver.connectivityReceiverListener = this;
         registerReceiver(connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
     private void createAccount(String email, String password) {
         Log.d("CREATEACCOUNT", "createAccount:" + email);
-        if (!validateForm()) {
+        if (!validateForm())
             return;
-        }
 
         showProgress(true);
 
-        // [START create_user   _with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             showToast(getResources().getString(R.string.account_created));
-
-
                             sendEmailVerification();
-
-                            /*FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();*/
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("CREATEACCOUNT", "createUserWithEmail:failure", task.getException());
                             showToast(getResources().getString(R.string.not_connection));
                         }
-
-                        // [START_EXCLUDE]
                         showProgress(false);
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
     }
-
 
     private void signIn(String email, String password) {
         Log.d("SIGNIN", "signIn:" + email);
-        if (!validateForm()) {
+        if (!validateForm())
             return;
-        }
 
         showProgress(true);
 
-        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -241,11 +184,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d("SIGNIN", "signInWithEmail:success");
                             showToast(getResources().getString(R.string.authentication_success));
 
-
                             String userUid = mAuth.getCurrentUser().getUid();
-
-                            //const usersRef = db.collection('users').whereEqualTo("user.uid", userUid )
-                            //create iff
 
                             db.collection("users").whereEqualTo("user.uid", userUid)
                                     .get()
@@ -258,16 +197,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                 } else {
-                                                    // storeFlagImageFromFirebaseStorage();
                                                     Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
                                                     startActivity(intent);
-
-                                                    //Intent intent = new Intent(LoginActivity.this, LangugesSelectionActivity.class);
-                                                    //startActivity(intent);
                                                 }
                                             } else {
                                                 showToast(getResources().getString(R.string.not_connection));
-
                                                 Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                             }
                                             finish();
@@ -280,107 +214,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             showToast(getResources().getString(R.string.not_connection));
                         }
 
-                        // [START_EXCLUDE]
-                        /*if (!task.isSuccessful()) {
-                            mStatusTextView.setText(R.string.auth_failed);
-                        }*/
                         showProgress(false);
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
-   /* private void storeFlagImageFromFirebaseStorage() {
-
-        for (indexOfImage = 0; indexOfImage < QUANTITY_FLAGS_FIREBASE_STORAGE; indexOfImage++) {
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child("100" + indexOfImage + ".png");
-
-            try {
-                final File localFile = File.createTempFile("images_flag", "png");
-                storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        DefValues.addFlagFromFirebaseStorage(bitmap);
-
-                        if (indexOfImage == QUANTITY_FLAGS_FIREBASE_STORAGE - 1){
-
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.w("TEST10", "Error getting flag image ."+ exception.getMessage());
-
-                    }
-                });
-            } catch (IOException e) {
-                //System.out.println("Vergassso");
-            }
-        }
-
-
-    }*/
-
     private void sendEmailVerification() {
-        // Disable button
-        // findViewById(R.id.email_password_validation).setEnabled(false);
-
-        // Send verification email
-        // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
                         // Re-enable button
                         findViewById(R.id.email_password_validation).setEnabled(true);
 
                         if (task.isSuccessful()) {
                             showToast(getResources().getString(R.string.verification_email));
-
                         } else {
                             Log.e("VERIFICATIONEMAIL", "sendEmailVerification", task.getException());
                             showToast(getResources().getString(R.string.not_connection));
-
                         }
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END send_email_verification]
     }
-    //////////////////////////////////
 
-    /*private boolean validateForm() {
-        boolean valid = true;
-
-        String email = mEmailView.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError("Required.");
-            valid = false;
-        } else {
-            mEmailView.setError(null);
-        }
-
-        String password = mPasswordView.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError("Required.");
-            valid = false;
-        } else {
-            mPasswordView.setError(null);
-        }
-
-        return valid;
-    }*/
-
-    ///////////////////////////////////
-
-    ////////////////////////////////////
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -388,9 +245,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
         } else if (i == R.id.email_sign_in_button) {
             signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
-
         } else if (i == R.id.email_password_validation) {
-            //sendEmailVerification();
             restorePassword();
         }
     }
@@ -398,9 +253,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void restorePassword() {
 
         findViewById(R.id.email_password_validation).setEnabled(false);
-        if (!validateFormRestorePassword()) {
+        if (!validateFormRestorePassword())
             return;
-        }
 
         showProgress(true);
 
@@ -415,30 +269,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         } else {
                             showToast(getResources().getString(R.string.email_not_found));
-
-
                         }
                         showProgress(false);
                         findViewById(R.id.email_password_validation).setEnabled(true);
-
                     }
                 });
-    }
-
-
-    ////////////////////////////////////////
-    private boolean hasbeenLoggedInBefore() {
-        String userEmail = prefs.getString(getResources().getString(R.string.email), NO_EMAIL);
-        String password = prefs.getString(getResources().getString(R.string.password), NO_PSSWRD);
-
-        if (userEmail == null || password == null)
-            return false;
-
-        return !userEmail.equals(NO_EMAIL) && !password.equals(NO_PSSWRD);
-    }
-
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
     }
 
     /**
@@ -462,22 +297,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mEmailView;
             cancel = true;
         }
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+
+        if (cancel)
             focusView.requestFocus();
-            return false;
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            return true;
-        }
+
+        return cancel;
     }
 
     private boolean validateForm() {
-        /*if (mAuthTask != null) {
-            return;
-        }*/
 
         // Reset errors.
         mEmailView.setError(null);
@@ -508,25 +335,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+        if (cancel)
             focusView.requestFocus();
-            return false;
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            return true;
-        }
+
+        return cancel;
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -579,15 +398,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
     }
 
     @Override
@@ -646,7 +456,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
             showProgress(false);
 
             if (success) {
@@ -659,7 +468,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
             showProgress(false);
         }
     }

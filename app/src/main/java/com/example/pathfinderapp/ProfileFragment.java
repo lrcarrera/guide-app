@@ -1,8 +1,5 @@
 package com.example.pathfinderapp;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +9,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +24,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -37,21 +31,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
 import com.example.pathfinderapp.Adapters.AdapterProfile;
-import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.Adapters.CroppedImage;
-import com.example.pathfinderapp.AsyncStuff.AsyncTaskLoadImage;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.Models.User;
-import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,25 +48,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -94,10 +78,6 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String NO_PHOTO = "no_photo";
-    private static final String NO_NAME = "no_name";
-    private static final String NO_EMAIL = "no_email";
-    private static final String NO_PSSWRD = "no_password";
 
     private static final String PACKAGE_NAME = "com.example.pathfinderapp";
 
@@ -105,37 +85,22 @@ public class ProfileFragment extends Fragment {
 
     private SharedPreferences prefs;
     private ImageView profilePicture;
-    //TextView textViewEmail;
 
     private OnFragmentInteractionListener mListener;
 
     private CheckBox checkboxNotifications;
-    private CheckBox checkboxFrench;
-    private CheckBox checkboxEnglish;
-    private CheckBox checkboxGerman;
-    private CheckBox checkboxItalian;
-    private CheckBox checkboxSpanish;
 
     private RadioButton radioWifi;
     private RadioButton radioWifiAndMore;
 
-    //private static final String TAG = "MainActivity";
-
-    private AdapterProfile mSectionsPageAdapter;
-    private ViewPager mViewPager;
-
     private ProgressBar rotateLoading;
-    private User user;
-
     private ProgressBar rotateLoadingPicture;
-
-    private FirebaseAuth mAuth;
 
     private AdapterLanguageHorizontal adapterLanguages;
 
 
     private FirebaseFirestore db;
-    ArrayList<Language> languages;
+    private ArrayList<Language> languages;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private boolean isInProfilePage;
@@ -147,23 +112,15 @@ public class ProfileFragment extends Fragment {
 
     public static ProfileFragment newInstance(boolean isInProfilePage) {
 
-
         ProfileFragment fragment = new ProfileFragment();
         fragment.isInProfilePage = isInProfilePage;
-        //fragment.user = user;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // TODO: Rename and change types of parameters
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        db = FirebaseFirestore.getInstance();
+       db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -174,23 +131,15 @@ public class ProfileFragment extends Fragment {
         TextView textViewName = rootView.findViewById(R.id.tv_name);
         rotateLoadingPicture = rootView.findViewById(R.id.rotate_loading_profile);
 
-
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (isInProfilePage) {
+        if (isInProfilePage && user != null) {
             // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
 
             textViewName.setText(user.getEmail());
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
 
             // The user's ID, unique to the Firebase project. Do NOT use this value to
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
-            String uid = user.getUid();
 
             myDialog = new Dialog(getContext());
             ImageButton settings = (ImageButton) rootView.findViewById(R.id.configure_button);
@@ -220,15 +169,7 @@ public class ProfileFragment extends Fragment {
 
             viewPager = (ViewPager) rootView.findViewById(R.id.view_pager);
             setTabsSubPages(DefValues.getUserRelatedPosts());
-
-
-
-
-
-        }/* else {
-            textViewName.setText(user.getName());
-        }*/
-
+        }
 
         return rootView;
     }
@@ -250,6 +191,7 @@ public class ProfileFragment extends Fragment {
             profilePicture.setImageBitmap(bitmap);
             return;
         }
+
         showProgressPicture(true);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -274,7 +216,6 @@ public class ProfileFragment extends Fragment {
             });
         } catch (IOException e ) {
             showProgressPicture(false);
-
             System.out.println("Error in bitmap-profile_fragment-picture " + e.getMessage());
         }
 
@@ -298,11 +239,9 @@ public class ProfileFragment extends Fragment {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
                                         User user = null;
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                        for (QueryDocumentSnapshot document : task.getResult())
                                             user = new User(document);
-                                            //DefValues.setDocumentReference(document.getReference());
-                                            //DefValues.setUserInContext(document);
-                                        }
+
                                         review.setAuthorInfo(user);
                                         newReviews.add(review);
                                         addAdapter(newReviews, posts);
@@ -349,11 +288,6 @@ public class ProfileFragment extends Fragment {
 
     private void addLanguages(final Dialog dialog) {
 
-        // ArrayList<Language> userLanguages = DefValues.getUserInContext().getLanguages();
-
-        //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        // String userUid = user.getUid();
-
         showProgress(true);
         db.collection("languages")
                 .get()
@@ -368,7 +302,6 @@ public class ProfileFragment extends Fragment {
 
                             languages = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //    public Language(long id, String flag, String name, String code, int picture) {
 
                                 languages.add(new Language(
                                         document.getId(),
@@ -386,14 +319,13 @@ public class ProfileFragment extends Fragment {
 
                             handleActionButtons();
                             setInitialValuesToTogglesItems();
-
-
-
                             showProgress(false);
+
                         } else {
+
                             notConnectionToast();
                             showProgress(false);
-                            Log.w("TEST08", "Error getting documents.", task.getException());
+                            Log.w("DB", "Error getting documents.", task.getException());
                         }
                     }
                 });
@@ -408,20 +340,15 @@ public class ProfileFragment extends Fragment {
         radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);
         addLanguages(myDialog);
 
-
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
     }
 
     private void handleActionButtons() {
 
-        ImageButton btnClose;
-        Button btnLogout;
-        Button btnSave;
-
-        btnClose = (ImageButton) myDialog.findViewById(R.id.btnclose);
-        btnLogout = (Button) myDialog.findViewById(R.id.btnlogout);
-        btnSave = (Button) myDialog.findViewById(R.id.btnSave);
+        ImageButton btnClose = (ImageButton) myDialog.findViewById(R.id.btnclose);
+        Button btnLogout = (Button) myDialog.findViewById(R.id.btnlogout);
+        Button btnSave = (Button) myDialog.findViewById(R.id.btnSave);
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -447,24 +374,12 @@ public class ProfileFragment extends Fragment {
 
     private void setInitialValuesToTogglesItems() {
 
-        Boolean isNotificationsOn = prefs.getBoolean(getResources().getString(R.string.notification), false);
-        Boolean isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
+        boolean isNotificationsOn = prefs.getBoolean(getResources().getString(R.string.notification), false);
+        boolean isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
 
-        if (isNotificationsOn) {
-            checkboxNotifications.setChecked(true);
-        } else {
-            checkboxNotifications.setChecked(false);
-        }
-
-        if (isFullConnectivityOn) {
-            radioWifi.setChecked(false);
-            radioWifiAndMore.setChecked(true);
-        } else {
-            radioWifi.setChecked(true);
-            radioWifiAndMore.setChecked(false);
-        }
-
-
+        checkboxNotifications.setChecked(isNotificationsOn);
+        radioWifi.setChecked(!isFullConnectivityOn);
+        radioWifiAndMore.setChecked(isFullConnectivityOn);
     }
 
     private boolean[] setLanguagesStatuses(ArrayList<Language> rootLanguages) {
@@ -537,28 +452,6 @@ public class ProfileFragment extends Fragment {
         getActivity().finish();
         Intent toLogin = new Intent(getActivity(), LoginActivity.class);
         startActivity(toLogin);
-
-       /* if (AccessToken.getCurrentAccessToken() == null){// already logged out with fb
-            prefs.edit().putString(getResources().getString(R.string.email), NO_EMAIL).apply();
-            prefs.edit().putString(getResources().getString(R.string.password), NO_PSSWRD).apply();
-
-            getActivity().finish();//TODO: implement logout for credentials from Firebase
-            Intent toLogin = new Intent(getActivity(), LoginActivity.class);
-            startActivity(toLogin);
-        }else{
-            new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                    .Callback() {
-                @Override
-                public void onCompleted(GraphResponse graphResponse) {
-
-                    LoginManager.getInstance().logOut();
-                    getActivity().finish();
-                    Intent toLogin = new Intent(getActivity(), LoginActivity.class);
-                    startActivity(toLogin);
-
-                }
-            }).executeAsync();
-        }*/
     }
 
     @Override
@@ -567,7 +460,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
@@ -622,7 +514,6 @@ public class ProfileFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

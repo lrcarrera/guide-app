@@ -2,16 +2,13 @@ package com.example.pathfinderapp;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,18 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
-import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Post;
-import com.example.pathfinderapp.PublishPackage.LanguagesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 
 /**
@@ -79,7 +72,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //searchList = DefValues.getMockYourToursList();
+
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         rotateLoading = view.findViewById(R.id.rotate_loading_post_list);
@@ -109,8 +102,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                             activity.setProfileTours(searchList);
                             showProgress(false);
 
-
-
                         } else {
                             showProgress(false);
                             notConnectionToast();
@@ -118,6 +109,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                         }
                     }
                 });
+
         SearchView searchView = view.findViewById(R.id.search_bar);
         searchView.setFocusable(false);
         searchView.clearFocus();
@@ -131,7 +123,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         toast.show();
     }
 
-    public void recyclerListChanged(){
+    void recyclerListChanged(){
         searchList = DefValues.getAllPublishedPosts();
         adapterSearch.setToursList(searchList);
         adapterSearch.notifyDataSetChanged();
@@ -140,31 +132,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        View view = getView();
-        if(view == null)
-            return;
-
-
-        /*db.collection("posts").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                DefValues.addAllPublishedPosts(document);
-                            }
-
-
-                        } else {
-                            Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
-                        }
-                    }
-                });*/
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
@@ -210,7 +179,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

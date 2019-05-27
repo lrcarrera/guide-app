@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements
 
         connectivityReceiver = new ConnectivityReceiver();
 
-
         String userUid = user.getUid();
 
         db.collection("users").whereEqualTo("user.uid", userUid )
@@ -196,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements
             mgr.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-        TextView mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         changeIcons(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -245,9 +243,6 @@ public class MainActivity extends AppCompatActivity implements
 
         if (status.equals(getResources().getString(R.string.wifi_ok))) {
             notConnectionDetectedImage.setVisibility(View.GONE);
-        }else if (status.equals(getResources().getString(R.string.mobile_ok)) && isFullConnectivityOn){
-            notConnectionDetectedImage.setVisibility(View.VISIBLE);
-            notConnectionDetectedImage.bringToFront();
         } else {
             notConnectionDetectedImage.setVisibility(View.VISIBLE);
             notConnectionDetectedImage.bringToFront();

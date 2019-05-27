@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,16 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import android.os.Looper;
-
 import com.example.pathfinderapp.Adapters.AdapterPlace;
 import com.example.pathfinderapp.MainActivity;
-import com.example.pathfinderapp.MockValues.DefValues;
-import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.maps.model.LatLng;
-
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -49,7 +44,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 
 /**
@@ -128,8 +122,9 @@ public class WhereFragment extends Fragment implements INexStep{
         mRequestingLocationUpdates = true;
         recycler = getView().findViewById(R.id.places);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        //placesList = DefValues.defPlaces();
+
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.collection("places")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -137,35 +132,23 @@ public class WhereFragment extends Fragment implements INexStep{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
-                            /*for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TEST08", document.getId() + " => " + document.getData());
-                            }*/
-
                             placesList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //    public Language(long id, String flag, String name, String code, int picture) {
 
                                 if(placesList.size() == 0 )
                                     placesList.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation, new LatLng(41.6082387, 0.6212267)));
-
-                                if(placesList.size() != 0 ){
+                                else {
                                     GeoPoint aux = document.getGeoPoint("coord");
                                     placesList.add(new Place(document.getString("name"),
                                             document.getString("country"), R.drawable.ic_action_place, new LatLng(aux.getLatitude(), aux.getLongitude())));
-
                                 }
-                                //Place(String name, String country, int picture, LatLng coord)
-                                /*PLACES.add(new Place("Ubicación Actual", "", R.drawable.ic_action_mylocation, new LatLng(41.6082387, 0.6212267)));
-                                PLACES.add(new Place("Lleida", "Spain", R.drawable.ic_action_place, new LatLng(41.6082387, 0.6212267)));
-                                */
                             }
 
                             AdapterPlace adapterPlace = new AdapterPlace(placesList);
                             adapterPlace.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    int pos =  recycler.getChildAdapterPosition(v);
-                                    onPlaceClicked(pos);
+                                    onPlaceClicked(recycler.getChildAdapterPosition(v));
                                 }
                             });
 
@@ -173,15 +156,17 @@ public class WhereFragment extends Fragment implements INexStep{
                             recycler.setItemAnimator(new DefaultItemAnimator());
 
                         } else {
-                            Log.w("TEST08", "Error getting documents.", task.getException());
+                            Log.w("DB", "Error getting documents.", task.getException());
                         }
                     }
                 });
+
         mSettingsClient = LocationServices.getSettingsClient(getActivity());
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         createLocationCallback();
         createLocationRequest();
         buildLocationSettingsRequest();
+
         if (mRequestingLocationUpdates && checkPermissions()) {
             startLocationUpdates();
         } else if (!checkPermissions()) {
@@ -313,7 +298,6 @@ public class WhereFragment extends Fragment implements INexStep{
         parent.setCurrentPage();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
@@ -348,7 +332,6 @@ public class WhereFragment extends Fragment implements INexStep{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

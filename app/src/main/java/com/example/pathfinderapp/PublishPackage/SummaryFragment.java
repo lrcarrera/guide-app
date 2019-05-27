@@ -103,8 +103,7 @@ public class SummaryFragment extends Fragment {
         parent.user.setLanguages(aux);
         if(isCancel)
             cancelButtonPressed();
-
-        if(!isCancel)
+        else
             confirmButtonPressed();
     }
 
@@ -157,9 +156,12 @@ public class SummaryFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+
                 if(parent.isNightMode())
                     mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(parent.getContext(), R.raw.mapstyle_night));
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(parent.post.getPlace().getCoord(), 11));
+
                 for (Marker marker : parent.post.getPlaces()){
                     mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
                 }
@@ -181,11 +183,9 @@ public class SummaryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
-        if (mListener != null) {
+        if (mListener != null)
             mListener.onFragmentInteraction();
-        }
     }
 
     @Override
@@ -216,7 +216,6 @@ public class SummaryFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

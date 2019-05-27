@@ -2,22 +2,15 @@ package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import com.example.pathfinderapp.LangugesSelectionActivity;
 import com.example.pathfinderapp.LoginActivity;
-import com.example.pathfinderapp.MainActivity;
-import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pathfinderapp.Adapters.AdapterLanguage;
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.PublishFragment;
@@ -44,9 +35,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +56,6 @@ public class LanguagesFragment extends Fragment implements INexStep {
     private final String DEFAULT_COLOR = "#b6fcd5";
     private PublishFragment parent;
     private LinearLayout containLayout;
-    private List<Integer> toAdd;
     private RecyclerView recycler;
     private OnFragmentInteractionListener mListener;
     private ArrayList<Language> languages;
@@ -127,18 +114,12 @@ public class LanguagesFragment extends Fragment implements INexStep {
             @Override
             public void onClick(View v) {
                 int pos = recycler.getChildAdapterPosition(v);
-                ArrayList<Language> aux;
-                if (languages == null) {
-                    aux = parent.user.getLanguages();
-                } else {
-                    aux = languages;
-                    //aux = DefValues.defLanguages();
-                }
+                ArrayList<Language> aux = languages == null ?  parent.user.getLanguages() : languages;
+
                 Language language = aux.get(pos);
                 language.setAdded(!language.isAdded());
-                /*if(languages != null)
-                    languages.get(pos).setAdded(!language.isAdded());*/
                 aux.set(pos, language);
+
                 if (languages != null)
                     languages = aux;
             }
@@ -155,7 +136,6 @@ public class LanguagesFragment extends Fragment implements INexStep {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
 
     private void addContinueButton() {
         FloatingActionButton continueButton = new FloatingActionButton(getContext());
@@ -216,12 +196,7 @@ public class LanguagesFragment extends Fragment implements INexStep {
 
 
     private int addLanguagesToPost() {
-        ArrayList<Language> userLanguages;
-        if (languages == null) {
-            userLanguages = parent.user.getLanguages();
-        } else {
-            userLanguages = languages;
-        }
+        ArrayList<Language> userLanguages = languages == null ?  parent.user.getLanguages() : languages;;
 
         ArrayList<Language> postLanguages = new ArrayList<>();
         for (Language language : userLanguages) {
@@ -237,16 +212,12 @@ public class LanguagesFragment extends Fragment implements INexStep {
     }
 
     private void saveLanguagesInDataBase(ArrayList<Language> languages) {
-
-        // Logica del luis
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userUid = user.getUid();
         String name = user.getEmail();
 
-
         Map<String, User> newUser = new HashMap<>();
-
         newUser.put("user", new User(userUid, name, null, 0, null, 0, languages, 0, null));
 
         db.collection("users")
@@ -254,13 +225,13 @@ public class LanguagesFragment extends Fragment implements INexStep {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TEST09", "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d("DB", "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("TEST09", "Error adding document", e);
+                        Log.w("DB", "Error adding document", e);
                         Toast.makeText(getActivity(),
                                 "Server not found (Error: 400)",
                                 Toast.LENGTH_SHORT).show();
@@ -270,19 +241,15 @@ public class LanguagesFragment extends Fragment implements INexStep {
                         Objects.requireNonNull(getActivity()).finish();
                     }
                 });
-
-        //act.changeFirstTimeStatus();
     }
 
     public void nextStep() {
         parent.setCurrentPage();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
-        if (mListener != null) {
+        if (mListener != null)
             mListener.onFragmentInteraction();
-        }
     }
 
     @Override

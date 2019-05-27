@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.R;
-
 import java.util.ArrayList;
 
 public class AdapterPlace
@@ -54,7 +52,7 @@ public class AdapterPlace
         return placesList.size();
     }
 
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
+    class ViewHolderItem extends RecyclerView.ViewHolder {
 
         final TextView title;
         final TextView info;

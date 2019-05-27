@@ -1,38 +1,29 @@
 package com.example.pathfinderapp.Adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.pathfinderapp.GuideProfileActivity;
 import com.example.pathfinderapp.MainActivity;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.Models.User;
 import com.example.pathfinderapp.ProfileDialog;
-import com.example.pathfinderapp.ProfileFragment;
 import com.example.pathfinderapp.R;
 import com.example.pathfinderapp.ToursFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,17 +39,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.protobuf.compiler.PluginProtos;
 import com.ramotion.foldingcell.FoldingCell;
-
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -68,18 +55,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem>
         implements View.OnClickListener {
@@ -92,7 +74,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     private final boolean isAdded;
     private final ToursFragment searchFragment;
     private MainActivity activity;
-    //private FragmentManager fragmentManager;
 
     public AdapterTour(MainActivity mainActivity, FragmentManager fragmentManager, ArrayList<Post> searchList, boolean isAdded, ToursFragment searchFragment) {
         this.searchList = searchList;
@@ -197,6 +178,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             viewHolder.topPicture.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_picture));
             return;
         }
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
         try {
@@ -214,19 +196,8 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 public void onFailure(@NonNull Exception exception) {
                 }
             });
-        } catch (IOException e ) {
-            //System.out.println("Vergassso");
-        }
-        /*bitmap = BitmapFactory.decodeResource(context.getResources());
-        if(bitmap == null){
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_user);
-        }*/
+        } catch (IOException ignored) { }
     }
-
-    /*private void getUserProfilePicture(int image){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(image + ".png");
-    }*/
 
     private void createLanguagesRecycler(ViewHolderItem viewHolder, Post current){
         viewHolder.languages.setLayoutManager(new LinearLayoutManager(context, LinearLayout.HORIZONTAL, false));
@@ -282,7 +253,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
     }
 
     public void removeItem(final int pos) {
-        Dialog confirmDialog = new AlertDialog.Builder(context)
+        new AlertDialog.Builder(context)
                 .setTitle(R.string.confirmation)
                 .setMessage(R.string.out_tour)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -309,7 +280,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                         }
                                     });
                         }
-                        //DefValues.addUserRelatedPost(post);
                         searchList.remove(pos);
                         notifyItemRemoved(pos);
                     }
@@ -321,8 +291,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
     public class ViewHolderItem extends RecyclerView.ViewHolder implements OnMapReadyCallback {
 
-        //LinearLayout background;
-        //MainActivity activity;
         Post post;
         final TextView dateContent;
         final TextView fromHourNumber;
@@ -332,7 +300,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         final TextView itemScore;
         final TextView itemLanguages;
         final RecyclerView languages;
-        MapView mapView;
         GoogleMap mMap;
         final FloatingActionButton topMapButton;
         final FloatingActionButton mapButton;
@@ -347,7 +314,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
         final ImageView topPicture;
         AdapterTour adapterTour;
 
-        FoldingCell foldingCell;
         LatLng mapPosition;
         List<Marker> places;
         List<MarkerOptions> markers;
@@ -356,7 +322,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
         ProfileDialog dialog;
         View view;
-        //boolean isAdded = false;
 
         ViewHolderItem(View itemView) {
             super(itemView);
@@ -405,11 +370,8 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 }
             });
             inscriptionButton = itemView.findViewById(R.id.inscribeButton);
-            //if(isAdded)
-               // messageAppearance();profilePopupSettings()
             final FoldingCell fc = itemView.findViewById(R.id.folding_cell);
             fc.initialize(30,1000, Color.DKGRAY, 2);
-            // attach click listener to folding cell
             fc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -428,7 +390,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
         private void setInscriptionButtonVisibility(){
             inscriptionButton.hide();
-            //inscriptionButton.setVisibility(View.INVISIBLE);
         }
 
         private void inscriptionStatus(int currentTourists, int numTouristsAllowed){
@@ -448,7 +409,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 inscriptionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       //makeSuccessToast();
                        inscribe();
                     }
                 });
@@ -457,7 +417,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
         private void inscribe(){
             DefValues.AddPostToToursList(post);
-            Dialog confirmDialog = new AlertDialog.Builder(context)
+            new AlertDialog.Builder(context)
                     .setTitle(R.string.confirmation)
                     .setMessage(R.string.in_tour)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -490,27 +450,15 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
 
                         }
                     })
-
-                    // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
             inscriptionButton.hide();
         }
 
-        private void makeSuccessToast(){
-            Toast toast = Toast.makeText(context, R.string.inscriptionSuccessful, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.show();
-        }
-
-        private void setPost(Post post){
-            this.post = post;
-        }
+        private void setPost(Post post){ this.post = post; }
 
         private void messageAppearance(){
-            //inscriptionButton.setBackgroundColor(ContextCompat.getColor(context, R.color.com_facebook_blue));
-            //inscriptionButton.setBackgroundTintList(ContextCompat.getColorStateList(context,  R.color.com_facebook_blue));
             inscriptionButton.setImageResource(R.drawable.ic_action_chat);
             inscriptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -534,8 +482,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                 TextView errorMessage = myDialog.findViewById(R.id.editText);
                                 errorMessage.setVisibility(View.VISIBLE);
                             } else {
-
-                                User user = DefValues.getUserInContext();
                                 Review review = new Review(text, DefValues.getUserInContext().getUid(), new Date());
                                 final User guide = post.getGuide();
                                 guide.addReview(review);
@@ -549,8 +495,6 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                                         document.getReference().update("user",guide.addToHashMap());
                                                         myDialog.dismiss();
-                                                        //DefValues.setDocumentReference(document.getReference());
-                                                        //DefValues.setUserInContext(document);
                                                     }
                                                 } else {
                                                     Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
@@ -565,67 +509,24 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                                                 if (task.isSuccessful()) {
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                                         document.getReference().update(post.addToHashMap());
-                                                        /*document.getReference().update("user",guide);
-                                                        myDialog.dismiss();*/
-                                                        //DefValues.setDocumentReference(document.getReference());
-                                                        //DefValues.setUserInContext(document);
                                                     }
                                                 } else {
                                                     Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                                 }
                                             }
                                         });
-                                /*FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
-                                documentReference.set(review);*/
-                                /*Review review = null;
-                                user.addReview(review);
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                DocumentReference documentReference = db.collection("users").document("A8Eq03Drre2YCTSVXtTQ");
-                                documentReference.set(review);*/
-                                //Toast toast = Toast.makeText(context, review, Toast.LENGTH_SHORT);
-                                /*Falta añadirlo al usuario que hizo el tour*/
-                                /*User user = DefValues.getPlayerInContext();
-                                user.getReviews().add(new Review(()))*/
                             }
 
                         }
                     });
-                    //addLanguages(myDialog);
-           /* checkboxNotifications = (CheckBox) myDialog.findViewById(R.id.checkbox_notifications);
-
-            RadioGroup radioGroupConnectivity = (RadioGroup) myDialog.findViewById(R.id.radio_group_connectivity);
-            radioWifi = (RadioButton) myDialog.findViewById(R.id.wifi);
-            radioWifiAndMore = (RadioButton) myDialog.findViewById(R.id.wifiandmore);*/
-
-
                     myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     myDialog.show();
                 }
             });
-
-
-
-            /*inscriptionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast toast = Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-                }
-            });*/
-        }
-
-        private void inscribeTour(){
-
         }
 
         public void dismiss(View view){
             this.view = view;
-            /*FragmentTransaction ft2 = fragmentManager.beginTransaction();
-            ft2.remove(fragmentManager.findFragmentByTag("profile_fragment"));
-            ft2.commit();*/
-            //dismiss();
             dialog.dismiss();
         }
 
@@ -636,7 +537,7 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             if(post.getGuide().getUid().equals(DefValues.getUserInContext().getUid())){
                 this.adapterTour.activity.moveToProfilePage();
             } else {
-                dialog = new ProfileDialog(post.getGuide(), fragmentManager, view, this, post.getPlace());
+                dialog = new ProfileDialog(post.getGuide(), this, post.getPlace());
                 FragmentTransaction ft2 = fragmentManager.beginTransaction();
                 dialog.show(ft2, "profile_fragment_popup");
             }
@@ -647,12 +548,12 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
             auxDialog.setContentView(R.layout.map_popup);
             FloatingActionButton btnClose = auxDialog.findViewById(R.id.btnClose);
             MapView map = auxDialog.findViewById(R.id.map);
+
             if (map != null) {
-                // Initialise the MapView
                 map.onCreate(null);
-                // Set the map ready callback to receive the GoogleMap object
                 map.getMapAsync(this);
             }
+
             auxDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             auxDialog.show();
             btnClose.setOnClickListener(new View.OnClickListener() {
@@ -673,23 +574,16 @@ public class AdapterTour extends RecyclerView.Adapter<AdapterTour.ViewHolderItem
                 setMapStyle();
 
             if(places == null){
-               for(MarkerOptions marker: markers){
+               for(MarkerOptions marker: markers)
                    mMap.addMarker(marker);
-               }
             } else {
-                for (Marker marker : places){
+                for (Marker marker : places)
                     mMap.addMarker(new MarkerOptions().position(marker.getPosition()));
-                }
             }
-
-
-            //new NamedLocation("New York", new LatLng(40.750580, -73.993584)),
         }
 
         void setMapStyle(){
             mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.mapstyle_night));
         }
-
-
     }
 }

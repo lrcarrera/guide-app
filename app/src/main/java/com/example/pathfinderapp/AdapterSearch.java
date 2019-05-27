@@ -47,10 +47,9 @@ public class AdapterSearch
         viewHolder.title.setText(searchList.get(i).getGuide().getName());
         viewHolder.picture.setImageResource(searchList.get(i).getGuide().getImage());
 
-        Bitmap bitmap = null;
-
-        bitmap = BitmapFactory.decodeResource(context.getResources(), searchList.get(i).getGuide().getImage());
+        Bitmap bitmap  = BitmapFactory.decodeResource(context.getResources(), searchList.get(i).getGuide().getImage());
         bitmap = getCroppedBitmap(bitmap);
+
         viewHolder.picture.setImageBitmap(bitmap);
     }
 
@@ -89,7 +88,7 @@ public class AdapterSearch
             listener.onClick(v);
     }
 
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
+    class ViewHolderItem extends RecyclerView.ViewHolder {
 
         final TextView title;
         final TextView info;

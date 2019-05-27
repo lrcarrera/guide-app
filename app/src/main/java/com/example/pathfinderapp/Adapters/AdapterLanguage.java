@@ -31,11 +31,6 @@ public class AdapterLanguage
         this.languagesList = languages;
     }
 
-    public ArrayList<Language>  getLanguagesList()
-    {
-        return this.languagesList;
-    }
-
     @Override
     public AdapterLanguage.ViewHolderItem onCreateViewHolder(ViewGroup parent, int i) {
         view = LayoutInflater.from(parent.getContext())
@@ -46,35 +41,12 @@ public class AdapterLanguage
 
     @Override
     public void onBindViewHolder(AdapterLanguage.ViewHolderItem viewHolder, int i) {
-        String aux = languagesList.get(i).getName(); //+ "," + languagesList.get(i).getCountry();
         viewHolder.info.setText(languagesList.get(i).getCode());
         viewHolder.title.setText(languagesList.get(i).getName());
-        switch (languagesList.get(i).getCode()){
-            case "FR":
-                viewHolder.picture.setImageResource(R.drawable.french_flag);
-                break;
-            case "DE":
-                viewHolder.picture.setImageResource(R.drawable.german_flag);
-                break;
-            case "EN":
-                viewHolder.picture.setImageResource(R.drawable.britain_flag);
-                break;
-            case "IT":
-                viewHolder.picture.setImageResource(R.drawable.italy_flag);
-                break;
-            case "ES":
-                viewHolder.picture.setImageResource(R.drawable.spain_flag);
-                break;
-            case "JP":
-                viewHolder.picture.setImageResource(R.drawable.japanese_flag);
-                break;
-        }
-
+        viewHolder.setPicture(languagesList.get(i).getCode());
 
         if(languagesList.get(i).isAdded())
             view.setBackgroundColor(Color.parseColor(SELECTED_COLOR));
-
-        //viewHolder.setItemCl
     }
 
     public void setOnClickListener(View.OnClickListener listener){
@@ -103,24 +75,42 @@ public class AdapterLanguage
         return languagesList.size();
     }
 
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
+    class ViewHolderItem extends RecyclerView.ViewHolder {
 
-        //LinearLayout background;
         final TextView title;
         final TextView info;
         final ImageView picture;
 
         ViewHolderItem(View itemView) {
             super(itemView);
-            //background = itemView.findViewById(R.id.backgroundLayout);
             title = itemView.findViewById(R.id.ItemTitle);
             info = itemView.findViewById(R.id.ItemInfo);
             picture = itemView.findViewById(R.id.imageId);
-            //background.setBackgroundColor(Color.parseColor(DEFAULT_COLOR));
         }
 
-        /*public void setBackgroundColor(int background) {
-            this.background.setBackgroundColor(background);
-        }*/
+        public void setPicture(String code) {
+            switch (code){
+                case "FR":
+                    picture.setImageResource(R.drawable.french_flag);
+                    break;
+                case "DE":
+                    picture.setImageResource(R.drawable.german_flag);
+                    break;
+                case "EN":
+                    picture.setImageResource(R.drawable.britain_flag);
+                    break;
+                case "IT":
+                    picture.setImageResource(R.drawable.italy_flag);
+                    break;
+                case "ES":
+                    picture.setImageResource(R.drawable.spain_flag);
+                    break;
+                case "JP":
+                    picture.setImageResource(R.drawable.japanese_flag);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

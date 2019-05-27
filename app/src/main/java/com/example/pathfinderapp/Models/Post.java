@@ -1,71 +1,15 @@
 package com.example.pathfinderapp.Models;
 
-import android.location.Location;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
-
-import com.facebook.internal.CollectionMapper;
-import com.google.android.gms.dynamic.IObjectWrapper;
-import com.google.android.gms.internal.maps.zzac;
-import com.google.android.gms.internal.maps.zzk;
-import com.google.android.gms.internal.maps.zzn;
-import com.google.android.gms.internal.maps.zzt;
-import com.google.android.gms.internal.maps.zzw;
-import com.google.android.gms.internal.maps.zzz;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.internal.IGoogleMapDelegate;
-import com.google.android.gms.maps.internal.ILocationSourceDelegate;
-import com.google.android.gms.maps.internal.IProjectionDelegate;
-import com.google.android.gms.maps.internal.IUiSettingsDelegate;
-import com.google.android.gms.maps.internal.zzab;
-import com.google.android.gms.maps.internal.zzad;
-import com.google.android.gms.maps.internal.zzaf;
-import com.google.android.gms.maps.internal.zzaj;
-import com.google.android.gms.maps.internal.zzal;
-import com.google.android.gms.maps.internal.zzan;
-import com.google.android.gms.maps.internal.zzap;
-import com.google.android.gms.maps.internal.zzar;
-import com.google.android.gms.maps.internal.zzat;
-import com.google.android.gms.maps.internal.zzav;
-import com.google.android.gms.maps.internal.zzax;
-import com.google.android.gms.maps.internal.zzaz;
-import com.google.android.gms.maps.internal.zzbb;
-import com.google.android.gms.maps.internal.zzbd;
-import com.google.android.gms.maps.internal.zzbf;
-import com.google.android.gms.maps.internal.zzbs;
-import com.google.android.gms.maps.internal.zzc;
-import com.google.android.gms.maps.internal.zzh;
-import com.google.android.gms.maps.internal.zzl;
-import com.google.android.gms.maps.internal.zzp;
-import com.google.android.gms.maps.internal.zzr;
-import com.google.android.gms.maps.internal.zzv;
-import com.google.android.gms.maps.internal.zzx;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class Post implements Serializable {
@@ -116,30 +60,29 @@ public class Post implements Serializable {
 
         ArrayList<HashMap<String, Object>> languagesHash  = (ArrayList<HashMap<String, Object>>) doc.get("languages");
         languages = new ArrayList<>();
-        for (HashMap<String, Object> languageHash : languagesHash) {
-            languages.add(new Language(languageHash));
-        }
 
-
+        if (languagesHash != null)
+            for (HashMap<String, Object> languageHash : languagesHash)
+                languages.add(new Language(languageHash));
 
         HashMap<String, Map<String, Long>> locations = (HashMap<String, Map<String, Long>>) doc.get("place.coord");
-        Collection collection = locations.values();
-        List<Double> list = new ArrayList<>(collection);
-        Double lat = list.get(0);
-        Double lon = list.get(1);
-        place = new Place(doc.getString("place.name"),
-                          doc.getString("place.country"),
-                          Integer.parseInt(doc.getLong("place.picture").toString()),
-                          new LatLng(lat, lon));
+        if (locations != null) {
+            Collection collection = locations.values();
 
+            List<Double> list = new ArrayList<>(collection);
+            Double lat = list.get(0);
+            Double lon = list.get(1);
+            place = new Place(doc.getString("place.name"),
+                    doc.getString("place.country"),
+                    Integer.parseInt(doc.getLong("place.picture").toString()),
+                    new LatLng(lat, lon));
+        }
 
-        //places = (ArrayList<Marker>) doc.get("places");
         if(markerOptions == null)
             markerOptions = new ArrayList<>();
 
         guide = new User((HashMap<String, Object>) doc.get("guide"));
 
-        /**Falta por implementar se tienen que catcher bien*/
         this.tourists = new ArrayList<>();
         ArrayList<HashMap<String, Object>> auxTouristList =  (ArrayList<HashMap<String, Object>>) doc.get("tourists");
         if(auxTouristList != null){
@@ -153,30 +96,18 @@ public class Post implements Serializable {
         if(collection1 == null)
             return;
 
-
         for(Object obj : collection1){
             HashMap <String, Object> aux = (HashMap<String, Object>)obj;
             if(aux == null)
                 continue;
+
             HashMap<String, Map<String, Double>> position = (HashMap<String, Map<String, Double>>) aux.get("position");
             List<Double> collection2 = new ArrayList(position.values());
 
             Double lat2 = collection2.get(0);
             Double lon2 = collection2.get(1);
             markerOptions.add(new MarkerOptions().position(new LatLng(lat2, lon2)));
-            //Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat2, lon2)));
-            //Marker marker = new Marker(new MarkerOptions().position(new LatLng(lat2, lon2)));
-            //marker.setPosition(new LatLng(lat2,lon2));
-            //places.add(marker);
-            System.out.println("GAAAAAAAAy");
-
-            //Marker marker = (Marker) aux.values();
-            //places.add(marker);
         }
-
-
-
-
     }
 
     public Post() {

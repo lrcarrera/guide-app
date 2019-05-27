@@ -1,13 +1,10 @@
 package com.example.pathfinderapp;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.example.pathfinderapp.AsyncStuff.ConnectivityReceiver;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -56,7 +53,6 @@ public class FirebaseService extends FirebaseMessagingService {
         SharedPreferences prefs = Objects.requireNonNull(getApplicationContext()).getSharedPreferences(PACKAGE_NAME, Context.MODE_PRIVATE);
 
         prefs.edit().putString(getResources().getString(R.string.message_token), token).apply();
-        prefs.edit().putBoolean(getResources().getString(R.string.send_token), true).apply();
     }
 
 }

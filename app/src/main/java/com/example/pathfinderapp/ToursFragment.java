@@ -3,7 +3,6 @@ package com.example.pathfinderapp;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -11,16 +10,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Post;
@@ -29,7 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 
 
@@ -83,7 +77,6 @@ public class ToursFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_tours, container, false);
-        //searchList = DefValues.getMockYourToursList();
         rotateLoading = view.findViewById(R.id.rotate_loading_post_list_tours);
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -97,16 +90,13 @@ public class ToursFragment extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (task.isSuccessful())
+                                    for (QueryDocumentSnapshot document : task.getResult())
                                         DefValues.addUserRelatedPost(document);
-                                    }
+                                else
+                                    notConnectionToast();
 
-
-                                } else {
-                                    notConnectionToast();                                }
                                 showProgress(false);
-
                             }
                         });
             }
@@ -115,20 +105,11 @@ public class ToursFragment extends Fragment {
 
         searchList = DefValues.getUserRelatedPosts();
         recycler = view.findViewById(R.id.recyclerid);
-        /*if(searchList == null || searchList.size() == 0) {
-            recycler.setVisibility(View.INVISIBLE);
-            TextView textView = view.findViewById(R.id.emptyTextViewMessage);
-            textView.setVisibility(View.VISIBLE);
-        }*/
         adapterSearch = new AdapterTour((MainActivity) getActivity(), getFragmentManager(), searchList, true, this);
 
-
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-
         recycler.setAdapter(adapterSearch);
         recycler.setItemAnimator(new DefaultItemAnimator());
-
-
 
         return view;
     }
@@ -139,7 +120,7 @@ public class ToursFragment extends Fragment {
         toast.show();
     }
 
-    public void recyclerListChanged(){
+    void recyclerListChanged(){
         searchList = DefValues.getUserRelatedPosts();
         adapterSearch.setToursList(searchList);
         adapterSearch.notifyDataSetChanged();
@@ -148,12 +129,10 @@ public class ToursFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         resetController();
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
@@ -169,8 +148,6 @@ public class ToursFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-
-        Context context1 = context;
     }
 
     @Override
@@ -213,7 +190,6 @@ public class ToursFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

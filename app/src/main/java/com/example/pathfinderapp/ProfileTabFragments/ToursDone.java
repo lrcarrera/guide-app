@@ -1,55 +1,38 @@
 package com.example.pathfinderapp.ProfileTabFragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.pathfinderapp.Adapters.AdapterLanguageHorizontal;
-import com.example.pathfinderapp.Adapters.CroppedImage;
 import com.example.pathfinderapp.Models.Post;
-import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.R;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.CirclePageIndicator;
 import com.synnapps.carouselview.ViewListener;
-
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class ToursDone extends Fragment {
 
     private List<Post> posts;
-    CarouselView postsCarousselView;
+    private CarouselView postsCarousselView;
     private ProgressBar rotateLoading;
 
     public  ToursDone(){}
 
-    public ToursDone(List<Post> posts){
+    public ToursDone(List<Post> posts){ this.posts = posts; }
 
-        this.posts = posts;
-    }
-
-    public  static  ToursDone newInstance(List<Post> posts){
+    public static ToursDone newInstance(List<Post> posts){
         ToursDone toursDone = new ToursDone();
         toursDone.posts = posts;
         return toursDone;
@@ -116,29 +99,6 @@ public class ToursDone extends Fragment {
             TextView priceNumber = customView.findViewById(R.id.priceNumber);
             priceNumber.setText(String.valueOf(post.getPrice()));
 
-            /*TextView messageTextView = (TextView) customView.findViewById(R.id.ReviewMessage);
-            TextView authorTextView = (TextView) customView.findViewById(R.id.ReviewAuthor);
-            ImageView profileImageView = (ImageView) customView.findViewById(R.id.ReviewAuthorImage);
-            Review current = reviews.get(position);
-            String aux = "\""+ current.getMessage() + "\"";
-            messageTextView.setText(aux);
-
-            Date date = current.getCreatedAt();
-            String day          = (String) DateFormat.format("dd",   date); // 20
-            String monthString  = (String) DateFormat.format("MMM",  date); // Jun
-            String year         = (String) DateFormat.format("yyyy", date); // 2013
-            aux = current.getAutor().getName() + " - " + day + "/" + monthString + "/" + year;
-            authorTextView.setText(aux);
-
-            Bitmap bitmap = null;
-            bitmap = BitmapFactory.decodeResource(getResources(), current.getAutor().getImage());
-            bitmap = CroppedImage.getCroppedBitmap(bitmap);
-            profileImageView.setImageBitmap(bitmap);
-
-            //fruitImageView.setImageResource(sampleImages[position]);
-            //labelTextView.setText(sampleTitles[position]);
-
-            reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);*/
             showProgress(false);
 
             return customView;

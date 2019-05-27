@@ -52,10 +52,6 @@ public class PriceFragment extends Fragment implements INexStep{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
     }
 
     @Override
@@ -107,14 +103,11 @@ public class PriceFragment extends Fragment implements INexStep{
             new_price = new_price - 1 < (DEFAULT_PRICE - 5) ? (new_price) : (new_price - 1);
 
         priceText.setText(String.format(Locale.getDefault(), "%d", new_price));
-
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
-        if (mListener != null) {
+        if (mListener != null)
             mListener.onFragmentInteraction();
-        }
     }
 
     @Override

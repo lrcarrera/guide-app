@@ -1,28 +1,19 @@
 package com.example.pathfinderapp;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.pathfinderapp.Adapters.AdapterProfile;
 import com.example.pathfinderapp.Adapters.AdapterProfilePopUp;
 import com.example.pathfinderapp.Adapters.AdapterTour;
 import com.example.pathfinderapp.Adapters.CroppedImage;
-import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Place;
 import com.example.pathfinderapp.Models.Post;
 import com.example.pathfinderapp.Models.Review;
@@ -38,15 +29,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +41,6 @@ public class ProfileDialog extends DialogFragment {
 
 
     private User guide;
-    private FragmentManager fragmentManager;
     private AdapterTour.ViewHolderItem adapterTour;
     private static View view;
     private Place place;
@@ -63,12 +48,10 @@ public class ProfileDialog extends DialogFragment {
     public ProfileDialog() {
     }
 
-    public ProfileDialog(User user, FragmentManager fragmentManager, View view, AdapterTour.ViewHolderItem adapterTour, Place place) {
+    public ProfileDialog(User user, AdapterTour.ViewHolderItem adapterTour, Place place) {
         this.guide = user;
-        this.fragmentManager = fragmentManager;
         this.adapterTour = adapterTour;
         this.place = place;
-        //this.view = view;
     }
 
     @Override
@@ -76,7 +59,6 @@ public class ProfileDialog extends DialogFragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.profile_popup, container);
-        //ProfileFragment profileFragment = (ProfileFragment)  view.findViewById(R.id.profile_fragment_in_popup);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(this.guide.getImage() + "x2.png");
 
@@ -84,8 +66,10 @@ public class ProfileDialog extends DialogFragment {
             TextView textViewName = view.findViewById(R.id.tv_name);
             TextView textViewAddress = view.findViewById(R.id.tv_address);
             textViewName.setText(guide.getName());
+
             String aux = place.getName() + ", " + place.getCountry();
             textViewAddress.setText(aux);
+
             ImageButton settings = (ImageButton) view.findViewById(R.id.configure_button);
             settings.setBackground(null);
             settings.setImageResource(R.drawable.ic_action_cancel);
@@ -96,7 +80,9 @@ public class ProfileDialog extends DialogFragment {
                     adapterTour.dismiss(view);
                 }
             });
+
             final ImageView profilePicture = (ImageView) view.findViewById(R.id.profilePicture);
+
             try {
                 final File localFile = File.createTempFile("images", "png");
                 storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -106,7 +92,6 @@ public class ProfileDialog extends DialogFragment {
                         bitmap = CroppedImage.getCroppedBitmap(bitmap);
                         profilePicture.setImageBitmap(bitmap);
                         setProfileContent();
-                        //mImageView.setImageBitmap(bitmap);
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -114,32 +99,9 @@ public class ProfileDialog extends DialogFragment {
                     public void onFailure(@NonNull Exception exception) {
                     }
                 });
-            } catch (IOException e) {
-                //System.out.println("Vergassso");
+            } catch (IOException ignored) {
             }
-            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), guide.getImage());
-            //bitmap = CroppedImage.getCroppedBitmap(bitmap);
-
         }
-
-        //Fragment fragment = ProfileFragment.newInstance(guide);
-        //LinearLayout rowLayout =view.findViewById(R.id.profile_popup_linear);
-        //rowLayout.setId(whateveryouwantasid);
-// add rowLayout to the root layout somewhere here
-
-        //FragmentManager fragMan = getFragmentManager();
-        //FragmentTransaction fragTransaction = fragMan.beginTransaction();
-
-        //ragment myFrag = new ImageFragment();
-        //fragTransaction.add(rowLayout.getId(), myFrag , "fragment" + fragCount);
-        //fragTransaction.commit();
-        /*fragmentManager
-                .beginTransaction()
-                .add(rowLayout.getId(), fragment)
-                .commit();*/
-        //Fragment fragmentToRemplace = view.findViewById(R.id.profile_popup_fragment);
-        //mEditText = (EditText) view.findViewById(R.id.txt_your_name);
-        //getDialog().setTitle("Hello");
 
         return view;
     }
@@ -167,141 +129,91 @@ public class ProfileDialog extends DialogFragment {
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        profilePosts.add(new Post(document));
-                                    }
 
-                                    if (reviews != null && reviews.size() > 0) {
-                                        for (final Review review : reviews) {
-                                            db.collection("users").whereEqualTo("user.uid", review.getAutor())
-                                                    .get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                User user = null;
-                                                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                    user = new User(document);
-                                                                    //DefValues.setDocumentReference(document.getReference());
-                                                                    //DefValues.setUserInContext(document);
-                                                                }
-                                                                review.setAuthorInfo(user);
-                                                                newReviews.add(review);
-                                                                AdapterProfilePopUp tabsAdapter = new AdapterProfilePopUp(getChildFragmentManager(), tabLayout.getTabCount(), newReviews, profilePosts);
-                                                                viewPager.setAdapter(tabsAdapter);
-                                                                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                                                                tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                                                                    @Override
-                                                                    public void onTabSelected(TabLayout.Tab tab) {
-                                                                        viewPager.setCurrentItem(tab.getPosition());
-                                                                    }
+                                if (!task.isSuccessful())
+                                {
+                                    notConnectionToast();
+                                    return;
+                                }
 
-                                                                    @Override
-                                                                    public void onTabUnselected(TabLayout.Tab tab) {
 
-                                                                    }
+                                for (QueryDocumentSnapshot document : task.getResult())
+                                    profilePosts.add(new Post(document));
 
-                                                                    @Override
-                                                                    public void onTabReselected(TabLayout.Tab tab) {
-
-                                                                    }
-                                                                });
-                                                                tabsAdapter.notifiyDataChanged();
-
-                                                            } else {
-
-                                                                notConnectionToast();
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                    } else {
-                                        AdapterProfilePopUp tabsAdapter = new AdapterProfilePopUp(getChildFragmentManager(), tabLayout.getTabCount(), newReviews, profilePosts);
-                                        viewPager.setAdapter(tabsAdapter);
-                                        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                                        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                                            @Override
-                                            public void onTabSelected(TabLayout.Tab tab) {
-                                                viewPager.setCurrentItem(tab.getPosition());
-                                            }
-
-                                            @Override
-                                            public void onTabUnselected(TabLayout.Tab tab) {
-
-                                            }
-
-                                            @Override
-                                            public void onTabReselected(TabLayout.Tab tab) {
-
-                                            }
-                                        });
-                                    }
-
+                                if (reviews != null && reviews.size() > 0) {
+                                    for (final Review review : reviews)
+                                        initReviews(review, newReviews, profilePosts);
 
                                 } else {
-                                    notConnectionToast();
+                                    AdapterProfilePopUp tabsAdapter = new AdapterProfilePopUp(getChildFragmentManager(), tabLayout.getTabCount(), newReviews, profilePosts);
+                                    viewPager.setAdapter(tabsAdapter);
+                                    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                                    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                                        @Override
+                                        public void onTabSelected(TabLayout.Tab tab) {
+                                            viewPager.setCurrentItem(tab.getPosition());
+                                        }
+
+                                        @Override
+                                        public void onTabUnselected(TabLayout.Tab tab) {
+
+                                        }
+
+                                        @Override
+                                        public void onTabReselected(TabLayout.Tab tab) {
+
+                                        }
+                                    });
                                 }
                             }
                         });
             }
         }
-
-        if (reviews != null) {
-
-        }
-
-
-
-
-
-        /*AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), DefValues.getMockReviews(), DefValues.getMockPostList());
-        viewPager.setAdapter(tabsAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
     }
 
-    /*private void processProfilePicture(Post current, final AdapterTour.ViewHolderItem viewHolder){
-        //Bitmap bitmap = null;
+    private void initReviews(final Review review, final ArrayList<Review> newReviews, final ArrayList<Post> profilePosts) {
+        final ViewPager viewPager = view.findViewById(R.id.view_pager);
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final TabLayout tabLayout = view.findViewById(R.id.tab_layout);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getGuide().getImage() + ".png");
-        try {
-            final File localFile = File.createTempFile("images", "png");
-            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    bitmap = CroppedImage.getCroppedBitmap(bitmap);
-                    viewHolder.picture.setImageBitmap(bitmap);
-                    viewHolder.topPicture.setImageBitmap(bitmap);
-                    //mImageView.setImageBitmap(bitmap);
+        db.collection("users").whereEqualTo("user.uid", review.getAutor())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            User user = null;
+                            for (QueryDocumentSnapshot document : task.getResult())
+                                user = new User(document);
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                }
-            });
-        } catch (IOException e ) {
-            //System.out.println("Vergassso");
-        }
-    }*/
+                            review.setAuthorInfo(user);
+                            newReviews.add(review);
+                            AdapterProfilePopUp tabsAdapter = new AdapterProfilePopUp(getChildFragmentManager(), tabLayout.getTabCount(), newReviews, profilePosts);
+                            viewPager.setAdapter(tabsAdapter);
+                            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                                @Override
+                                public void onTabSelected(TabLayout.Tab tab) {
+                                    viewPager.setCurrentItem(tab.getPosition());
+                                }
+
+                                @Override
+                                public void onTabUnselected(TabLayout.Tab tab) {
+
+                                }
+
+                                @Override
+                                public void onTabReselected(TabLayout.Tab tab) {
+
+                                }
+                            });
+                            tabsAdapter.notifiyDataChanged();
+
+                        } else
+                            notConnectionToast();
+                    }
+                });
+    }
 
     private void notConnectionToast() {
         Toast toast = Toast.makeText(getContext(), R.string.not_connection, Toast.LENGTH_SHORT);
@@ -314,7 +226,6 @@ public class ProfileDialog extends DialogFragment {
         super.onResume();
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        //params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 

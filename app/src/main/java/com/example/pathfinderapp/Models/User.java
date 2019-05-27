@@ -1,15 +1,9 @@
 package com.example.pathfinderapp.Models;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -78,21 +72,9 @@ public class User implements Serializable {
             }
             System.out.println(reviews);
         }
-        //userInContext = new User(uid, name, posts, tours, company, score, languages, image, reviews);
-
     }
 
     public User(HashMap<String, Object> userInHashMap) {
-        /*private String uid;
-        private String name;
-        private ArrayList<String> postList;
-        private int toursCound;
-        private String company;
-        private float score;
-        private ArrayList<Language> languages;
-        private int image;
-        private ArrayList<Review> reviews;*/
-
         this.uid = (String) userInHashMap.get("uid");
         this.name = (String) userInHashMap.get("name");
         this.image = Integer.parseInt(userInHashMap.get("image").toString());
@@ -103,14 +85,10 @@ public class User implements Serializable {
         ArrayList<HashMap<String, Object>> reviews = (ArrayList<HashMap<String, Object>>) userInHashMap.get("reviews");
         if(this.reviews == null)
             this.reviews = new ArrayList<>();
-        if(reviews != null){
 
-            for (HashMap<String, Object> review : reviews){
+        if(reviews != null)
+            for (HashMap<String, Object> review : reviews)
                 this.reviews.add(new Review(review));
-            }
-            System.out.println(reviews);
-        }
-
     }
 
     public Map<String, Object> addToHashMap(){
@@ -130,9 +108,9 @@ public class User implements Serializable {
 
     private ArrayList<Map<String, Object>> addReviewsToHashMap(){
         ArrayList<Map<String, Object>> hashMaps = new ArrayList<>();
-        for (int i=0; i < reviews.size(); i++){
+        for (int i=0; i < reviews.size(); i++)
             hashMaps.add(reviews.get(i).addToHashMap());
-        }
+
         return  hashMaps;
     }
 

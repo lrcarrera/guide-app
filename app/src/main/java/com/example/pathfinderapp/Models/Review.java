@@ -1,19 +1,6 @@
 package com.example.pathfinderapp.Models;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.example.pathfinderapp.MockValues.DefValues;
-import com.example.pathfinderapp.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,42 +23,15 @@ public class Review {
         this.author = (String) review.get("author");
         Timestamp timestamp = (Timestamp) review.get("createdAt");
         this.createdAt = timestamp.toDate();
-        //this.createdAt = (Date)review.get("createdAt");
-        //this.message = (String) review.get("message");
     }
 
-    public Map<String, Object> addToHashMap(){
+    Map<String, Object> addToHashMap(){
         Map<String, Object> data = new HashMap<>();
         data.put("message", message);
         data.put("author", author);
         data.put("createdAt", createdAt);
         return data;
     }
-
-    /*public void getAuthorInfoFromDatabase(){
-        final FirebaseFirestore db = com.google.firebase.firestore.FirebaseFirestore.getInstance();
-        db.collection("users").whereEqualTo("user.uid", this.author )
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            User user = null;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                user = new User(document);
-                                //DefValues.setDocumentReference(document.getReference());
-                                //DefValues.setUserInContext(document);
-                            }
-                            setAuthorInfo(user);
-
-
-
-                        } else {
-                            Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }*/
 
     public void setAuthorInfo(User user){
         this.authorInfo = user;

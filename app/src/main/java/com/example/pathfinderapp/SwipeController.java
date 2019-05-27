@@ -30,7 +30,7 @@ public class SwipeController extends Callback {
     private SwipeControllerActions buttonsActions = null;
     private static final float buttonWidth = 300;
 
-    public SwipeController(SwipeControllerActions buttonsActions) {
+    SwipeController(SwipeControllerActions buttonsActions) {
         this.buttonsActions = buttonsActions;
     }
 

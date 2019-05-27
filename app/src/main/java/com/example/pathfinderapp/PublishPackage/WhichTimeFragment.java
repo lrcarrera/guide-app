@@ -93,17 +93,14 @@ public class WhichTimeFragment extends Fragment implements INexStep {
     }
 
     private boolean isMoreThanHour(){
-        String[] time = new String[]{"1", "2"};
-        time = parent.post.getStartHour().split(":");
+        String[] time = parent.post.getStartHour().split(":");
+
         int total = Integer.parseInt(time[0])*60 + Integer.parseInt(time[1]);
-        if((timePicker.getHour()* 60 + timePicker.getMinute()) - total > 60){
-            return true;
-        }
-        return false;
+        return (timePicker.getHour() * 60 + timePicker.getMinute()) - total > 60;
     }
 
     private void checkHours(){
-        String[] time = new String[]{"1", "2"};
+        String[] time;
         if(!isDuration){
             if(parent.post.getStartHour() != null){
                 time = parent.post.getStartHour().split(":");
@@ -122,11 +119,9 @@ public class WhichTimeFragment extends Fragment implements INexStep {
 
     public void nextStep(){ parent.setCurrentPage(); }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
-        if (mListener != null) {
+        if (mListener != null)
             mListener.onFragmentInteraction();
-        }
     }
 
     @Override
@@ -157,7 +152,6 @@ public class WhichTimeFragment extends Fragment implements INexStep {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

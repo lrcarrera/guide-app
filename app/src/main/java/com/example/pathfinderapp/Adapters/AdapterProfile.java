@@ -6,11 +6,8 @@ import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.ProfileTabFragments.ReviewsCaroussel;
 import com.example.pathfinderapp.ProfileTabFragments.ToursDone;
 import com.example.pathfinderapp.ProfileTabFragments.ProfileTab3Fragment;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -22,7 +19,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class AdapterProfile extends FragmentStatePagerAdapter {
 
     private final int mNumOfTabs;
-    List<Review> reviews;
+    private List<Review> reviews;
     private ArrayList<Post> posts;
 
     public AdapterProfile(FragmentManager fm, int NoofTabs, List<Review> reviews, List<Post> posts, boolean due){
@@ -30,15 +27,10 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
         this.mNumOfTabs = NoofTabs;
         this.reviews = reviews;
         this.posts = new ArrayList<>();
-        if(due){
+        if(due)
             getOnlyPostsCreatedByTheCurrentUser(posts);
-        } else {
+        else
             this.posts.addAll(posts);
-        }
-    }
-
-    private void addPosts(List<Post> posts){
-        this.posts.addAll(posts);
     }
 
     private void getOnlyPostsCreatedByTheCurrentUser(List<Post> posts){
@@ -54,19 +46,10 @@ public class AdapterProfile extends FragmentStatePagerAdapter {
         }
     }
 
-    public void notifiyDataChanged(){
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getCount() {
         return mNumOfTabs;
     }
-
-    /*@Override
-    public int getItemPosition(Object object){
-        return POSITION_NONE;
-    }*/
 
     @Override
     public Fragment getItem(int position){

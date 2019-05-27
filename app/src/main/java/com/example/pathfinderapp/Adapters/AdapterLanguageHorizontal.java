@@ -1,5 +1,4 @@
 package com.example.pathfinderapp.Adapters;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,12 +8,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.pathfinderapp.Models.Language;
 import com.example.pathfinderapp.R;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLanguageHorizontal.ViewHolderItem>
         implements View.OnClickListener {
@@ -36,13 +32,7 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
         this.previousCheckedState = prev;
     }
 
-    public boolean[] getCheckBoxesStatus()
-    {
-        boolean[]aux = previousCheckedState;
-
-
-        return isChecked;
-    }
+    public boolean[] getCheckBoxesStatus() { return isChecked; }
 
     @NonNull
     @Override
@@ -55,29 +45,9 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
 
     @Override
     public void onBindViewHolder(AdapterLanguageHorizontal.ViewHolderItem viewHolder, int i) {
-        String aux = languagesList.get(i).getCode(); // + "," + languagesList.get(i).getCode();
-        viewHolder.title.setText(aux);
-        switch (languagesList.get(i).getCode()){
-            case "FR":
-                viewHolder.picture.setImageResource(R.drawable.french_flag);
-                break;
-            case "DE":
-                viewHolder.picture.setImageResource(R.drawable.german_flag);
-                break;
-            case "EN":
-                viewHolder.picture.setImageResource(R.drawable.britain_flag);
-                break;
-            case "IT":
-                viewHolder.picture.setImageResource(R.drawable.italy_flag);
-                break;
-            case "ES":
-                viewHolder.picture.setImageResource(R.drawable.spain_flag);
-                break;
-            case "JP":
-                viewHolder.picture.setImageResource(R.drawable.japanese_flag);
-                break;
+        viewHolder.title.setText(languagesList.get(i).getCode());
+        viewHolder.setPicture(languagesList.get(i).getCode());
 
-        }
         if(!isSettings)
             viewHolder.checkBox.setVisibility(View.INVISIBLE);
         if(isSettings) {
@@ -106,7 +76,6 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
     public void onClick(View view) {
         if(listener != null)
             listener.onClick(view);
-
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
@@ -122,6 +91,29 @@ public class AdapterLanguageHorizontal extends RecyclerView.Adapter<AdapterLangu
             checkBox = itemView.findViewById(R.id.checkboxId);
         }
 
-
+        public void setPicture(String code) {
+            switch (code){
+                case "FR":
+                    picture.setImageResource(R.drawable.french_flag);
+                    break;
+                case "DE":
+                    picture.setImageResource(R.drawable.german_flag);
+                    break;
+                case "EN":
+                    picture.setImageResource(R.drawable.britain_flag);
+                    break;
+                case "IT":
+                    picture.setImageResource(R.drawable.italy_flag);
+                    break;
+                case "ES":
+                    picture.setImageResource(R.drawable.spain_flag);
+                    break;
+                case "JP":
+                    picture.setImageResource(R.drawable.japanese_flag);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

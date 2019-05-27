@@ -2,16 +2,13 @@ package com.example.pathfinderapp.PublishPackage;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-
 import com.example.pathfinderapp.PublishFragment;
 import com.example.pathfinderapp.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +43,6 @@ public class WhenFragment extends Fragment implements INexStep {
      * @param parent Parameter 1.
      * @return A new instance of fragment WhenFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static WhenFragment newInstance(PublishFragment parent) {
 
         WhenFragment fragment = new WhenFragment();
@@ -72,9 +68,11 @@ public class WhenFragment extends Fragment implements INexStep {
                 nextStep();
             }
         });
+
         setCalendarMinDate();
         setFocus();
         parent.setSeekBarStatus();
+
         return view;
     }
 
@@ -100,9 +98,6 @@ public class WhenFragment extends Fragment implements INexStep {
         calendarView.setMinDate(millis);
     }
 
-
-
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
@@ -137,7 +132,6 @@ public class WhenFragment extends Fragment implements INexStep {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction();
     }
 }

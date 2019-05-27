@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.pathfinderapp.Adapters.CroppedImage;
-import com.example.pathfinderapp.MockValues.DefValues;
 import com.example.pathfinderapp.Models.Review;
 import com.example.pathfinderapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,12 +21,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.CirclePageIndicator;
-import com.synnapps.carouselview.ImageListener;
 import com.synnapps.carouselview.ViewListener;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -37,13 +32,9 @@ import java.util.List;
 public class ReviewsCaroussel extends Fragment {
 
 
-    CarouselView reviewsCarousselView;
+    private CarouselView reviewsCarousselView;
     private List<Review> reviews;
     private ProgressBar rotateLoading;
-
-
-    //int[] sampleImages = {R.drawable.review_example1, R.drawable.review_example2, R.drawable.review_example3, R.drawable.review_example4};
-
 
     public ReviewsCaroussel(){}
 
@@ -69,43 +60,17 @@ public class ReviewsCaroussel extends Fragment {
             reviewsCarousselView.setPageCount(reviews.size());
             reviewsCarousselView.setSlideInterval(4000);
             reviewsCarousselView.setViewListener(viewListener);
-            //reviewsCarousselView.setImageListener(imageListener);
             showProgress(true);
-
         } else {
             reviewsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
             reviewsCarousselView.setVisibility(View.INVISIBLE);
             TextView textView = (TextView) rootView.findViewById(R.id.emptyTextViewMessage);
             textView.setVisibility(View.VISIBLE);
-            /*reviewsCarousselView.setPageCount(reviews.size());
-            reviewsCarousselView.setSlideInterval(4000);
-            reviewsCarousselView.setViewListener(viewEmptyListener);*/
         }
-
-        // To set custom views
-
-
         return rootView;
-
     }
 
-    /*ViewListener viewEmptyListener = new ViewListener() {
-        @Override
-        public View setViewForPosition(int position) {
-
-            View customView = getLayoutInflater().inflate(R.layout.reviews_caroussel, null);
-            if(reviews.get(position).getAuthorInfo() != null){
-                TextView messageTextView = (TextView) customView.findViewById(R.id.ReviewMessage);
-                messageTextView.setText(R.string.empty_reviews);
-
-            }
-            return customView;
-
-        }
-    };*/
-
-
-    ViewListener viewListener = new ViewListener() {
+    private ViewListener viewListener = new ViewListener() {
         @Override
         public View setViewForPosition(int position) {
 
@@ -146,25 +111,13 @@ public class ReviewsCaroussel extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             showProgress(false);
-
                         }
                     });
                 } catch (IOException e) {
                     showProgress(false);
                 }
-
-
             }
             return customView;
-
-
-            // bitmap = BitmapFactory.decodeResource(getResources(), current.getAutor().getImage());
-            //bitmap = CroppedImage.getCroppedBitmap(bitmap);
-
-            //fruitImageView.setImageResource(sampleImages[position]);
-            //labelTextView.setText(sampleTitles[position]);
-
-
         }
     };
 
@@ -179,11 +132,4 @@ public class ReviewsCaroussel extends Fragment {
 
         }
     }
-
-    /*ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(sampleImages[position]);
-        }
-    };*/
 }

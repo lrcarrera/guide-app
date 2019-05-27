@@ -3,13 +3,13 @@ package com.example.pathfinderapp.AsyncStuff;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import com.example.pathfinderapp.R;
 
-public class NetworkUtil {
+class NetworkUtil {
 
-    public static String getConnectivityStatusString(Context context) {
-        String status = null;
+    static String getConnectivityStatusString(Context context) {
+        String status;
+
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
@@ -24,6 +24,6 @@ public class NetworkUtil {
             status = context.getResources().getString(R.string.internet_ko);
             return status;
         }
-        return null;
+        return "";
     }
 }
