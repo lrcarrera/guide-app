@@ -240,6 +240,13 @@ public class ProfileFragment extends Fragment {
         if (current == null)
             return;
 
+        if(current.getImage() == 0){
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_picture);
+            bitmap = CroppedImage.getCroppedBitmap(bitmap);
+            profilePicture.setImageBitmap(bitmap);
+            return;
+        }
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getImage() + ".png");
         try {
@@ -263,40 +270,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    /*private ArrayList<Review> getUserReviewsInfo(ArrayList<Review> reviews){
-        final ArrayList<Review> newReviews = new ArrayList<>();
-        if(reviews != null){
-            for(final Review review : reviews){
-                db.collection("users").whereEqualTo("user.uid", review.getAutor() )
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    User user = null;
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        user = new User(document);
-                                        //DefValues.setDocumentReference(document.getReference());
-                                        //DefValues.setUserInContext(document);
-                                    }
-                                    review.setAuthorInfo(user);
-                                    newReviews.add(review);
-
-                                } else {
-                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
-                                }
-                            }
-                        });
-            }
-        }
-
-        return newReviews;
-    }*/
-
-    public void setTabsSubPages(User user){
-
-    }
-
     void setTabsSubPages(final ArrayList<Post> posts){
         if (DefValues.getUserInContext() == null)
             return;
@@ -305,49 +278,60 @@ public class ProfileFragment extends Fragment {
 
         final ArrayList<Review> newReviews = new ArrayList<>();
         if(reviews != null){
-            for(final Review review : reviews){
-                db.collection("users").whereEqualTo("user.uid", review.getAutor() )
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    User user = null;
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        user = new User(document);
-                                        //DefValues.setDocumentReference(document.getReference());
-                                        //DefValues.setUserInContext(document);
+            if(reviews.size() > 0){
+                for(final Review review : reviews){
+                    db.collection("users").whereEqualTo("user.uid", review.getAutor() )
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        User user = null;
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            user = new User(document);
+                                            //DefValues.setDocumentReference(document.getReference());
+                                            //DefValues.setUserInContext(document);
+                                        }
+                                        review.setAuthorInfo(user);
+                                        newReviews.add(review);
+                                        addAdapter(newReviews, posts);
+
+                                    } else {
+                                        notConnectionToast();
+                                        Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                     }
-                                    review.setAuthorInfo(user);
-                                    newReviews.add(review);
-                                    AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), newReviews, posts, true);
-                                    viewPager.setAdapter(tabsAdapter);
-                                    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                                    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                                        @Override
-                                        public void onTabSelected(TabLayout.Tab tab) {
-                                            viewPager.setCurrentItem(tab.getPosition());
-                                        }
-
-                                        @Override
-                                        public void onTabUnselected(TabLayout.Tab tab) {
-
-                                        }
-
-                                        @Override
-                                        public void onTabReselected(TabLayout.Tab tab) {
-
-                                        }
-                                    });
-
-                                } else {
-                                    notConnectionToast();
-                                    Log.w("ERRORDOCUMENT", "Error getting documents.", task.getException());
                                 }
-                            }
-                        });
+                            });
+                }
+            } else {
+                addAdapter(newReviews, posts);
             }
+        } else {
+            addAdapter(newReviews, posts);
         }
+
+    }
+
+    private void addAdapter(final ArrayList<Review> newReviews, final ArrayList<Post> posts){
+        AdapterProfile tabsAdapter = new AdapterProfile(getFragmentManager(), tabLayout.getTabCount(), newReviews, posts, true);
+        viewPager.setAdapter(tabsAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
 
