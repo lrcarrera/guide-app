@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.pathfinderapp.Adapters.CroppedImage;
@@ -38,8 +39,11 @@ public class ReviewsCaroussel extends Fragment {
 
     CarouselView reviewsCarousselView;
     private List<Review> reviews;
+    private ProgressBar rotateLoading;
+
 
     //int[] sampleImages = {R.drawable.review_example1, R.drawable.review_example2, R.drawable.review_example3, R.drawable.review_example4};
+
 
     public ReviewsCaroussel(){}
 
@@ -58,12 +62,15 @@ public class ReviewsCaroussel extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile_firsttab, viewGroup, false);
         CirclePageIndicator indicator = rootView.findViewById(R.id.indicator);
         indicator.setFillColor(R.color.address);
+        rotateLoading = rootView.findViewById(R.id.rotate_loading_reviews);
+
         if (reviews != null && reviews.size() > 0) {
             reviewsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
             reviewsCarousselView.setPageCount(reviews.size());
             reviewsCarousselView.setSlideInterval(4000);
             reviewsCarousselView.setViewListener(viewListener);
             //reviewsCarousselView.setImageListener(imageListener);
+            showProgress(true);
 
         } else {
             reviewsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
@@ -104,6 +111,7 @@ public class ReviewsCaroussel extends Fragment {
 
             View customView = getLayoutInflater().inflate(R.layout.reviews_caroussel, null);
             if(reviews.get(position).getAuthorInfo() != null){
+
                 TextView messageTextView = (TextView) customView.findViewById(R.id.ReviewMessage);
                 TextView authorTextView = (TextView) customView.findViewById(R.id.ReviewAuthor);
                 final ImageView profileImageView = (ImageView) customView.findViewById(R.id.ReviewAuthorImage);
@@ -131,16 +139,18 @@ public class ReviewsCaroussel extends Fragment {
                             profileImageView.setImageBitmap(bitmap);
                             reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
 
+                            showProgress(false);
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
+                            showProgress(false);
 
                         }
                     });
                 } catch (IOException e) {
-                    System.out.println("Vergassso");
+                    showProgress(false);
                 }
 
 
@@ -157,6 +167,18 @@ public class ReviewsCaroussel extends Fragment {
 
         }
     };
+
+    private void showProgress(final boolean show) {
+
+        if (show) {
+            rotateLoading.setVisibility(View.VISIBLE);
+            reviewsCarousselView.setVisibility(View.INVISIBLE);
+        } else {
+            rotateLoading.setVisibility(View.GONE);
+            reviewsCarousselView.setVisibility(View.VISIBLE);
+
+        }
+    }
 
     /*ImageListener imageListener = new ImageListener() {
         @Override

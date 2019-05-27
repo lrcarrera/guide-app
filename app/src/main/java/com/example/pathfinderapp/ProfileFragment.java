@@ -124,9 +124,10 @@ public class ProfileFragment extends Fragment {
     private AdapterProfile mSectionsPageAdapter;
     private ViewPager mViewPager;
 
+    private ProgressBar rotateLoading;
     private User user;
 
-    private ProgressBar rotateLoading;
+    private ProgressBar rotateLoadingPicture;
 
     private FirebaseAuth mAuth;
 
@@ -171,6 +172,9 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         TextView textViewName = rootView.findViewById(R.id.tv_name);
+        rotateLoadingPicture = rootView.findViewById(R.id.rotate_loading_profile);
+
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (isInProfilePage) {
@@ -246,6 +250,7 @@ public class ProfileFragment extends Fragment {
             profilePicture.setImageBitmap(bitmap);
             return;
         }
+        showProgressPicture(true);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://pathfinder-50817.appspot.com").child(current.getImage() + ".png");
@@ -257,13 +262,19 @@ public class ProfileFragment extends Fragment {
                     Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                     bitmap = CroppedImage.getCroppedBitmap(bitmap);
                     profilePicture.setImageBitmap(bitmap);
+                    showProgressPicture(false);
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+                    showProgressPicture(false);
+
                 }
             });
         } catch (IOException e ) {
+            showProgressPicture(false);
+
             System.out.println("Error in bitmap-profile_fragment-picture " + e.getMessage());
         }
 
@@ -334,6 +345,7 @@ public class ProfileFragment extends Fragment {
         });
 
     }
+
 
     private void addLanguages(final Dialog dialog) {
 
@@ -472,6 +484,18 @@ public class ProfileFragment extends Fragment {
         }
 
         return bools;
+    }
+
+    private void showProgressPicture(boolean show) {
+
+        if (show) {
+            rotateLoadingPicture.setVisibility(View.VISIBLE);
+            profilePicture.setVisibility(View.INVISIBLE);
+        } else {
+            rotateLoadingPicture.setVisibility(View.GONE);
+            profilePicture.setVisibility(View.VISIBLE);
+
+        }
     }
 
     private void storePreferenceValues(ArrayList<Language> languages) {

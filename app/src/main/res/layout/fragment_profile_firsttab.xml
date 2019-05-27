@@ -18,6 +18,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <ProgressBar
+        android:id="@+id/rotate_loading_reviews"
+        style="?android:attr/progressBarStyle"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone" />
+
     <TextView
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"

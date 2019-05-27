@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class ToursDone extends Fragment {
 
     private List<Post> posts;
     CarouselView postsCarousselView;
+    private ProgressBar rotateLoading;
 
     public  ToursDone(){}
 
@@ -57,6 +59,8 @@ public class ToursDone extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_profile_secondtab, viewGroup, false);
         CirclePageIndicator indicator = rootView.findViewById(R.id.indicator);
+        rotateLoading = rootView.findViewById(R.id.rotate_loading_tours);
+
         indicator.setFillColor(R.color.address);
         if(posts != null && posts.size() > 0){
             postsCarousselView = (CarouselView) rootView.findViewById(R.id.carouselView);
@@ -69,6 +73,8 @@ public class ToursDone extends Fragment {
             TextView textView = (TextView) rootView.findViewById(R.id.emptyTextViewMessage);
             textView.setVisibility(View.VISIBLE);
         }
+        showProgress(true);
+
         return rootView;
     }
 
@@ -133,8 +139,21 @@ public class ToursDone extends Fragment {
             //labelTextView.setText(sampleTitles[position]);
 
             reviewsCarousselView.setIndicatorGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);*/
+            showProgress(false);
 
             return customView;
         }
     };
+
+    private void showProgress(final boolean show) {
+
+        if (show) {
+            rotateLoading.setVisibility(View.VISIBLE);
+            postsCarousselView.setVisibility(View.INVISIBLE);
+        } else {
+            rotateLoading.setVisibility(View.GONE);
+            postsCarousselView.setVisibility(View.VISIBLE);
+
+        }
+    }
 }
