@@ -112,7 +112,7 @@
     <string name="authentication_success">Authentication successful!</string>
     <string name="verification_email">Verification email will be sent to the email address.</string>
     <string name="restore_account">Please check the instructions sent to your email to restore the password.</string>
-    <string name="email_not_found">E-mail inserted not found.</string>
+    <string name="email_not_found">The E-mail inserted was not found.</string>
 
 
     <!--Empty -->

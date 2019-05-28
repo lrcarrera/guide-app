@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
-                            showToast(getResources().getString(R.string.not_connection));
+                            showToast(getResources().getString(R.string.email_not_found));
                         }
 
                         showProgress(false);
@@ -232,7 +232,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             showToast(getResources().getString(R.string.verification_email));
                         } else {
                             Log.e("VERIFICATIONEMAIL", "sendEmailVerification", task.getException());
-                            showToast(getResources().getString(R.string.not_connection));
+                            showToast(getResources().getString(R.string.email_not_found));
                         }
                     }
                 });
