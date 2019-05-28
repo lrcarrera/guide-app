@@ -374,7 +374,7 @@ public class ProfileFragment extends Fragment {
 
     private void setInitialValuesToTogglesItems() {
 
-        boolean isNotificationsOn = prefs.getBoolean(getResources().getString(R.string.notification), false);
+        boolean isNotificationsOn = prefs.getBoolean(getResources().getString(R.string.notification), true);
         boolean isFullConnectivityOn = prefs.getBoolean(getResources().getString(R.string.full_connectivity), false);
 
         checkboxNotifications.setChecked(isNotificationsOn);
