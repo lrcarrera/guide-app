@@ -6,10 +6,33 @@ admin.initializeApp();
 exports.onPostCreat = functions.firestore
 .document('/posts/{postid}')
 .onWrite(async (change, context) => {
-  console.log(`New post: ${context.params.postid}`)
+  console.log(`Post: ${context.params.postid}`)
 
   if (!change.after.exists) {
-    console.log("Data is being deleted");
+    console.log("Post deleted!");
+    const beforeData = change.before.data();
+    if (beforeData) {
+      const tourists:any[] = beforeData.tourists;
+      tourists.forEach(async tourist  => {
+          const token = tourist['messageToken'];
+          console.log(token);
+
+          if (token) {
+            const payload = {
+              notification: {
+                title: `Tour cancelled!`,
+                body: `Your tour in ${beforeData.place.name} got cancelled!`
+              },
+              token: token
+            }
+
+            console.log('Messaging');
+            const response = await admin.messaging().send(payload);
+            console.log('Done: ', response);
+          }
+      });
+    }
+
     return null;
   }
 
